@@ -1,10 +1,6 @@
-﻿using System;
-
+﻿
 using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
 
 namespace FastTalkerSkiaSharp.Droid
@@ -19,7 +15,16 @@ namespace FastTalkerSkiaSharp.Droid
 
             base.OnCreate(bundle);
 
+            Rg.Plugins.Popup.Popup.Init(this, bundle);
+
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+            Acr.UserDialogs.UserDialogs.Init(this);
+
+            App.DisplayScreenWidth = Resources.DisplayMetrics.WidthPixels / Resources.DisplayMetrics.Density;
+            App.DisplayScreenHeight = Resources.DisplayMetrics.HeightPixels / Resources.DisplayMetrics.Density;
+            App.DisplayScaleFactor = Resources.DisplayMetrics.Density;
+
             LoadApplication(new App());
         }
     }

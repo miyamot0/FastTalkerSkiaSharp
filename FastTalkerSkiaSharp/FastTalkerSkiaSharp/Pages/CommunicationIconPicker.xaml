@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FastTalkerSkiaSharp.Pages.CommunicationIconPicker"
+             x:local="clr-namespace:FastTalkerSkiaSharp;assembly=FastTalkerSkiaSharp"
+             xmlns:controls="clr-namespace:FastTalkerSkiaSharp.Controls;assembly=FastTalkerSkiaSharp" 
+             Title="Add New Icon">
+
+    <Grid HorizontalOptions="FillAndExpand"
+          VerticalOptions="FillAndExpand"
+          Padding="10, 10, 10, 10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="30*"></RowDefinition>
+            <RowDefinition Height="50*"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25*"></ColumnDefinition>
+            <ColumnDefinition Width="75*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Label Text="Pick Icon Category:"
+               VerticalTextAlignment="Center"
+               HorizontalTextAlignment="Start"
+               Grid.Row="0"
+               Grid.Column="0"></Label>
+
+        <Picker x:Name="categoryPicker"
+                Grid.Row="0"
+                SelectedIndexChanged="Handle_SelectedIndexChanged"
+                Grid.Column="1"
+                HorizontalOptions="FillAndExpand">
+        </Picker>
+
+        <controls:CustomScrollView x:Name="customScrollView"
+                                   Orientation="Horizontal" 
+                                   ItemSelected="Handle_ItemSelected"
+                                   Grid.Row="1"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2">
+            <controls:CustomScrollView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="5">
+                            <Image Source="{Binding Image}" 
+                                   WidthRequest="140"
+                                   HeightRequest="140"
+                                   Aspect="AspectFit"/>
+                            <Label FontSize="Default"
+                                   Text="{Binding Name}"
+                                   HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </controls:CustomScrollView.ItemTemplate>
+        </controls:CustomScrollView>
+
+        <Image x:Name="previewCurrent"
+               Grid.Row="2"
+               Grid.Column="0"
+               Aspect="AspectFit"
+               Margin="10" />
+
+        <StackLayout Grid.Row="2"
+                     Grid.Column="1"
+                     VerticalOptions="StartAndExpand">
+            <Label Text="Name selected icon:"/>
+            <Entry x:Name="selectedIconNaming"
+                   Placeholder="Name for icon"/>
+
+        </StackLayout>
+
+        <Button x:Name="iconSaveButton" 
+                Text="Use Current Icon"
+                HorizontalOptions="CenterAndExpand"
+                Clicked="Handle_Clicked"
+                Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"/>
+    </Grid>
+
+</ContentPage>
