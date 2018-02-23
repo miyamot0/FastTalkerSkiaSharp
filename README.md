@@ -1,3 +1,3 @@
 # FastTalkerSkiaSharp
 
-GPL V3+ Shawn Gilroy
+GPL V3+ Shawn Gilroy 
