@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using FastTalkerSkiaSharp.Models;
 using System.Diagnostics;
 using FastTalkerSkiaSharp.Helpers;
+using System.Threading.Tasks;
 
 namespace FastTalkerSkiaSharp.Pages
 {
@@ -43,6 +44,18 @@ namespace FastTalkerSkiaSharp.Pages
         {
             base.OnAppearing();
 
+            LoadInformationAsync();
+        }
+
+        private async void LoadInformationAsync()
+        {
+            // Wait for android
+            while (coreLayout.Width == 0 || coreLayout.Width == -1)
+            {
+                await Task.Delay(50);
+                Debug.WriteLine("waiting...");
+            }
+
             var recommendedWidth = this.Width / 4;
 
             int totalCount = itemsMatching.Count;
@@ -57,7 +70,8 @@ namespace FastTalkerSkiaSharp.Pages
                 tempName1 = tempName2 = tempName3 = null;
                 source1 = source2 = source3 = null;
 
-                Debug.WriteLine(itemsMatching[i].ImageInformation);
+                Debug.WriteLine("ResourceName: " + itemsMatching[i].ImageInformation);
+                Debug.WriteLine("Width: " + itemsMatching[i].ImageInformation);
 
                 for (j = 0; j < 3 && (j + i) < totalCount; j++)
                 {

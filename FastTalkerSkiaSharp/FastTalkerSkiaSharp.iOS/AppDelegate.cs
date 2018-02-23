@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
+﻿
 using Foundation;
 using UIKit;
 
@@ -22,7 +19,14 @@ namespace FastTalkerSkiaSharp.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            Rg.Plugins.Popup.Popup.Init();
+
             global::Xamarin.Forms.Forms.Init();
+
+            App.DisplayScreenWidth = (float)UIScreen.MainScreen.Bounds.Width;
+            App.DisplayScreenHeight = (float)UIScreen.MainScreen.Bounds.Height;
+            App.DisplayScaleFactor = (float)UIScreen.MainScreen.Scale;
+
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
