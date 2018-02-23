@@ -11,10 +11,10 @@
           Padding="10, 10, 10, 10">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="45*"></RowDefinition>
             <RowDefinition Height="30*"></RowDefinition>
-            <RowDefinition Height="50*"></RowDefinition>
-            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="20*"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>

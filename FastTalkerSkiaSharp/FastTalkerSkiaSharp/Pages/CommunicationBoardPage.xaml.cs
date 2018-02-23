@@ -674,7 +674,7 @@ namespace FastTalkerSkiaSharp.Pages
                 var page = new StoredIconPopup(_currentElement.Text, itemsMatching);
                 page.IconSelected += RestoreIcon;
 
-                App.Current.MainPage.Navigation.PushPopupAsync(page);
+                await App.Current.MainPage.Navigation.PushPopupAsync(page);
 
                 e.Handled = true;
             }
