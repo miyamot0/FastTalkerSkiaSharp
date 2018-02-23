@@ -13,7 +13,6 @@ namespace FastTalkerSkiaSharp.Pages
 
         public List<DisplayImageModel> Images { get; set; }
 
-        private bool inInitialLoading = true;
         private bool needsImage = true;
 
         private string selectedIconString = "";

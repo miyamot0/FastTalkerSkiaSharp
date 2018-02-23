@@ -57,6 +57,8 @@ namespace FastTalkerSkiaSharp.Pages
                 tempName1 = tempName2 = tempName3 = null;
                 source1 = source2 = source3 = null;
 
+                Debug.WriteLine(itemsMatching[i].ImageInformation);
+
                 for (j = 0; j < 3 && (j + i) < totalCount; j++)
                 {
                     if (j == 0)

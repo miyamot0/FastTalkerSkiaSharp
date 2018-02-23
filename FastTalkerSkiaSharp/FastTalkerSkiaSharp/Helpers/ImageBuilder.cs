@@ -280,7 +280,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 Local = true,
                 IsStoredInFolder = false,
                 FolderContainingIcon = "",
-                ResourceLocation = "FastTalkerSkiaSharp.Images." + selectedIconArgs.ImageSource + ".png",
+                ResourceLocation = LanguageSettings.ResourcePrefixPng + selectedIconArgs.ImageSource + LanguageSettings.ResourceSuffixPng,
                 Scale = 1f,
                 X = -1,
                 Y = -1
@@ -384,7 +384,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 Local = true,
                 IsStoredInFolder = false,
                 FolderContainingIcon = "",
-                ResourceLocation = "FastTalkerSkiaSharp.Images." + selectedIconArgs.ImageSource + ".png",
+                ResourceLocation = LanguageSettings.ResourcePrefixPng + selectedIconArgs.ImageSource + LanguageSettings.ResourceSuffixPng,
                 Scale = 1f,
                 X = -1,
                 Y = -1

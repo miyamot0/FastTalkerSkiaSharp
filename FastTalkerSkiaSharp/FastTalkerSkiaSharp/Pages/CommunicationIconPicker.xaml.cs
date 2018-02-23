@@ -7,6 +7,7 @@ using FastTalkerSkiaSharp.Models;
 using System.Linq;
 using Acr.UserDialogs;
 using FastTalkerSkiaSharp.Helpers;
+using FastTalkerSkiaSharp.Constants;
 
 namespace FastTalkerSkiaSharp.Pages
 {
@@ -38,7 +39,7 @@ namespace FastTalkerSkiaSharp.Pages
             {
                 if (App.storedIcons == null || App.storedIcons.StoredIcons.Count == 0)
                 {
-                    using (Stream stream = App.MainAssembly.GetManifestResourceStream("FastTalkerSkiaSharp.Data.StoredJson.json"))
+                    using (Stream stream = App.MainAssembly.GetManifestResourceStream(LanguageSettings.ResourcePrefixJson))
                     {
                         using (StreamReader reader = new StreamReader(stream))
                         {

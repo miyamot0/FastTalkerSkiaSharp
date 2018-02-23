@@ -4,6 +4,11 @@ namespace FastTalkerSkiaSharp.Constants
 {
     public static class LanguageSettings
     {
+        public const string ResourcePrefixPng = "FastTalkerSkiaSharp.Images.";
+        public const string ResourceSuffixPng = ".png";
+
+        public const string ResourcePrefixJson = "FastTalkerSkiaSharp.Data.StoredJson.json";
+
         public const string SettingsTitle = "Change setting or icons?";
 
         public const string SettingsClose = "Close";

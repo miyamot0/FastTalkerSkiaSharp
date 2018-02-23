@@ -246,6 +246,9 @@ namespace FastTalkerSkiaSharp.Pages
 
         #endregion
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void ClampCurrentIconToCanvasBounds()
         {
             if (_currentElement.Top <= 0)
@@ -276,7 +279,7 @@ namespace FastTalkerSkiaSharp.Pages
         /// <param name="e">E.</param>
         private void PanGestureRecognizer_PanUpdated(object sender, PanUpdatedEventArgs e)
         {
-            bool outputVerbose = false;
+            bool outputVerbose = true;
 
             System.Diagnostics.Debug.WriteLineIf(outputVerbose, e.StatusType.ToString());
 
@@ -491,12 +494,12 @@ namespace FastTalkerSkiaSharp.Pages
         /// <param name="e">E.</param>
         private async void Canvas_Touch(object sender, SkiaSharp.Views.Forms.SKTouchEventArgs e)
         {
-            bool outputVerbose = false;
+            bool outputVerbose = true;
 
             Debug.WriteLine("e.ActionType = " + e.ActionType.ToString());
             Debug.WriteLineIf(outputVerbose, "e.InContact = " + e.InContact.ToString());
 
-            e.Handled = true;
+            //e.Handled = true;
 
             Debug.WriteLineIf(outputVerbose, "IsCanvasPressed: " + IsCanvasPressed(e));
             Debug.WriteLineIf(outputVerbose, "IsSentenceFramePressed: " + IsSentenceFramePressed(e));
@@ -521,14 +524,45 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         holdingEmitter = true;
                         emitterPressTime = DateTime.Now;
+
+                        e.Handled = true;
+
                     }
                     else if (IsSettingsItemPressed(e))
                     {
                         App.UserInputInstance.QueryUserMainSettingsAsync(canvas);
+
+                        e.Handled = true;
                     }
                     else if (IsDeletePressed(e))
                     {
+                        e.Handled = true;
+
                         return;
+                    }
+                    else if (_currentElement != null &&
+                             _currentElement.Tag == (int) SkiaSharp.Elements.CanvasView.Role.Communication &&
+                             canvas.Controller.InEditMode)
+                    {
+                        ClearIconsInPlay();
+
+                        canvas.Elements.BringToFront(_currentElement);
+
+                        if (!canvas.Controller.InFramedMode)
+                        {
+                            _currentElement.IsMainIconInPlay = true;
+                        }
+
+                        e.Handled = true;
+                    }
+                    else if (_currentElement != null &&
+                             _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
+                    {
+                        ClearIconsInPlay();
+
+                        canvas.Elements.BringToFront(_currentElement);
+
+                        e.Handled = true;
                     }
                     else
                     {
@@ -560,6 +594,8 @@ namespace FastTalkerSkiaSharp.Pages
 
                     canvas.InvalidateSurface();
                 }
+
+                //e.Handled = false;
             }
             else if (IsSpeechEmitterReleased(e))
             {
@@ -615,7 +651,10 @@ namespace FastTalkerSkiaSharp.Pages
                             canvas.InvalidateSurface();
                         }
                     }
+
                 }
+
+                e.Handled = true;
             }
             else if (IsFolderPressedUserMode(e))
             {
@@ -627,6 +666,8 @@ namespace FastTalkerSkiaSharp.Pages
                 // Leave if empty
                 if (itemsMatching == null)
                 {
+                    e.Handled = true;
+
                     return;
                 }
 
@@ -634,11 +675,17 @@ namespace FastTalkerSkiaSharp.Pages
                 page.IconSelected += RestoreIcon;
 
                 App.Current.MainPage.Navigation.PushPopupAsync(page);
+
+                e.Handled = true;
             }
             else if (IsFolderPressedEditMode(e))
             {
                 Debug.WriteLine("Hit a folder, in edit mode");
+
+                e.Handled = true;
             }
+
+            //e.Handled = false;
         }
 
         /// <summary>
