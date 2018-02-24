@@ -156,6 +156,38 @@ namespace FastTalkerSkiaSharp.Helpers
                 case LanguageSettings.SettingsTakePhoto:
                     var base64 = await GetImageFromCameraCallAsync();
 
+                    if (base64 == null) return;
+
+                    var dynamicIcon = new FastTalkerSkiaSharp.Storage.CommunicationIcon()
+                    {
+                        Tag = (int)SkiaSharp.Elements.CanvasView.Role.Communication,
+                        Text = base64[0],
+                        Local = false,
+                        IsStoredInFolder = false,
+                        FolderContainingIcon = "",
+                        Base64 = base64[1],
+                        Scale = 1f,
+                        X = -1,
+                        Y = -1
+                    };
+
+                    SkiaSharp.Elements.Image testImage = null;
+
+                    try
+                    {
+                        testImage = App.ImageBuilderInstance.BuildCommunicationIconDynamic(dynamicIcon);
+
+                        canvasRef.Elements.Add(testImage);
+
+                        canvasRef.InvalidateSurface();
+                    }
+                    catch
+                    {
+                        return;
+                    }
+
+                    canvasRef.Controller.PromptResave();
+
                     return;
 
                 case LanguageSettings.SettingsAddFolder:
@@ -345,7 +377,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// Make call to camera
         /// </summary>
         /// <returns></returns>
-        public async Task<string> GetImageFromCameraCallAsync()
+        public async Task<string[]> GetImageFromCameraCallAsync()
         {
             if (!(CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported))
             {
@@ -376,7 +408,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// </summary>
         /// <param name="mediaOptions"></param>
         /// <returns></returns>
-        public async Task<string> GetImageAndCrop(StoreCameraMediaOptions mediaOptions)
+        public async Task<string[]> GetImageAndCrop(StoreCameraMediaOptions mediaOptions)
         {
             try
             {
@@ -414,7 +446,7 @@ namespace FastTalkerSkiaSharp.Helpers
                         byte[] imageArray = File.ReadAllBytes(@newPath);
                         string base64ImageRepresentation = Convert.ToBase64String(imageArray);
 
-                        return base64ImageRepresentation;
+                        return new string[] { getNamedImage, base64ImageRepresentation };
                     }
                     else
                     {

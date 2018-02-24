@@ -291,6 +291,101 @@ namespace FastTalkerSkiaSharp.Helpers
         }
 
         /// <summary>
+        /// Build icon from instance of icon class
+        /// </summary>
+        /// <returns>The communication icon local.</returns>
+        /// <param name="icon">Icon.</param>
+        public SkiaSharp.Elements.Image BuildCommunicationIconDynamic(FastTalkerSkiaSharp.Storage.CommunicationIcon icon)
+        {
+            SkiaSharp.Elements.Image image = null;
+
+            byte[] data = System.Convert.FromBase64String(icon.Base64);
+
+            SKSize loadedSize = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, icon.Scale, icon.Scale);
+
+            System.Diagnostics.Debug.WriteLine("Loaded Size: " + loadedSize.Width);
+
+            using (Stream stream = new MemoryStream(data))
+            {
+                System.Diagnostics.Debug.WriteLine(App.OutputVerbose, "In Memory Stream");
+
+                SkiaSharp.SKBitmap tempBitmapPre = SkiaSharp.SKBitmap.Decode(stream);
+                SkiaSharp.SKBitmap tempBitmap = tempBitmapPre.Resize(new SKImageInfo((int)loadedSize.Width, (int)loadedSize.Width),
+                                                                 SKBitmapResizeMethod.Lanczos3);
+
+                SkiaSharp.SKBitmap returnBitmap = new SkiaSharp.SKBitmap((int)Math.Round(tempBitmap.Width * 1.4),
+                                                                         (int)Math.Round(tempBitmap.Height * 1.4),
+                                                                         tempBitmap.ColorType,
+                                                                         tempBitmap.AlphaType);
+
+                using (SkiaSharp.SKCanvas canvas2 = new SkiaSharp.SKCanvas(returnBitmap))
+                {
+                    System.Diagnostics.Debug.WriteLine(App.OutputVerbose, "In Canvas");
+
+                    canvas2.Clear(SkiaSharp.SKColors.Transparent);
+
+                    canvas2.DrawBitmap(tempBitmap, SkiaSharp.SKRect.Create(Convert.ToInt16(tempBitmap.Width * 0.2),
+                                                                           Convert.ToInt16(tempBitmap.Height * 0.1),
+                                                                           tempBitmap.Width,
+                                                                           tempBitmap.Height));
+
+                    using (SkiaSharp.SKPaint paint = new SkiaSharp.SKPaint())
+                    {
+                        System.Diagnostics.Debug.WriteLine(App.OutputVerbose, "In SKPaint");
+
+                        paint.TextSize = DeviceLayout.TextSizeDefault * App.DisplayScaleFactor * icon.Scale;
+                        paint.IsAntialias = true;
+                        paint.Color = SkiaSharp.SKColors.Black;
+                        paint.TextAlign = SkiaSharp.SKTextAlign.Center;
+
+                        canvas2.DrawText(icon.Text,
+                                        (Convert.ToSingle(tempBitmap.Width) * 1.4f) / 2f,
+                                        (Convert.ToSingle(tempBitmap.Height) * 1.35f),
+                                        paint);
+                    }
+
+                    canvas2.Flush();
+                }
+
+                SkiaSharp.SKSize finalSize = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
+                                                                        DeviceLayout.InterfaceDimensionDefault,
+                                                                        DeviceLayout.InterfaceDimensionDefault);
+
+                SkiaSharp.SKPoint settingsPoint;
+
+                if (icon.X == -1 || icon.Y == -1)
+                {
+                    settingsPoint = DeviceLayout.GetCenterPoint(canvasReference.CanvasSize);
+                }
+                else
+                {
+                    settingsPoint = new SkiaSharp.SKPoint(icon.X, icon.Y);
+                }
+
+                System.Diagnostics.Debug.WriteLine(App.OutputVerbose, "Creating Image...");
+
+                image = new SkiaSharp.Elements.Image(returnBitmap)
+                {
+                    Tag = icon.Tag,
+                    Text = icon.Text,
+                    ImageInformation = icon.Base64,
+                    LocalImage = false,
+                    IsInsertableIntoFolder = false,
+                    StoredFolderTag = icon.FolderContainingIcon,
+                    IsStoredInAFolder = icon.IsStoredInFolder,
+                    CurrentScale = icon.Scale,
+                    BorderColor = SkiaSharp.SKColors.Black,
+                    BorderWidth = 2f,
+                    Bounds = SkiaSharp.SKRect.Create(settingsPoint, loadedSize)
+                };
+
+                Array.Clear(data, 0, data.Length);
+
+                return image;
+            }
+        }
+
+        /// <summary>
         /// Caller for building icon from user selection
         /// </summary>
         /// <returns>The communication icon local.</returns>
@@ -473,10 +568,8 @@ namespace FastTalkerSkiaSharp.Helpers
                 Tag = element.Tag,
                 Local = element.LocalImage,
                 TextVisible = true,
-                Base64 = (element.LocalImage) ? "" :
-                                    element.ImageInformation,
-                ResourceLocation = (element.LocalImage) ? element.ImageInformation :
-                                              "",
+                Base64 = (element.LocalImage) ? "" : element.ImageInformation,
+                ResourceLocation = (element.LocalImage) ? element.ImageInformation : "",
                 IsStoredInFolder = element.IsStoredInAFolder,
                 FolderContainingIcon = element.StoredFolderTag,
                 Scale = newScale,
@@ -484,12 +577,22 @@ namespace FastTalkerSkiaSharp.Helpers
                 HashCode = element.GetHashCode()
             };
 
-            if (element.Tag == (int) SkiaSharp.Elements.CanvasView.Role.Communication)
+            if (element.Tag == (int) SkiaSharp.Elements.CanvasView.Role.Communication && icon.Local)
             {
+                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "CanvasView.Role.Communication && icon.Local");
+
                 return BuildCommunicationIconLocal(icon);
+            }
+            else if (element.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication && !icon.Local)
+            {
+                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "CanvasView.Role.Communication && !icon.Local");
+
+                return BuildCommunicationIconDynamic(icon);
             }
             else if (element.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
             {
+                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "CanvasView.Role.Folder");
+
                 return BuildCommunicationFolderLocal(icon);
             }
             else

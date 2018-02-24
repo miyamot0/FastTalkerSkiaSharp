@@ -177,16 +177,22 @@ namespace FastTalkerSkiaSharp.Pages
 
                 foreach (var icon in icons)
                 {
-                    Debug.WriteLine("Tag: " + icon.Tag +
+                    Debug.WriteLine(App.OutputVerbose,
+                                    "Tag: " + icon.Tag +
                                     " Name: " + icon.Text +
                                     " Scale: " + icon.Scale +
                                     " Local: " + icon.Local +
                                     " Stored Bool: " + icon.IsStoredInFolder +
+                                    " Base64: " + icon.Base64 +
                                     " FolderTag: " + icon.FolderContainingIcon);
 
                     if (icon.Local && icon.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication)
                     {
                         canvas.Elements.Add(App.ImageBuilderInstance.BuildCommunicationIconLocal(icon));
+                    }
+                    else if (!icon.Local && icon.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication)
+                    {
+                        canvas.Elements.Add(App.ImageBuilderInstance.BuildCommunicationIconDynamic(icon));
                     }
                     else if (icon.Local && icon.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
                     {
@@ -196,11 +202,11 @@ namespace FastTalkerSkiaSharp.Pages
             }
             else if (icons != null && icons.Count == 0)
             {
-                Debug.WriteLine("No icons");
+                Debug.WriteLineIf(App.OutputVerbose, "No icons");
             }
             else
             {
-                Debug.WriteLine("Null");
+                Debug.WriteLineIf(App.OutputVerbose, "Null");
             }
         }
 
