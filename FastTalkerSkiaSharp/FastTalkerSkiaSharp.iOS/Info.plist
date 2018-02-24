@@ -50,6 +50,8 @@
 	<true/>
 	<key>UIRequiresFullScreen</key>
 	<true/>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 	<key>CFBundleShortVersionString</key>
 	<string>1</string>
 </dict>

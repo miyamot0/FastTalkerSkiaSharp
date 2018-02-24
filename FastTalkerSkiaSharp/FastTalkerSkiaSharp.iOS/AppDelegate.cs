@@ -51,6 +51,9 @@ namespace FastTalkerSkiaSharp.iOS
 
             LoadApplication(new App());
 
+            UIApplication.SharedApplication.SetStatusBarHidden(true, true);
+            UIApplication.SharedApplication.StatusBarHidden = true;
+
             return base.FinishedLaunching(app, options);
         }
     }

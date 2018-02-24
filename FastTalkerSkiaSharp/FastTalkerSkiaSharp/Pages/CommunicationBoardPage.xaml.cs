@@ -54,14 +54,6 @@ namespace FastTalkerSkiaSharp.Pages
         {
             InitializeComponent();
 
-            switch (Device.RuntimePlatform)
-            {
-                case Device.iOS:
-                    Padding = new Thickness(0, 20, 0, 0);
-
-                    break;
-            }
-
             App.ImageBuilderInstance = new ImageBuilder(canvas);
 
             _panGestureRecognizer = new PanGestureRecognizer();
