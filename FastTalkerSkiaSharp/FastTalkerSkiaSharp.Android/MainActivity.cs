@@ -22,16 +22,39 @@
 */
 
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
+using Android.Media;
 using Android.OS;
+using Android.Views;
 
 namespace FastTalkerSkiaSharp.Droid
 {
-    [Activity(Label = "FastTalkerSkiaSharp", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "Fast Talker",
+              AlwaysRetainTaskState = true,
+              Icon = "@drawable/icon",
+              ScreenOrientation = ScreenOrientation.SensorLandscape,
+              MainLauncher = true,
+              LaunchMode = LaunchMode.SingleInstance,
+              Theme = "@style/MainTheme",
+              ConfigurationChanges = ConfigChanges.Orientation |
+                                     ConfigChanges.ScreenSize |
+                                     ConfigChanges.Keyboard |
+                                     ConfigChanges.KeyboardHidden)]
+    [IntentFilter(new[] { Intent.ActionMain },
+        Categories = new[]
+        {
+            Intent.CategoryHome,
+            Android.Content.Intent.CategoryDefault
+        })]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        public static Activity MainApplicationActivity;
+
         protected override void OnCreate(Bundle bundle)
         {
+            MainApplicationActivity = this;
+
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
@@ -48,6 +71,11 @@ namespace FastTalkerSkiaSharp.Droid
             App.DisplayScaleFactor = Resources.DisplayMetrics.Density;
 
             LoadApplication(new App());
+
+            this.Window.AddFlags(WindowManagerFlags.Fullscreen);
+
+            AudioManager audioManager = (AudioManager)Application.Context.GetSystemService(Context.AudioService);
+            audioManager.SetStreamVolume(Stream.System, audioManager.GetStreamMaxVolume(Stream.System), 0);
         }
     }
 }

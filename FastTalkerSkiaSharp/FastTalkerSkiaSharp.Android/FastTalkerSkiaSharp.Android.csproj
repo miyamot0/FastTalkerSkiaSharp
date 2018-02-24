@@ -70,8 +70,10 @@
     <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="25.4.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\DeviceAdminReceiverClass.cs" />
     <Compile Include="Controls\CustomScrollViewRenderer.cs" />
     <Compile Include="Controls\ViewCellTransparent.cs" />
+    <Compile Include="Implementations\ImplementationAdministration.cs" />
     <Compile Include="Implementations\ImplementationSaveLoad.cs" />
     <Compile Include="Implementations\ImplementationSpeechOutput.cs" />
     <Compile Include="MainActivity.cs" />
@@ -98,7 +100,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\FastTalkerSkiaSharp\FastTalkerSkiaSharp.csproj">
       <Project>{fd1a2dc8-3298-43fe-a592-2bf3f02a3908}</Project>
@@ -108,6 +109,12 @@
       <Project>{5e03b166-c293-49d1-99c6-a972b126591d}</Project>
       <Name>SkiaSharp.Elements</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\NewFolder1\" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\xml\admin.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

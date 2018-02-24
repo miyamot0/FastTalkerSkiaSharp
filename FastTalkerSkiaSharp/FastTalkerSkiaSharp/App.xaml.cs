@@ -26,12 +26,15 @@ using System.Reflection;
 using FastTalkerSkiaSharp.Storage;
 using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Models;
+using FastTalkerSkiaSharp.Interfaces;
 
 namespace FastTalkerSkiaSharp
 {
     public partial class App : Application
 	{
         public static bool OutputVerbose = true;
+
+        public static bool HasAdmin = false;
 
         public static float DisplayScreenWidth;
         public static float DisplayScreenHeight;
@@ -87,7 +90,15 @@ namespace FastTalkerSkiaSharp
 
             Database.Init();
 
-            MainPage = new NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
+            var boardPage = new NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
+
+            if (Device.RuntimePlatform == Device.Android)
+            {
+                HasAdmin = DependencyService.Get<InterfaceAdministration>().IsAdmin();
+                DependencyService.Get<InterfaceAdministration>().RequestAdmin(HasAdmin);
+            }
+
+            MainPage = boardPage;
         }
 
         protected override void OnStart () { }
