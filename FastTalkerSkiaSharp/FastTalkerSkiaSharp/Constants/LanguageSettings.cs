@@ -55,7 +55,7 @@ namespace FastTalkerSkiaSharp.Constants
         {
             return new string[] {
                 SettingsResume,
-                SettingsServerStart,
+                //SettingsServerStart,
                 SettingsSave,
                 (controller.RequireDeselect) ? SettingsDeselectDisable : SettingsDeselect,
                 (controller.InFramedMode) ? SettingsMode2 : SettingsMode,

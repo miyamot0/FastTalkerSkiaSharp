@@ -21,14 +21,21 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using FastTalkerSkiaSharp.Constants;
+using FastTalkerSkiaSharp.Interfaces;
 using FastTalkerSkiaSharp.Pages;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
 using SkiaSharp;
 using SkiaSharp.Elements;
+using Xamarin.Forms;
 
 namespace FastTalkerSkiaSharp.Helpers
 {
@@ -65,7 +72,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="canvasView">Canvas view.</param>
         /// <param name="userResponse">User response.</param>
         /// <param name="saveSettingsAsync">Save settings async.</param>
-        public void ResponseToQuery(CanvasView canvasView, string userResponse)
+        public async void ResponseToQuery(CanvasView canvasView, string userResponse)
         {
             switch (userResponse)
             {
@@ -142,12 +149,12 @@ namespace FastTalkerSkiaSharp.Helpers
                     var newCommunicationPage = new CommunicationIconPicker();
                     newCommunicationPage.IconConstructed += SaveCommunicationIcon;
 
-                    App.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
+                    await App.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
 
                     return;
 
                 case LanguageSettings.SettingsTakePhoto:
-                    // TODO
+                    var base64 = await GetImageFromCameraCallAsync();
 
                     return;
 
@@ -155,7 +162,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     var newFolderPage = new FolderIconPicker();
                     newFolderPage.FolderConstructed += SaveFolder;
 
-                    App.Current.MainPage.Navigation.PushAsync(newFolderPage);
+                    await App.Current.MainPage.Navigation.PushAsync(newFolderPage);
 
                     return;
 
@@ -220,7 +227,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// </summary>
         /// <param name="canvasView">Canvas view.</param>
         /// <param name="currentElement">Current element.</param>
-        public async void ConfirmRemoveIcon(Element currentElement, Element deleteButton)
+        public async void ConfirmRemoveIcon(SkiaSharp.Elements.Element currentElement, SkiaSharp.Elements.Element deleteButton)
         {
             var response = await UserDialogs.Instance.ConfirmAsync("Delete this icon?");
 
@@ -260,7 +267,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// </summary>
         /// <param name="currentElement"></param>
         /// <param name="deleteButton"></param>
-        public async void ConfirmDeleteFolder(Element currentElement, Element deleteButton)
+        public async void ConfirmDeleteFolder(SkiaSharp.Elements.Element currentElement, SkiaSharp.Elements.Element deleteButton)
         {
             var response = await UserDialogs.Instance.ConfirmAsync("Delete this folder and the icons within?");
 
@@ -318,6 +325,11 @@ namespace FastTalkerSkiaSharp.Helpers
             }
         }
 
+        /// <summary>
+        /// Modify icon text
+        /// </summary>
+        /// <param name="prevText"></param>
+        /// <returns></returns>
         public async Task<string> ModifyIconTextAsync(string prevText)
         {
             var text = await UserDialogs.Instance.PromptAsync("Enter name for image", 
@@ -327,6 +339,93 @@ namespace FastTalkerSkiaSharp.Helpers
                 placeholder: prevText);
 
             return text.Text;
+        }
+
+        /// <summary>
+        /// Make call to camera
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> GetImageFromCameraCallAsync()
+        {
+            if (!(CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported))
+            {
+                // <!-- If photo taking isn't supported, return with blank array -->
+                await UserDialogs.Instance.AlertAsync("");                    
+            }
+
+            // <!-- Options related to image storage and formatting -->
+            StoreCameraMediaOptions mediaOptions = new StoreCameraMediaOptions
+            {
+                Directory = "SGDPhotos",
+                Name = $"{System.DateTime.UtcNow}.png",
+                PhotoSize = PhotoSize.Small,
+                CompressionQuality = 50,
+
+                // <!-- These below largely have to be handled explicitly in Android
+                SaveToAlbum = true,
+                AllowCropping = true,
+                RotateImage = true
+                // --> 
+            };
+
+            return await GetImageAndCrop(mediaOptions);
+        }
+
+        /// <summary>
+        /// Get saved image
+        /// </summary>
+        /// <param name="mediaOptions"></param>
+        /// <returns></returns>
+        public async Task<string> GetImageAndCrop(StoreCameraMediaOptions mediaOptions)
+        {
+            try
+            {
+                using (MediaFile file = await CrossMedia.Current.TakePhotoAsync(mediaOptions))
+                {
+                    string newPath = "";
+
+                    Debug.WriteLineIf(App.OutputVerbose, "In Taker");
+
+                    if (file == null || file.Path == null || file.Path == "")
+                    {
+                        return null;
+                    }
+                    else if (File.Exists(@file.Path))
+                    {
+                        var path = Path.GetDirectoryName(@file.Path);
+
+                        if (Device.RuntimePlatform == Device.Android)
+                        {
+                            newPath = Path.Combine(path, Path.GetFileNameWithoutExtension(@file.Path) + "crop.jpg");
+
+                            // <!-- Note: this crops an image to square, since not a default in Android -->
+                            DependencyService.Get<InterfaceBitmapResize>().ResizeBitmaps(@file.Path, @newPath);
+
+                        }
+                        else if (Device.RuntimePlatform == Device.iOS)
+                        {
+                            // <!-- Note: iOS has a center crop option built in -->
+                            newPath = Path.Combine(path, Path.GetFileName(@file.Path));
+                        }
+
+                        var getNamedImageInfo = await UserDialogs.Instance.PromptAsync("Name picture");
+                        var getNamedImage = getNamedImageInfo.Text;
+
+                        byte[] imageArray = File.ReadAllBytes(@newPath);
+                        string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+
+                        return base64ImageRepresentation;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

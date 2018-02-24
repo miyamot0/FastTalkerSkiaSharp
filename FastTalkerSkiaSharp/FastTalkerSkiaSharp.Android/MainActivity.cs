@@ -49,11 +49,9 @@ namespace FastTalkerSkiaSharp.Droid
         })]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        public static Activity MainApplicationActivity;
-
         protected override void OnCreate(Bundle bundle)
         {
-            MainApplicationActivity = this;
+            Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity = this;
 
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
@@ -76,6 +74,11 @@ namespace FastTalkerSkiaSharp.Droid
 
             AudioManager audioManager = (AudioManager)Application.Context.GetSystemService(Context.AudioService);
             audioManager.SetStreamVolume(Stream.System, audioManager.GetStreamMaxVolume(Stream.System), 0);
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Plugin.Permissions.PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

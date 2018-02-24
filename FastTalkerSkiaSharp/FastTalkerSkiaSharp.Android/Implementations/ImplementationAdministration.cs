@@ -56,11 +56,11 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
                 {
                     if (status)
                     {
-                        MainActivity.MainApplicationActivity.StartLockTask();
+                        Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.StartLockTask();
                     }
                     else
                     {
-                        MainActivity.MainApplicationActivity.StopLockTask();
+                        Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.StopLockTask();
                     }
                 }
             }
