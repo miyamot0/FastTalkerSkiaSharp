@@ -180,15 +180,16 @@ namespace FastTalkerSkiaSharp.Helpers
 
         public async Task<string> IconEditOptionsAsync()
         {
-            var userResponse = await UserDialogs.Instance.ActionSheetAsync(LanguageSettings.EditTitle,
-                                                                           LanguageSettings.EditClose,
-                                                                           LanguageSettings.EditClose,
-                                                                           null,
-                                                                           new string[]
-                                                                            {
-                                                                            LanguageSettings.EditGrow,
-                                                                            LanguageSettings.EditShrink
-                                                                            });
+            var userResponse = await UserDialogs.Instance.ActionSheetAsync(LanguageSettings.EditTitle, LanguageSettings.EditClose,
+                                                                           LanguageSettings.EditClose, null,
+            new string[] 
+            { 
+                LanguageSettings.EditGrow2,
+                LanguageSettings.EditGrow,
+                LanguageSettings.EditResetSize,
+                LanguageSettings.EditShrink,
+                LanguageSettings.EditShrink2 
+            });
 
             return userResponse;
 

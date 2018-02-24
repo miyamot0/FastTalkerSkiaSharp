@@ -438,6 +438,18 @@ namespace FastTalkerSkiaSharp.Helpers
                     newScale = element.CurrentScale * 0.9f;
                     break;
 
+                case LanguageSettings.EditGrow2:
+                    newScale = element.CurrentScale * 1.5f;
+                    break;
+
+                case LanguageSettings.EditShrink2:
+                    newScale = element.CurrentScale * 0.5f;
+                    break;
+
+                case LanguageSettings.EditResetSize:
+                    newScale = element.CurrentScale * 1.0f;
+                    break;
+
                 case LanguageSettings.EditClose:
 
                     return element;

@@ -69,5 +69,8 @@ namespace FastTalkerSkiaSharp.Constants
 
         public const string EditShrink = "Shrink";
         public const string EditGrow = "Grow";
+        public const string EditResetSize = "Scale Default";
+        public const string EditShrink2 = "Shrink a Lot";
+        public const string EditGrow2 = "Grow a Lot";
     }
 }
