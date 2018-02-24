@@ -31,6 +31,8 @@ namespace FastTalkerSkiaSharp
 {
     public partial class App : Application
 	{
+        public static bool OutputVerbose = true;
+
         public static float DisplayScreenWidth;
         public static float DisplayScreenHeight;
         public static float DisplayScaleFactor;

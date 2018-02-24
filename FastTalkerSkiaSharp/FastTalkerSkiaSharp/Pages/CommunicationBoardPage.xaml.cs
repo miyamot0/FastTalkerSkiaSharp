@@ -37,7 +37,6 @@ namespace FastTalkerSkiaSharp.Pages
 {
     public partial class CommunicationBoardPage : ContentPage
     {
-        private PanGestureRecognizer _panGestureRecognizer;
         private SkiaSharp.Elements.Element _currentElement;
         private SKPoint? _startLocation;
 
@@ -49,17 +48,13 @@ namespace FastTalkerSkiaSharp.Pages
         private DateTime emitterPressTime;
 
         private bool inInitialLoading = true;
+        private bool hasMoved = false;
 
         public CommunicationBoardPage()
         {
             InitializeComponent();
 
             App.ImageBuilderInstance = new ImageBuilder(canvas);
-
-            _panGestureRecognizer = new PanGestureRecognizer();
-            _panGestureRecognizer.PanUpdated += PanGestureRecognizer_PanUpdated;
-
-            canvas.GestureRecognizers.Add(_panGestureRecognizer);
 
             canvas.Controller.OnElementsChanged += SaveCurrentBoard;
             canvas.Controller.OnSettingsChanged += SaveCurrentSettings;
@@ -228,39 +223,6 @@ namespace FastTalkerSkiaSharp.Pages
                                              overridePrompt: true);
         }
 
-        #region Panning Logic
-
-        private bool IsInterfaceIconPanning()
-        {
-            return _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Control || _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Emitter;
-        }
-
-        private bool IsCommunicationIconPanning()
-        {
-            return _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication;
-        }
-
-        private bool IsFolderIconPanningEditMode()
-        {
-            return _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder && canvas.Controller.InEditMode;
-        }
-
-        private bool IsCommunicationIconPanningCompletedDeleteable(PanUpdatedEventArgs e)
-        {
-            return e.StatusType == GestureStatus.Completed && _currentElement != null &&
-                                                                canvas.Controller.InEditMode &&
-                                                                _currentElement.IsDeletable;
-        }
-
-        private bool IsCommunicationIconPanningCompletedInsertable(PanUpdatedEventArgs e)
-        {
-            return e.StatusType == GestureStatus.Completed && _currentElement != null &&
-                                                                _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication &&
-                                                                _currentElement.IsInsertableIntoFolder;
-        }
-
-        #endregion
-
         /// <summary>
         /// 
         /// </summary>
@@ -288,419 +250,366 @@ namespace FastTalkerSkiaSharp.Pages
         }
 
         /// <summary>
-        /// Pans the gesture recognizer pan updated.
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        private void PanGestureRecognizer_PanUpdated(object sender, PanUpdatedEventArgs e)
-        {
-            bool outputVerbose = true;
-
-            System.Diagnostics.Debug.WriteLineIf(outputVerbose, e.StatusType.ToString());
-
-            if (e.StatusType == GestureStatus.Running)
-            {
-                if (_currentElement != null)
-                {
-                    if (IsInterfaceIconPanning())
-                    {
-                        return;
-                    }
-                    else if (IsCommunicationIconPanning())
-                    {
-                        _currentElement.Location = new SKPoint(_startLocation.Value.X + (float)e.TotalX * App.DisplayScaleFactor,
-                                                               _startLocation.Value.Y + (float)e.TotalY * App.DisplayScaleFactor);
-
-                        ClampCurrentIconToCanvasBounds();
-
-                        if (canvas.Controller.InFramedMode)
-                        {
-                            _currentElement.IsSpeakable = _currentElement.Bounds.IntersectsWith(stripReference.Bounds);
-                        }
-                        else
-                        {
-                            for (int i = 0; i < canvas.Elements.Count; i++)
-                            {
-                                canvas.Elements[i].IsMainIconInPlay = false;
-                            }
-
-                            _currentElement.IsMainIconInPlay = true;
-                        }
-
-                        _currentElement.IsDeletable = _currentElement.Bounds.IntersectsWith(deleteReference.Bounds);
-
-                        if (_currentElement.IsDeletable && canvas.Controller.InEditMode)
-                        {
-                            //System.Diagnostics.Debug.WriteLine("can delete");
-                        }
-
-                        _currentElement.IsInsertableIntoFolder = canvas.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
-                                          .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds))
-                                          .Any();
-                    }
-                    else if (IsFolderIconPanningEditMode())
-                    {
-                        _currentElement.Location = new SKPoint(_startLocation.Value.X + (float)e.TotalX * App.DisplayScaleFactor,
-                                                               _startLocation.Value.Y + (float)e.TotalY * App.DisplayScaleFactor);
-
-                        ClampCurrentIconToCanvasBounds();
-
-                        if (canvas.Controller.InFramedMode)
-                        {
-                            _currentElement.IsSpeakable = _currentElement.Bounds.IntersectsWith(stripReference.Bounds);
-                        }
-                        else
-                        {
-                            for (int i = 0; i < canvas.Elements.Count; i++)
-                            {
-                                canvas.Elements[i].IsMainIconInPlay = false;
-                            }
-
-                            _currentElement.IsMainIconInPlay = true;
-                        }
-
-                        _currentElement.IsDeletable = _currentElement.Bounds.IntersectsWith(deleteReference.Bounds);
-
-                        if (_currentElement.IsDeletable && canvas.Controller.InEditMode)
-                        {
-                            //System.Diagnostics.Debug.WriteLine("can delete folder");
-                        }
-                    }
-                }
-            }
-            else if (IsCommunicationIconPanningCompletedDeleteable(e))
-            {
-                App.UserInputInstance.ConfirmRemoveIcon(canvas, _currentElement, deleteReference);
-            }
-            else if (IsCommunicationIconPanningCompletedInsertable(e))
-            {
-                var folderOfInterest = canvas.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder && !elem.IsStoredInAFolder)
-                                                      .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds)).First();
-
-                if (folderOfInterest != null)
-                {
-                    Debug.WriteLine("In Completed: Passed Insertable into folder. Tag: " + _currentElement.Tag +
-                                    " Text: " + _currentElement.Text +
-                                    " Folder name: " + folderOfInterest.Text);
-
-                    _currentElement.IsStoredInAFolder = true;
-
-                    _currentElement.StoredFolderTag = folderOfInterest.Text;
-
-                    canvas.Elements.SendToBack(_currentElement);
-
-                    canvas.Controller.PromptResave();
-
-                    // Animation
-
-                }
-            }
-        }
-
-        #region Logic Canvas Press Handling
-
-        /// <summary>
-        /// Ises the canvas pressed.
-        /// </summary>
-        /// <returns><c>true</c>, if canvas pressed was ised, <c>false</c> otherwise.</returns>
-        /// <param name="e">E.</param>
-        private bool IsCanvasPressed(SkiaSharp.Views.Forms.SKTouchEventArgs e)
-        {
-            return e.ActionType == SkiaSharp.Views.Forms.SKTouchAction.Pressed;
-        }
-
-        /// <summary>
-        /// Ises the sentence frame pressed.
-        /// </summary>
-        /// <returns><c>true</c>, if sentence frame pressed was ised, <c>false</c> otherwise.</returns>
-        /// <param name="e">E.</param>
-        private bool IsSentenceFramePressed(SkiaSharp.Views.Forms.SKTouchEventArgs e)
-        {
-            return _currentElement != null && _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.SentenceFrame;
-        }
-
-        /// <summary>
-        /// Ises the speech emitter pressed.
-        /// </summary>
-        /// <returns><c>true</c>, if speech emitter pressed was ised, <c>false</c> otherwise.</returns>
-        /// <param name="e">E.</param>
-        private bool IsSpeechEmitterPressed(SkiaSharp.Views.Forms.SKTouchEventArgs e)
-        {
-            return _currentElement != null && _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Emitter;
-        }
-
-        /// <summary>
-        /// Ises the speech emitter released.
-        /// </summary>
-        /// <returns><c>true</c>, if speech emitter released was ised, <c>false</c> otherwise.</returns>
-        /// <param name="e">E.</param>
-        private bool IsSpeechEmitterReleased(SkiaSharp.Views.Forms.SKTouchEventArgs e)
-        {
-            return e.ActionType == SkiaSharp.Views.Forms.SKTouchAction.Released && holdingEmitter;
-        }
-
-        /// <summary>
-        /// Ises the settings item pressed.
-        /// </summary>
-        /// <returns><c>true</c>, if settings item pressed was ised, <c>false</c> otherwise.</returns>
-        /// <param name="e">E.</param>
-        private bool IsSettingsItemPressed(SkiaSharp.Views.Forms.SKTouchEventArgs e)
-        {
-            return _currentElement != null &&
-                canvas.Controller.InEditMode &&
-                _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Settings;
-        }
-
-        /// <summary>
-        /// Ises the delete pressed.
-        /// </summary>
-        /// <returns><c>true</c>, if delete pressed was ised, <c>false</c> otherwise.</returns>
-        /// <param name="e">E.</param>
-        private bool IsDeletePressed(SkiaSharp.Views.Forms.SKTouchEventArgs e)
-        {
-            return _currentElement != null && _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Delete;
-        }
-
-        /// <summary>
-        /// Ises the icon tapped in edit mode.
-        /// </summary>
-        /// <returns><c>true</c>, if icon tapped in edit mode was ised, <c>false</c> otherwise.</returns>
-        /// <param name="e">E.</param>
-        private bool IsIconTappedInEditMode(SkiaSharp.Views.Forms.SKTouchEventArgs e)
-        {
-            return e.ActionType == SkiaSharp.Views.Forms.SKTouchAction.Released &&
-                     _currentElement != null &&
-                     _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication &&
-                    canvas.Controller.InEditMode;
-        }
-
-        /// <summary>
-        /// Ises the folder pressed user mode.
-        /// </summary>
-        /// <returns><c>true</c>, if folder pressed user mode was ised, <c>false</c> otherwise.</returns>
-        /// <param name="e">E.</param>
-        private bool IsFolderPressedUserMode(SkiaSharp.Views.Forms.SKTouchEventArgs e)
-        {
-            return e.ActionType == SkiaSharp.Views.Forms.SKTouchAction.Released &&
-                    _currentElement != null &&
-                    _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder &&
-                    !canvas.Controller.InEditMode;
-        }
-
-        /// <summary>
-        /// Ises the folder pressed edit mode.
-        /// </summary>
-        /// <returns><c>true</c>, if folder pressed edit mode was ised, <c>false</c> otherwise.</returns>
-        /// <param name="e">E.</param>
-        private bool IsFolderPressedEditMode(SkiaSharp.Views.Forms.SKTouchEventArgs e)
-        {
-            return e.ActionType == SkiaSharp.Views.Forms.SKTouchAction.Released &&
-                    _currentElement != null &&
-                    _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder &&
-                    canvas.Controller.InEditMode;
-        }
-
-        #endregion
-
-        /// <summary>
         /// Canvases the touch.
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">E.</param>
-        private async void Canvas_Touch(object sender, SkiaSharp.Views.Forms.SKTouchEventArgs e)
+        private void Canvas_Touch(object sender, SkiaSharp.Views.Forms.SKTouchEventArgs e)
         {
-            bool outputVerbose = true;
+            e.Handled = true;
 
-            Debug.WriteLine("e.ActionType = " + e.ActionType.ToString());
-            Debug.WriteLineIf(outputVerbose, "e.InContact = " + e.InContact.ToString());
+            Debug.WriteLine(App.OutputVerbose, "e.ActionType = " + e.ActionType.ToString() + "e.InContact = " + e.InContact.ToString());
 
-            //e.Handled = true;
-
-            Debug.WriteLineIf(outputVerbose, "IsCanvasPressed: " + IsCanvasPressed(e));
-            Debug.WriteLineIf(outputVerbose, "IsSentenceFramePressed: " + IsSentenceFramePressed(e));
-            Debug.WriteLineIf(outputVerbose, "IsSpeechEmitterPressed: " + IsSpeechEmitterPressed(e));
-            Debug.WriteLineIf(outputVerbose, "IsSettingsItemPressed: " + IsSettingsItemPressed(e));
-
-            if (IsCanvasPressed(e))
+            switch (e.ActionType)
             {
-                _currentElement = canvas.GetElementAtPoint(e.Location);
+                case SkiaSharp.Views.Forms.SKTouchAction.Pressed:
+                    ProcessInitialTouchEvent(e, outputVerbose: App.OutputVerbose);
 
-                if (_currentElement != null)
-                {
-                    _startLocation = _currentElement.Location;
+                    break;
 
-                    if (IsSentenceFramePressed(e))
-                    {
-                        Debug.WriteLineIf(outputVerbose, "Hit sentence frame");
+                case SkiaSharp.Views.Forms.SKTouchAction.Moved:
+                    ProcessMovedTouchEvent(e, outputVerbose: App.OutputVerbose);
 
-                        return;
-                    }
-                    else if (IsSpeechEmitterPressed(e))
-                    {
-                        holdingEmitter = true;
-                        emitterPressTime = DateTime.Now;
+                    return;
 
-                        e.Handled = true;
+                case SkiaSharp.Views.Forms.SKTouchAction.Released:
+                    ProcessCompletedTouchEvent(e, outputVerbose: App.OutputVerbose);
 
-                    }
-                    else if (IsSettingsItemPressed(e))
-                    {
-                        App.UserInputInstance.QueryUserMainSettingsAsync(canvas);
+                    return;
+                    
+                default:
+                    _currentElement = null;
 
-                        e.Handled = true;
-                    }
-                    else if (IsDeletePressed(e))
-                    {
-                        e.Handled = true;
+                    return;
+            }        
+        }
 
-                        return;
-                    }
-                    else if (_currentElement != null &&
-                             _currentElement.Tag == (int) SkiaSharp.Elements.CanvasView.Role.Communication &&
-                             canvas.Controller.InEditMode)
-                    {
-                        ClearIconsInPlay();
+        /// <summary>
+        /// Process initial touches
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="outputVerbose"></param>
+        void ProcessInitialTouchEvent(SkiaSharp.Views.Forms.SKTouchEventArgs e, bool outputVerbose = false)
+        {
+            _currentElement = canvas.GetElementAtPoint(e.Location);
 
-                        canvas.Elements.BringToFront(_currentElement);
+            // Confirmation of movement
+            hasMoved = false;
 
-                        if (!canvas.Controller.InFramedMode)
-                        {
-                            _currentElement.IsMainIconInPlay = true;
-                        }
+            // Fail out if null
+            if (_currentElement == null) return;
 
-                        e.Handled = true;
-                    }
-                    else if (_currentElement != null &&
-                             _currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
-                    {
-                        ClearIconsInPlay();
+            // Get origin of element
+            _startLocation = _currentElement.Location;
 
-                        canvas.Elements.BringToFront(_currentElement);
-
-                        e.Handled = true;
-                    }
-                    else
-                    {
-                        ClearIconsInPlay();
-
-                        canvas.Elements.BringToFront(_currentElement);
-
-                        if (!canvas.Controller.InFramedMode)
-                        {
-                            _currentElement.IsMainIconInPlay = true;
-                        }
-                    }
-                }
-            }
-            else if (IsIconTappedInEditMode(e))
+            switch (_currentElement.Tag)
             {
-                string userFeedback = await App.UserInputInstance.IconEditOptionsAsync();
+                case (int)SkiaSharp.Elements.CanvasView.Role.SentenceFrame:
+                    Debug.WriteLineIf(outputVerbose, "Hit sentence frame");
 
-                var item = App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
-                int index = canvas.Elements.IndexOf(_currentElement);
+                    return;
 
-                if (item == null && index != -1)
-                {
-                    Debug.WriteLine("was null or unrefernced");
-                }
-                else
-                {
-                    canvas.Elements[index] = item;
+                case (int)SkiaSharp.Elements.CanvasView.Role.Emitter:
+                    Debug.WriteLineIf(outputVerbose, "Hit speech emitter");
+                    holdingEmitter = true;
+                    emitterPressTime = DateTime.Now;
 
-                    canvas.InvalidateSurface();
-                }
+                    return;
 
-                //e.Handled = false;
-            }
-            else if (IsSpeechEmitterReleased(e))
-            {
-                holdingEmitter = false;
+                case (int)SkiaSharp.Elements.CanvasView.Role.Settings:
+                    Debug.WriteLineIf(outputVerbose, "Hit settings");
+                    if (canvas.Controller.InEditMode) App.UserInputInstance.QueryUserMainSettingsAsync(canvas);
 
-                //Debug.WriteLine("Seconds held: " + (DateTime.Now - emitterPressTime).TotalSeconds.ToString());
+                    return;
 
-                if ((DateTime.Now - emitterPressTime).Seconds >= 3 && !canvas.Controller.InEditMode)
-                {
+                case (int)SkiaSharp.Elements.CanvasView.Role.Delete:
+                    Debug.WriteLineIf(outputVerbose, "Hit Delete");
 
-                    canvas.Controller.UpdateSettings(!canvas.Controller.InEditMode,
-                                                     canvas.Controller.InFramedMode,
-                                                     canvas.Controller.RequireDeselect);
+                    return;
 
-                    canvas.Controller.BackgroundColor = canvas.Controller.InEditMode ? SKColors.DarkOrange : SKColors.DimGray;
-
+                case (int)SkiaSharp.Elements.CanvasView.Role.Folder:
+                    Debug.WriteLineIf(outputVerbose, "Hit Folder");
                     ClearIconsInPlay();
+                    canvas.Elements.BringToFront(_currentElement);
 
-                    canvas.InvalidateSurface();
-                }
-                else
-                {
+                    return;
+
+                default:
+                    Debug.WriteLineIf(outputVerbose, "In Default Hit");
+                    ClearIconsInPlay();
+                    canvas.Elements.BringToFront(_currentElement);
+
+                    if (!canvas.Controller.InFramedMode)
+                    {
+                        _currentElement.IsMainIconInPlay = true;
+                    }
+
+                    return;
+            }
+        }
+
+        /// <summary>
+        /// Process moving touches
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="outputVerbose"></param>
+        void ProcessMovedTouchEvent(SkiaSharp.Views.Forms.SKTouchEventArgs e, bool outputVerbose = false)
+        {
+            // If out of scope, return
+            if (_currentElement == null) return;
+            
+            switch (_currentElement.Tag)
+            {
+                case (int)SkiaSharp.Elements.CanvasView.Role.Control:
+
+                    return;
+
+                case (int)SkiaSharp.Elements.CanvasView.Role.Emitter:
+
+                    return;
+
+                case (int)SkiaSharp.Elements.CanvasView.Role.Communication:
+                    hasMoved = true;
+
+                    _currentElement.Location = new SKPoint(e.Location.X - _currentElement.Bounds.Width / 2f,
+                                                           e.Location.Y - _currentElement.Bounds.Height / 2f);
+
+                    ClampCurrentIconToCanvasBounds();
+
                     if (canvas.Controller.InFramedMode)
                     {
-                        var mIntersectingElements = canvas?.Elements
-                                                           .Where(elem => elem.IsSpeakable && elem.Tag != (int)SkiaSharp.Elements.CanvasView.Role.Folder)
-                                                           .OrderBy(elem => elem.Left)
-                                                           .Select(elem => elem.Text);
-
-                        if (mIntersectingElements != null && mIntersectingElements.Count() > 0)
-                        {
-                            var output = String.Join(" ", mIntersectingElements);
-
-                            DependencyService.Get<InterfaceSpeechOutput>().SpeakText(output);
-                        }
+                        _currentElement.IsSpeakable = _currentElement.Bounds.IntersectsWith(stripReference.Bounds);
                     }
                     else
                     {
-                        var selectedElements = canvas?.Elements
-                                                      .Where(elem => elem.IsMainIconInPlay && elem.Tag != (int)SkiaSharp.Elements.CanvasView.Role.Folder)
-                                                      .Select(elem => elem.Text)
-                                                      .FirstOrDefault();
-
-                        if (selectedElements != null)
+                        for (int i = 0; i < canvas.Elements.Count; i++)
                         {
-                            DependencyService.Get<InterfaceSpeechOutput>().SpeakText(selectedElements);
+                            canvas.Elements[i].IsMainIconInPlay = false;
                         }
 
-                        if (canvas.Controller.RequireDeselect)
+                        _currentElement.IsMainIconInPlay = true;
+                    }
+
+                    _currentElement.IsDeletable = _currentElement.Bounds.IntersectsWith(deleteReference.Bounds);
+
+                    if (_currentElement.IsDeletable && canvas.Controller.InEditMode)
+                    {
+                        Debug.WriteLineIf(outputVerbose, "Can delete communication icon");
+                    }
+
+                    _currentElement.IsInsertableIntoFolder = canvas.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
+                                        .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds))
+                                        .Any();
+
+                    _startLocation = _currentElement.Location;
+
+                    return;
+
+                case (int)SkiaSharp.Elements.CanvasView.Role.Folder:
+                    hasMoved = true;
+
+                    if (!canvas.Controller.InEditMode) return;
+
+                    _currentElement.Location = new SKPoint(e.Location.X - _currentElement.Bounds.Width / 2f,
+                                        e.Location.Y - _currentElement.Bounds.Height / 2f);
+
+                    ClampCurrentIconToCanvasBounds();
+
+                    _currentElement.IsDeletable = _currentElement.Bounds.IntersectsWith(deleteReference.Bounds);
+
+                    if (_currentElement.IsDeletable && canvas.Controller.InEditMode)
+                    {
+                        Debug.WriteLineIf(outputVerbose, "Can delete folder icon");
+                    }
+
+                    _startLocation = _currentElement.Location;
+
+                    return;
+
+                default:
+
+                    return;
+
+            }            
+        }
+
+        /// <summary>
+        /// Process touch completed events
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="outputVerbose"></param>
+        async void ProcessCompletedTouchEvent(SkiaSharp.Views.Forms.SKTouchEventArgs e, bool outputVerbose = false)
+        {
+            // If out of scope, return
+            if (_currentElement == null) return;
+
+            switch (_currentElement.Tag)
+            {
+                case (int)SkiaSharp.Elements.CanvasView.Role.Communication:
+                    if (canvas.Controller.InEditMode && !hasMoved)
+                    {
+                        Debug.WriteLineIf(outputVerbose, "Completed icon tap");
+
+                        string userFeedback = await App.UserInputInstance.IconEditOptionsAsync();
+
+                        Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
+
+                        var item = App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
+
+                        int index = canvas.Elements.IndexOf(_currentElement);
+
+                        if (item == null || index == -1)
                         {
-                            ClearIconsInPlay();
+                            Debug.WriteLineIf(outputVerbose, "was null or unrefernced");
+                        }
+                        else
+                        {
+                            canvas.Elements[index] = item;
 
                             canvas.InvalidateSurface();
                         }
                     }
+                    else if (hasMoved && _currentElement.IsInsertableIntoFolder)
+                    {
+                        Debug.WriteLineIf(outputVerbose, "Icon completed, has moved");
 
-                }
+                        var folderOfInterest = canvas.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder && !elem.IsStoredInAFolder)
+                                      .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds));
 
-                e.Handled = true;
-            }
-            else if (IsFolderPressedUserMode(e))
-            {
-                Debug.WriteLine("Hit a folder, in user mode: " + _currentElement.Text);
+                        if (folderOfInterest != null || folderOfInterest.Count() > 0)
+                        {
+                            Debug.WriteLineIf(outputVerbose, "In Completed: Insertable into folder: " + _currentElement.Tag);
 
-                // This is where the current item is the folder in question
-                var itemsMatching = canvas.Controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == _currentElement.Text).ToList();
+                            _currentElement.IsStoredInAFolder = true;
+                            _currentElement.StoredFolderTag = folderOfInterest.First().Text;
 
-                // Leave if empty
-                if (itemsMatching == null)
-                {
+                            canvas.Elements.SendToBack(_currentElement);
+                            canvas.Controller.PromptResave();
+
+                            Debug.WriteLineIf(outputVerbose, "TODO: animation entry");
+                        }
+                    }
+                    else if (hasMoved && _currentElement.IsDeletable)
+                    {
+                        App.UserInputInstance.ConfirmRemoveIcon(canvas, _currentElement, deleteReference);
+                    }
+
                     e.Handled = true;
 
                     return;
-                }
 
-                var page = new StoredIconPopup(_currentElement.Text, itemsMatching);
-                page.IconSelected += RestoreIcon;
+                case (int)SkiaSharp.Elements.CanvasView.Role.Folder:
+                    if (canvas.Controller.InEditMode && !hasMoved)
+                    {
+                        Debug.WriteLineIf(outputVerbose, "Hit a folder, in edit mode, ADD EDIT");
 
-                await App.Current.MainPage.Navigation.PushPopupAsync(page);
+                        e.Handled = true;
+                    }
+                    if (canvas.Controller.InEditMode && _currentElement.IsDeletable)
+                    {
+                        Debug.WriteLineIf(outputVerbose, "Can delete a folder, TODO");
 
-                e.Handled = true;
+                        e.Handled = true;
+                    }
+                    else if (!canvas.Controller.InEditMode && !hasMoved)
+                    {
+                        Debug.WriteLineIf(outputVerbose, "Hit a folder, in user mode: " + _currentElement.Text);
+
+                        // This is where the current item is the folder in question
+                        var itemsMatching = canvas.Controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == _currentElement.Text).ToList();
+
+                        // Leave if empty
+                        if (itemsMatching == null)
+                        {
+                            e.Handled = true;
+
+                            return;
+                        }
+
+                        var page = new StoredIconPopup(_currentElement.Text, itemsMatching);
+
+                        page.IconSelected += RestoreIcon;
+
+                        await App.Current.MainPage.Navigation.PushPopupAsync(page);
+
+                        e.Handled = true;
+                    }
+
+                    return;
+
+                default:
+                    // Emitter was tapped/held
+                    if (holdingEmitter)
+                    {
+                        holdingEmitter = false;
+
+                        Debug.WriteLineIf(outputVerbose, "Seconds held: " + (DateTime.Now - emitterPressTime).TotalSeconds.ToString());
+
+                        if ((DateTime.Now - emitterPressTime).Seconds >= 3 && !canvas.Controller.InEditMode)
+                        {
+
+                            canvas.Controller.UpdateSettings(!canvas.Controller.InEditMode,
+                                                             canvas.Controller.InFramedMode,
+                                                             canvas.Controller.RequireDeselect);
+
+                            canvas.Controller.BackgroundColor = canvas.Controller.InEditMode ? SKColors.DarkOrange : SKColors.DimGray;
+
+                            ClearIconsInPlay();
+
+                            canvas.InvalidateSurface();
+                        }
+                        else
+                        {
+                            if (canvas.Controller.InFramedMode)
+                            {
+                                var mIntersectingElements = canvas?.Elements
+                                                                   .Where(elem => elem.IsSpeakable && elem.Tag != (int)SkiaSharp.Elements.CanvasView.Role.Folder)
+                                                                   .OrderBy(elem => elem.Left)
+                                                                   .Select(elem => elem.Text);
+
+                                if (mIntersectingElements != null && mIntersectingElements.Count() > 0)
+                                {
+                                    var output = String.Join(" ", mIntersectingElements);
+
+                                    Debug.WriteLineIf(outputVerbose, "Verbal output (Frame): " + output);
+
+                                    DependencyService.Get<InterfaceSpeechOutput>().SpeakText(output);
+                                }
+                            }
+                            else
+                            {
+                                var selectedElements = canvas?.Elements
+                                                              .Where(elem => elem.IsMainIconInPlay && elem.Tag != (int)SkiaSharp.Elements.CanvasView.Role.Folder)
+                                                              .Select(elem => elem.Text)
+                                                              .FirstOrDefault();
+
+                                if (selectedElements != null)
+                                {
+                                    Debug.WriteLineIf(outputVerbose, "Verbal output (Icon): " + selectedElements);
+
+                                    DependencyService.Get<InterfaceSpeechOutput>().SpeakText(selectedElements);
+                                }
+
+                                if (canvas.Controller.RequireDeselect)
+                                {
+                                    ClearIconsInPlay();
+
+                                    canvas.InvalidateSurface();
+                                }
+                            }
+
+                        }
+
+                        e.Handled = true;
+                    }
+                    // Item is deleteable
+                    else if (canvas.Controller.InEditMode && _currentElement.IsDeletable)
+                    {
+                        App.UserInputInstance.ConfirmRemoveIcon(canvas, _currentElement, deleteReference);
+                    }
+
+                    return;
             }
-            else if (IsFolderPressedEditMode(e))
-            {
-                Debug.WriteLine("Hit a folder, in edit mode");
-
-                e.Handled = true;
-            }
-
-            //e.Handled = false;
         }
 
         /// <summary>

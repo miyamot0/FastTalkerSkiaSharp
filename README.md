@@ -1,7 +1,7 @@
 # FastTalkerSkiaSharp
 Fast Talker is a native extension of earlier work to establish a free and open source application for use in the treatment of communication disorders.  Fast Tasker is built upon Xamarin Forms and SkiaSharp, both open-source frameworks for use in native development of applications for Android, iOS, Windows Mobile, and Blackberry.  Fast Talker is fully supported on all platforms, though only Android and iOS are actively maintained and under evaluation at this point.
 
-Features
+### Features
  - Native views in both iOS and Android
  - Dynamically add picture icons and text
  - Use as home screen, limit access to non-communication apps
@@ -14,13 +14,13 @@ Features
  - Save all boards automatically, all locally managed!
 
 ### Images
-
+ - Todo
 
 ### Version
-1.0.0.0
+ - 1.0.0.0
 
 ### Changelog
- * 1.0.0.0 - Initial push
+ - 1.0.0.0 - Initial push
 
 ### Derivative Works
 Fast Talker is a derivative work of an earlier project and uses licensed software:
@@ -51,7 +51,7 @@ Fast Talker can be installed as either an Android or iOS application.
 ### Device Owner Mode (Android)
 Fast Talker can be set to be a dedicated, SGD-only device by having the administrator run the following command from ADB:
 
-<i>adb shell dpm set-device-owner com.smallnstats.fasttalker/com.smallnstats.fasttalker.Base.DeviceAdminReceiverClass</i>
+<i>adb shell dpm set-device-owner com.smallnstats.fasttalkerskiasharp/com.smallnstats.fasttalkerskiasharp.Base.DeviceAdminReceiverClass</i>
 
 Optionally, administators can disable the user warnings displayed on the screen by running the following command from ADB:
 

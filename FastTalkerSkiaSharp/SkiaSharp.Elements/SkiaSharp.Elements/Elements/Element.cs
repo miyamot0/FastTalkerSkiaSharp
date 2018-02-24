@@ -82,6 +82,9 @@ namespace SkiaSharp.Elements
         // Is this stored in a folder?
         public bool IsStoredInAFolder { get; set; }
 
+        // Has this been moved since press?
+        public bool IsThisInMotion { get; set; }
+
         // What folder is this stored in?
         public string StoredFolderTag { get; set; }
 
