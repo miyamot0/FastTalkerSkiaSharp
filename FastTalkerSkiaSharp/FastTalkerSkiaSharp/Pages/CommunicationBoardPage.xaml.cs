@@ -491,7 +491,7 @@ namespace FastTalkerSkiaSharp.Pages
                     }
                     else if (hasMoved && _currentElement.IsDeletable)
                     {
-                        App.UserInputInstance.ConfirmRemoveIcon(canvas, _currentElement, deleteReference);
+                        App.UserInputInstance.ConfirmRemoveIcon(_currentElement, deleteReference);
                     }
 
                     e.Handled = true;
@@ -505,9 +505,9 @@ namespace FastTalkerSkiaSharp.Pages
 
                         e.Handled = true;
                     }
-                    if (canvas.Controller.InEditMode && _currentElement.IsDeletable)
+                    if (canvas.Controller.InEditMode && hasMoved && _currentElement.IsDeletable)
                     {
-                        Debug.WriteLineIf(outputVerbose, "Can delete a folder, TODO");
+                        App.UserInputInstance.ConfirmDeleteFolder(_currentElement, deleteReference);
 
                         e.Handled = true;
                     }
@@ -605,7 +605,7 @@ namespace FastTalkerSkiaSharp.Pages
                     // Item is deleteable
                     else if (canvas.Controller.InEditMode && _currentElement.IsDeletable)
                     {
-                        App.UserInputInstance.ConfirmRemoveIcon(canvas, _currentElement, deleteReference);
+                        App.UserInputInstance.ConfirmRemoveIcon(_currentElement, deleteReference);
                     }
 
                     return;

@@ -21,6 +21,8 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using FastTalkerSkiaSharp.Constants;
@@ -178,6 +180,10 @@ namespace FastTalkerSkiaSharp.Helpers
             }
         }
 
+        /// <summary>
+        /// Get options from user
+        /// </summary>
+        /// <returns></returns>
         public async Task<string> IconEditOptionsAsync()
         {
             var userResponse = await UserDialogs.Instance.ActionSheetAsync(LanguageSettings.EditTitle, LanguageSettings.EditClose,
@@ -192,45 +198,6 @@ namespace FastTalkerSkiaSharp.Helpers
             });
 
             return userResponse;
-
-            /* 
-            if (userResponse == LanguageSettings.EditClose)
-            {
-                Debug.WriteLine("Closing");
-            }
-            else
-            {
-
-                var item = App.ImageBuilderInstance.AmendIconImage(currentItem, userResponse);
-                int index = canvasRef.Elements.IndexOf(currentItem);
-
-                if (item == null && index != -1)
-                {
-                    Debug.WriteLine("was null or unrefernced");
-                }
-                else
-                {
-                    Debug.WriteLine("was not null");
-
-                    Debug.WriteLine("Index of OG: " + index);
-
-                    canvasRef.Elements[index] = item;
-
-                    canvasRef.InvalidateSurface();
-                }
-
-                //return App.ImageBuilderInstance.AmendIconImage(currentItem, userResponse);
-
-                 
-
-
-                //canvasRef.Controller.Elements.Remove(currentItem);
-                //canvasRef.Controller.Elements.Add(newItem);
-                //canvasRef.Controller.Elements.BringToFront(newItem);
-
-                //canvasRef.Controller.Invalidate();
-            }
-            */
         }
 
         /// <summary>
@@ -260,7 +227,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// </summary>
         /// <param name="canvasView">Canvas view.</param>
         /// <param name="currentElement">Current element.</param>
-        public async void ConfirmRemoveIcon(CanvasView canvasView, Element currentElement, Element deleteButton)
+        public async void ConfirmRemoveIcon(Element currentElement, Element deleteButton)
         {
             var response = await UserDialogs.Instance.ConfirmAsync("Delete this icon?");
 
@@ -273,23 +240,86 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 new Xamarin.Forms.Animation((value) =>
                 {
-                    canvasView.SuspendLayout();
+                    canvasRef.SuspendLayout();
                     currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
                                                           (startPoint.Y) + (yDiff * (float)value));
-                    canvasView.ResumeLayout(true);
+                    canvasRef.ResumeLayout(true);
                 }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationMoveMillis, finished: (v, c) =>
                 {
                     new Xamarin.Forms.Animation((value) =>
                     {
-                        canvasView.SuspendLayout();
+                        canvasRef.SuspendLayout();
 
                         currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
 
-                        canvasView.ResumeLayout(true);
+                        canvasRef.ResumeLayout(true);
                     }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationShrinkMillis, finished: (v2, c2) =>
                     {
-                        canvasView.Elements.Remove(currentElement);
-                        canvasView.Controller.PromptResave();
+                        canvasRef.Elements.Remove(currentElement);
+                        canvasRef.Controller.PromptResave();
+                    });
+                });
+            }
+        }
+
+        /// <summary>
+        /// Delete folder and icons within
+        /// </summary>
+        /// <param name="currentElement"></param>
+        /// <param name="deleteButton"></param>
+        public async void ConfirmDeleteFolder(Element currentElement, Element deleteButton)
+        {
+            var response = await UserDialogs.Instance.ConfirmAsync("Delete this folder and the icons within?");
+
+            if (response)
+            {
+                var startPoint = currentElement.Location;
+
+                float xDiff = (deleteButton.Location.X + deleteButton.Bounds.Width / 2f) - (startPoint.X + currentElement.Bounds.Width / 2f);
+                float yDiff = (deleteButton.Location.Y + deleteButton.Bounds.Height / 2f) - (startPoint.Y + currentElement.Bounds.Height / 2f);
+
+                new Xamarin.Forms.Animation((value) =>
+                {
+                    canvasRef.SuspendLayout();
+                    currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
+                                                          (startPoint.Y) + (yDiff * (float)value));
+                    canvasRef.ResumeLayout(true);
+                }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationMoveMillis, finished: (v, c) =>
+                {
+                    new Xamarin.Forms.Animation((value) =>
+                    {
+                        canvasRef.SuspendLayout();
+
+                        currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
+
+                        canvasRef.ResumeLayout(true);
+                    }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationShrinkMillis, finished: (v2, c2) =>
+                    {
+                        var containedIconColl = canvasRef.Elements.Where(elem => elem.IsStoredInAFolder && 
+                                                                          elem.StoredFolderTag == currentElement.Text);
+
+                        if (containedIconColl != null && containedIconColl.Any() && containedIconColl.Count() > 0)
+                        {
+                            List<int> indicesToRemove = new List<int>();
+
+                            // Build a list of items to remove
+                            foreach (var storedIcon in containedIconColl)
+                            {
+                                indicesToRemove.Add(canvasRef.Elements.IndexOf(storedIcon));
+                            }
+
+                            indicesToRemove = indicesToRemove.Where(i => i != -1)
+                                                             .OrderByDescending(i => i)
+                                                             .ToList();
+
+                            foreach (var index in indicesToRemove)
+                            {
+                                canvasRef.Elements.RemoveAt(index);
+                            }
+                        }
+
+                        canvasRef.Elements.Remove(currentElement);
+                        canvasRef.Controller.PromptResave();
                     });
                 });
             }
