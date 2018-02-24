@@ -345,7 +345,7 @@ namespace FastTalkerSkiaSharp.Helpers
 
                     using (SkiaSharp.SKPaint paint = new SkiaSharp.SKPaint())
                     {
-                        paint.TextSize = DeviceLayout.TextSizeDefault * App.DisplayScaleFactor;
+                        paint.TextSize = DeviceLayout.TextSizeDefault * App.DisplayScaleFactor * icon.Scale;
                         paint.IsAntialias = true;
                         paint.Color = SkiaSharp.SKColors.White;
                         paint.TextAlign = SkiaSharp.SKTextAlign.Center;
@@ -386,7 +386,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     CurrentScale = icon.Scale,
                     BorderColor = SkiaSharp.SKColors.Black,
                     BorderWidth = 2f,
-                    Bounds = SkiaSharp.SKRect.Create(settingsPoint, DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, 1.5f, 1.5f))
+                    Bounds = SkiaSharp.SKRect.Create(settingsPoint, loadedSize)
                 };
 
                 return image;
@@ -424,7 +424,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="changeActions">Change actions.</param>
         public SkiaSharp.Elements.Element AmendIconImage(SkiaSharp.Elements.Element element, string changeActions)
         {
-            float newScale = 1f;
+            float newScale = element.CurrentScale;
 
             System.Diagnostics.Debug.WriteLine("Change Action = " + changeActions);
 
@@ -458,8 +458,7 @@ namespace FastTalkerSkiaSharp.Helpers
 
                     return element;
             }
-
-
+            
             var icon = new FastTalkerSkiaSharp.Storage.CommunicationIcon()
             {
                 Text = element.Text,
@@ -479,7 +478,18 @@ namespace FastTalkerSkiaSharp.Helpers
                 HashCode = element.GetHashCode()
             };
 
-            return BuildCommunicationIconLocal(icon);
+            if (element.Tag == (int) SkiaSharp.Elements.CanvasView.Role.Communication)
+            {
+                return BuildCommunicationIconLocal(icon);
+            }
+            else if (element.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
+            {
+                return BuildCommunicationFolderLocal(icon);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

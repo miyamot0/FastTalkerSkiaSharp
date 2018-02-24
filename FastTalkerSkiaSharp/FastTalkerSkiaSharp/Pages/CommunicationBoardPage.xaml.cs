@@ -501,7 +501,26 @@ namespace FastTalkerSkiaSharp.Pages
                 case (int)SkiaSharp.Elements.CanvasView.Role.Folder:
                     if (canvas.Controller.InEditMode && !hasMoved)
                     {
-                        Debug.WriteLineIf(outputVerbose, "Hit a folder, in edit mode, ADD EDIT");
+                        Debug.WriteLineIf(outputVerbose, "Completed folder tap");
+
+                        string userFeedback = await App.UserInputInstance.IconEditOptionsAsync();
+
+                        Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
+
+                        var item = App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
+
+                        int index = canvas.Elements.IndexOf(_currentElement);
+
+                        if (item == null || index == -1)
+                        {
+                            Debug.WriteLineIf(outputVerbose, "was null or unrefernced");
+                        }
+                        else
+                        {
+                            canvas.Elements[index] = item;
+
+                            canvas.InvalidateSurface();
+                        }
 
                         e.Handled = true;
                     }
