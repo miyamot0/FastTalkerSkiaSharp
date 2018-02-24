@@ -26,9 +26,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 using FastTalkerSkiaSharp.Constants;
 using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Interfaces;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using Rg.Plugins.Popup.Extensions;
 using SkiaSharp;
 using Xamarin.Forms;
@@ -146,21 +149,51 @@ namespace FastTalkerSkiaSharp.Pages
                     Debug.WriteLine("waiting...");
                 }
 
-                Debug.WriteLine("GetSettingsAsync");
+                Debug.WriteLineIf(App.OutputVerbose, "GetSettingsAsync");
 
                 GetSettingsAsync();
 
-                Debug.WriteLine("AddStaticContent");
+                Debug.WriteLineIf(App.OutputVerbose, "AddStaticContent");
 
                 AddStaticContent();
 
-                Debug.WriteLine("GetIconsAsync");
+                Debug.WriteLineIf(App.OutputVerbose, "GetIconsAsync");
 
                 GetIconsAsync();
 
-                Debug.WriteLine("Loading..");
+                Debug.WriteLineIf(App.OutputVerbose, "Loading..");
+
+                CheckPermissions();
+
+                Debug.WriteLineIf(App.OutputVerbose, "Requesting permissions..");
 
                 inInitialLoading = false;
+            }
+        }
+
+        /// <summary>
+        /// Checks the permissions.
+        /// </summary>
+        private async void CheckPermissions()
+        {
+            var cameraStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Camera);
+            var storageStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
+
+            if (cameraStatus != PermissionStatus.Granted || storageStatus != PermissionStatus.Granted)
+            {
+                var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] 
+                { 
+                    Permission.Camera, 
+                    Permission.Storage 
+                });
+
+                cameraStatus = results[Permission.Camera];
+                storageStatus = results[Permission.Storage];
+            }
+
+            if (cameraStatus != PermissionStatus.Granted || storageStatus != PermissionStatus.Granted)
+            {
+                await UserDialogs.Instance.AlertAsync("Permissions Denied", "Unable to take photos.");
             }
         }
 
