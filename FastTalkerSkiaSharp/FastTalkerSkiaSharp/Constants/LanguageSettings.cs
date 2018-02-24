@@ -48,6 +48,9 @@ namespace FastTalkerSkiaSharp.Constants
         public const string SettingsTakePhoto = "Take a Photo";
         public const string SettingsAddFolder = "Add a Folder";
 
+        public const string EditTextCancel = "Cancel";
+        public const string EditTextOK = "OK";
+
         public static string[] SettingsMenu(ElementsController controller)
         {
             return new string[] {
@@ -62,7 +65,6 @@ namespace FastTalkerSkiaSharp.Constants
             };
         }
 
-
         public const string EditTitle = "Edit Current Icon?";
 
         public const string EditClose = "Close";
@@ -72,5 +74,19 @@ namespace FastTalkerSkiaSharp.Constants
         public const string EditResetSize = "Scale Default";
         public const string EditShrink2 = "Shrink a Lot";
         public const string EditGrow2 = "Grow a Lot";
+        public const string EditText = "Edit Text";
+
+        public static string[] EditMenu()
+        {
+            return new string[]
+            {
+                LanguageSettings.EditGrow2,
+                LanguageSettings.EditGrow,
+                LanguageSettings.EditResetSize,
+                LanguageSettings.EditShrink,
+                LanguageSettings.EditShrink2,
+                LanguageSettings.EditText
+            };
+        }
     }
 }

@@ -454,7 +454,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
 
-                        var item = App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
+                        var item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
 
                         int index = canvas.Elements.IndexOf(_currentElement);
 
@@ -463,7 +463,7 @@ namespace FastTalkerSkiaSharp.Pages
                             Debug.WriteLineIf(outputVerbose, "was null or unrefernced");
                         }
                         else
-                        {
+                        {                            
                             canvas.Elements[index] = item;
 
                             canvas.InvalidateSurface();
@@ -507,7 +507,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
 
-                        var item = App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
+                        var item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
 
                         int index = canvas.Elements.IndexOf(_currentElement);
 
@@ -517,8 +517,23 @@ namespace FastTalkerSkiaSharp.Pages
                         }
                         else
                         {
-                            canvas.Elements[index] = item;
+                            // Modify to suit new folder
+                            string oldFolderTitle = _currentElement.Text;
 
+                            if (canvas.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == oldFolderTitle).Any())
+                            {
+                                // Modify dated tags
+                                for (int i = 0; i < canvas.Elements.Count; i++)
+                                {
+                                    canvas.Elements[i].StoredFolderTag = (canvas.Elements[i].IsStoredInAFolder &&
+                                                                            canvas.Elements[i].Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication &&
+                                                                            canvas.Elements[i].StoredFolderTag == oldFolderTitle) ?
+                                        item.Text :
+                                        canvas.Elements[i].StoredFolderTag;
+                                }
+                            }
+
+                            canvas.Elements[index] = item;
                             canvas.InvalidateSurface();
                         }
 

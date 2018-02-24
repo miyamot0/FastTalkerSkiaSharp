@@ -187,15 +187,8 @@ namespace FastTalkerSkiaSharp.Helpers
         public async Task<string> IconEditOptionsAsync()
         {
             var userResponse = await UserDialogs.Instance.ActionSheetAsync(LanguageSettings.EditTitle, LanguageSettings.EditClose,
-                                                                           LanguageSettings.EditClose, null,
-            new string[] 
-            { 
-                LanguageSettings.EditGrow2,
-                LanguageSettings.EditGrow,
-                LanguageSettings.EditResetSize,
-                LanguageSettings.EditShrink,
-                LanguageSettings.EditShrink2 
-            });
+                                                                           LanguageSettings.EditClose, null, LanguageSettings.EditMenu());
+
 
             return userResponse;
         }
@@ -323,6 +316,17 @@ namespace FastTalkerSkiaSharp.Helpers
                     });
                 });
             }
+        }
+
+        public async Task<string> ModifyIconTextAsync(string prevText)
+        {
+            var text = await UserDialogs.Instance.PromptAsync("Enter name for image", 
+                title: LanguageSettings.EditTitle,
+                okText: LanguageSettings.EditTextOK,
+                cancelText: LanguageSettings.EditTextCancel,
+                placeholder: prevText);
+
+            return text.Text;
         }
     }
 }

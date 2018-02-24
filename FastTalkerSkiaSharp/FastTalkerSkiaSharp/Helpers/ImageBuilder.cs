@@ -26,6 +26,7 @@ using FastTalkerSkiaSharp.Constants;
 using SkiaSharp;
 using SkiaSharp.Elements;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace FastTalkerSkiaSharp.Helpers
 {
@@ -422,9 +423,10 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <returns>The icon image.</returns>
         /// <param name="element">Element.</param>
         /// <param name="changeActions">Change actions.</param>
-        public SkiaSharp.Elements.Element AmendIconImage(SkiaSharp.Elements.Element element, string changeActions)
+        public async Task<SkiaSharp.Elements.Element> AmendIconImage(SkiaSharp.Elements.Element element, string changeActions)
         {
             float newScale = element.CurrentScale;
+            string newText = element.Text;
 
             System.Diagnostics.Debug.WriteLine("Change Action = " + changeActions);
 
@@ -450,6 +452,10 @@ namespace FastTalkerSkiaSharp.Helpers
                     newScale = element.CurrentScale * 1.0f;
                     break;
 
+                case LanguageSettings.EditText:
+                    newText = await App.UserInputInstance.ModifyIconTextAsync(newText);
+                    break;
+
                 case LanguageSettings.EditClose:
 
                     return element;
@@ -461,7 +467,7 @@ namespace FastTalkerSkiaSharp.Helpers
             
             var icon = new FastTalkerSkiaSharp.Storage.CommunicationIcon()
             {
-                Text = element.Text,
+                Text = newText,
                 X = element.Left,
                 Y = element.Top,
                 Tag = element.Tag,
