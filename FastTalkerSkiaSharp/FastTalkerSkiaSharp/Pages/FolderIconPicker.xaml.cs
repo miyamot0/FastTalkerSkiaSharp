@@ -101,7 +101,7 @@ namespace FastTalkerSkiaSharp.Pages
         {
             if (needsImage || string.IsNullOrWhiteSpace(selectedFolderNaming.Text) || selectedFolderNaming.Text.Trim().Length < 2)
             {
-                await UserDialogs.Instance.AlertAsync("Please enter at least three letters.");
+                await UserDialogs.Instance.AlertAsync("Please select an imange and enter a folder name with at least three letters.");
             }
             else
             {

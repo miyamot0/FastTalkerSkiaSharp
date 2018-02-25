@@ -175,7 +175,7 @@ namespace FastTalkerSkiaSharp.Pages
         {
             if (needsImage || string.IsNullOrWhiteSpace(selectedIconNaming.Text) || selectedIconNaming.Text.Trim().Length < 2)
             {
-                await UserDialogs.Instance.AlertAsync("Please enter valid speech to output");
+                await UserDialogs.Instance.AlertAsync("Please select an image and enter speech to output");
             }
             else
             {
