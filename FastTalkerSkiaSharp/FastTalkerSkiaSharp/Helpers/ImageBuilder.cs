@@ -278,6 +278,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     Tag = icon.Tag,
                     Text = icon.Text,
                     ImageInformation = icon.ResourceLocation,
+                    IsPinnedToSpot = icon.IsPinned,
                     LocalImage = true,
                     IsInsertableIntoFolder = false,
                     StoredFolderTag = icon.FolderContainingIcon,
@@ -373,6 +374,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     ImageInformation = icon.Base64,
                     LocalImage = false,
                     IsInsertableIntoFolder = false,
+                    IsPinnedToSpot = icon.IsPinned,
                     StoredFolderTag = icon.FolderContainingIcon,
                     IsStoredInAFolder = icon.IsStoredInFolder,
                     CurrentScale = icon.Scale,
@@ -400,6 +402,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 Text = selectedIconArgs.Name,
                 Local = true,
                 IsStoredInFolder = false,
+                IsPinned = false,
                 FolderContainingIcon = "",
                 ResourceLocation = LanguageSettings.ResourcePrefixPng + selectedIconArgs.ImageSource + LanguageSettings.ResourceSuffixPng,
                 Scale = 1f,
@@ -479,6 +482,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     ImageInformation = icon.ResourceLocation,
                     LocalImage = true,
                     IsInsertableIntoFolder = false,
+                    IsPinnedToSpot = icon.IsPinned,
                     StoredFolderTag = icon.FolderContainingIcon,
                     IsStoredInAFolder = icon.IsStoredInFolder,
                     CurrentScale = icon.Scale,
@@ -504,6 +508,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 Text = selectedIconArgs.Name,
                 Local = true,
                 IsStoredInFolder = false,
+                IsPinned = false,
                 FolderContainingIcon = "",
                 ResourceLocation = LanguageSettings.ResourcePrefixPng + selectedIconArgs.ImageSource + LanguageSettings.ResourceSuffixPng,
                 Scale = 1f,
@@ -524,6 +529,7 @@ namespace FastTalkerSkiaSharp.Helpers
         {
             float newScale = element.CurrentScale;
             string newText = element.Text;
+            bool isPinned = element.IsPinnedToSpot;
 
             System.Diagnostics.Debug.WriteLine("Change Action = " + changeActions);
 
@@ -563,6 +569,10 @@ namespace FastTalkerSkiaSharp.Helpers
 
                     break;
 
+                case LanguageSettings.EditPinning:
+                    isPinned = !isPinned;
+                    break;
+
                 case LanguageSettings.EditClose:
 
                     return element;
@@ -580,6 +590,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 Tag = element.Tag,
                 Local = element.LocalImage,
                 TextVisible = true,
+                IsPinned = isPinned,
                 Base64 = (element.LocalImage) ? "" : element.ImageInformation,
                 ResourceLocation = (element.LocalImage) ? element.ImageInformation : "",
                 IsStoredInFolder = element.IsStoredInAFolder,

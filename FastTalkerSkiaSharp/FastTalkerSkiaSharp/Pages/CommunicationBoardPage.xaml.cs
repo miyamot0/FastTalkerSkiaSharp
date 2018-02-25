@@ -99,6 +99,7 @@ namespace FastTalkerSkiaSharp.Pages
                         IsStoredInFolder = element.IsStoredInAFolder,
                         FolderContainingIcon = element.StoredFolderTag,
                         Scale = element.CurrentScale,
+                        IsPinned = element.IsPinnedToSpot,
                         TextScale = 1f,
                         HashCode = element.GetHashCode()
                     });
@@ -408,6 +409,9 @@ namespace FastTalkerSkiaSharp.Pages
                     return;
 
                 case (int)SkiaSharp.Elements.CanvasView.Role.Communication:
+                    // If pinned, prevent move
+                    if (_currentElement.IsPinnedToSpot) return;
+
                     hasMoved = true;
 
                     _currentElement.Location = new SKPoint(e.Location.X - _currentElement.Bounds.Width / 2f,

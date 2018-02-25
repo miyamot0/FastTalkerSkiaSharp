@@ -38,6 +38,7 @@ namespace FastTalkerSkiaSharp.Storage
         public bool Local { get; set; }
         public bool TextVisible { get; set; }
         public bool IsStoredInFolder { get; set; }
+        public bool IsPinned { get; set; }
 
         public string Base64 { get; set; }
         public string ResourceLocation { get; set; }

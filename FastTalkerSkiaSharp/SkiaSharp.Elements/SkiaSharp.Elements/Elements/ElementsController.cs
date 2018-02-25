@@ -86,6 +86,9 @@ namespace SkiaSharp.Elements
 
         #region Public methods
 
+        /// <summary>
+        /// Invalidate layout event
+        /// </summary>
         public void Invalidate()
         {
             if (_suspendLayout == 0)
@@ -94,11 +97,21 @@ namespace SkiaSharp.Elements
             }
         }
 
+        /// <summary>
+        /// Save elements event
+        /// </summary>
         public void PromptResave()
         {
             OnElementsChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Edit settings in underlying controller
+        /// </summary>
+        /// <param name="isEditing"></param>
+        /// <param name="isInFrame"></param>
+        /// <param name="isAutoDeselecting"></param>
+        /// <param name="overridePrompt"></param>
         public void UpdateSettings(bool isEditing, bool isInFrame, bool isAutoDeselecting, bool overridePrompt = false)
         {
             _inEditMode = isEditing;
@@ -113,11 +126,19 @@ namespace SkiaSharp.Elements
             OnSettingsChanged?.Invoke(this, EventArgs.Empty);            
         }
 
+        /// <summary>
+        /// Background color
+        /// </summary>
+        /// <param name="canvas"></param>
         public void Clear(SKCanvas canvas)
         {
             canvas.Clear(BackgroundColor);
         }
 
+        /// <summary>
+        /// Drawing of elements, pass over certain events if they're not necessary (or presented to user)
+        /// </summary>
+        /// <param name="canvas"></param>
         public void Draw(SKCanvas canvas)
         {
             foreach (var element in Elements)

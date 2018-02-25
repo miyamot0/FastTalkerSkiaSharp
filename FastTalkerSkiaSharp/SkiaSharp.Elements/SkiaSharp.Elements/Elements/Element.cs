@@ -11,6 +11,8 @@ namespace SkiaSharp.Elements
         public Element()
         {
             _transformationPivot = new SKPoint(.5f, .5f);
+
+            IsPinnedToSpot = false;
         }
 
         #endregion Constructors
@@ -87,6 +89,8 @@ namespace SkiaSharp.Elements
 
         // What folder is this stored in?
         public string StoredFolderTag { get; set; }
+
+        public bool IsPinnedToSpot { get; set; }
 
         public float CurrentScale { get; set; }
 

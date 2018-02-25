@@ -75,17 +75,19 @@ namespace FastTalkerSkiaSharp.Constants
         public const string EditShrink2 = "Shrink a Lot";
         public const string EditGrow2 = "Grow a Lot";
         public const string EditText = "Edit Text";
+        public const string EditPinning = "Toggle Pinning";
 
         public static string[] EditMenu()
         {
             return new string[]
             {
-                LanguageSettings.EditGrow2,
-                LanguageSettings.EditGrow,
-                LanguageSettings.EditResetSize,
-                LanguageSettings.EditShrink,
-                LanguageSettings.EditShrink2,
-                LanguageSettings.EditText
+                EditGrow2,
+                EditGrow,
+                EditResetSize,
+                EditShrink,
+                EditShrink2,
+                EditText,
+                EditPinning
             };
         }
     }
