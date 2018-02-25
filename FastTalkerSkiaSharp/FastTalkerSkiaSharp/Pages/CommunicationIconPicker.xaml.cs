@@ -31,6 +31,7 @@ using System.Linq;
 using Acr.UserDialogs;
 using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Constants;
+using System.Threading.Tasks;
 
 namespace FastTalkerSkiaSharp.Pages
 {
@@ -59,6 +60,18 @@ namespace FastTalkerSkiaSharp.Pages
             base.OnAppearing();
 
             if (inInitialLoading)
+            {
+                LoadingInitialJson();
+            }
+
+            Images = new List<DisplayImageModel>();
+
+            customScrollView.ItemsSource = Images;
+        }
+
+        void LoadingInitialJson()
+        {
+            using (var dlg = UserDialogs.Instance.Progress("Loading icon categories"))
             {
                 if (App.storedIcons == null || App.storedIcons.StoredIcons.Count == 0)
                 {
@@ -89,10 +102,6 @@ namespace FastTalkerSkiaSharp.Pages
 
                 categoryPicker.SelectedItem = Categories.First();
             }
-
-            Images = new List<DisplayImageModel>();
-
-            customScrollView.ItemsSource = Images;
         }
 
         /// <summary>
@@ -100,28 +109,41 @@ namespace FastTalkerSkiaSharp.Pages
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">E.</param>
-        void Handle_SelectedIndexChanged(object sender, System.EventArgs e)
+        async void Handle_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            List<string> checkList = new List<string>() { categoryPicker.SelectedItem.ToString() };
-
-            var mIcons = App.storedIcons.StoredIcons.Where(icons => icons.Tags.Intersect(checkList).Any())
-                                                    .Select(icons => icons.Name)
-                                                    .ToList();
-
-            customScrollView.ItemsSource = null;
-
-            Images.Clear();
-
-            foreach (var iconName in mIcons)
+            using (var dlg = UserDialogs.Instance.Progress("Loading icon images"))
             {
-                Images.Add(new DisplayImageModel
-                {
-                    Image = ImageSource.FromResource(string.Format("FastTalkerSkiaSharp.Images.{0}.png", iconName)),
-                    Name = iconName
-                });
-            }
+                List<string> checkList = new List<string>() { categoryPicker.SelectedItem.ToString() };
 
-            customScrollView.ItemsSource = Images;
+                var mIcons = App.storedIcons.StoredIcons.Where(icons => icons.Tags.Intersect(checkList).Any())
+                                                        .Select(icons => icons.Name)
+                                                        .ToList();
+
+                customScrollView.ItemsSource = null;
+
+                Images.Clear();
+
+                int count = 0;
+
+                foreach (var iconName in mIcons)
+                {
+                    Images.Add(new DisplayImageModel
+                    {
+                        Image = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng +
+                                                                           "{0}" +
+                                                                           LanguageSettings.ResourceSuffixPng, iconName)),
+                        Name = iconName
+                    });
+
+                    await Task.Delay(50);
+
+                    count++;
+
+                    dlg.PercentComplete = (int)(((double)count / (double)mIcons.Count)*100);
+                }
+
+                customScrollView.ItemsSource = Images;
+            }
         }
 
         /// <summary>
@@ -136,8 +158,9 @@ namespace FastTalkerSkiaSharp.Pages
             selectedIconString = (e.Item as DisplayImageModel).Name;
 
             selectedIconNaming.Text = selectedIconString;
-
-            previewCurrent.Source = ImageSource.FromResource(string.Format("FastTalkerSkiaSharp.Images.{0}.png", (e.Item as DisplayImageModel).Name));
+            previewCurrent.Source = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng + 
+                                                                           "{0}" + 
+                                                                           LanguageSettings.ResourceSuffixPng, (e.Item as DisplayImageModel).Name));
         }
 
         /// <summary>
