@@ -11,10 +11,9 @@
           Padding="10, 10, 10, 10">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="5*"></RowDefinition>
-            <RowDefinition Height="45*"></RowDefinition>
-            <RowDefinition Height="30*"></RowDefinition>
-            <RowDefinition Height="20*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -22,57 +21,104 @@
             <ColumnDefinition Width="75*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Label Text="Pick Icon Category:"
-               VerticalTextAlignment="Center"
-               HorizontalTextAlignment="Start"
-               Grid.Row="0"
-               Grid.Column="0"></Label>
+        <Grid
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand"
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2">
 
-        <controls:CustomScrollView x:Name="customScrollView"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*"></ColumnDefinition>
+                <ColumnDefinition Width="75*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <controls:CustomScrollView x:Name="customScrollView"
                                    Orientation="Horizontal" 
                                    ItemSelected="Handle_ItemSelected"
-                                   Grid.Row="1"
+                                   VerticalOptions="FillAndExpand"
+                                   Grid.Row="0"
                                    Grid.Column="0"
                                    Grid.ColumnSpan="2">
-            <controls:CustomScrollView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Padding="5">
-                            <Image Source="{Binding Image}" 
+                <controls:CustomScrollView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="5">
+                                <Image Source="{Binding Image}" 
                                    WidthRequest="140"
                                    HeightRequest="140"
                                    Aspect="AspectFit"/>
-                            <Label FontSize="Default"
+                                <Label FontSize="Default"
                                    Text="{Binding Name}"
-                                   HorizontalTextAlignment="Center"/>
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </controls:CustomScrollView.ItemTemplate>
-        </controls:CustomScrollView>
+                                   HorizontalTextAlignment="Center">
 
-        <Image x:Name="previewCurrent"
-               Grid.Row="2"
+                                    <Label.TextColor>
+                                        <OnPlatform x:TypeArguments="Color">
+                                            <OnPlatform.Platforms>
+                                                <On Platform="Android" Value="Black" />
+                                            </OnPlatform.Platforms>
+                                        </OnPlatform>
+                                    </Label.TextColor>
+                                </Label>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </controls:CustomScrollView.ItemTemplate>
+            </controls:CustomScrollView>
+
+            <Image x:Name="previewCurrent"
+               Grid.Row="1"
                Grid.Column="0"
+               VerticalOptions="FillAndExpand"
                Aspect="AspectFit"
                Margin="10" />
 
-        <StackLayout Grid.Row="2"
+            <StackLayout Grid.Row="1"
                      Grid.Column="1"
-                     VerticalOptions="StartAndExpand">
-            <Label Text="Name selected folder:"/>
-            <Entry x:Name="selectedFolderNaming"
-                   Placeholder="Name for folder"/>
+                     VerticalOptions="FillAndExpand">
+                <Label Text="Name selected icon:">
+                    <Label.TextColor>
+                        <OnPlatform x:TypeArguments="Color">
+                            <OnPlatform.Platforms>
+                                <On Platform="Android" Value="Black" />
+                            </OnPlatform.Platforms>
+                        </OnPlatform>
+                    </Label.TextColor>
+                </Label>
+                <Entry x:Name="selectedFolderNaming"
+                   Placeholder="Name for icon"/>
 
-        </StackLayout>
+            </StackLayout>
+        </Grid>
+
+
+        <Label Text="Pick Folder Color:"
+               VerticalTextAlignment="Center"
+               HorizontalTextAlignment="Start"
+               VerticalOptions="StartAndExpand"
+               Grid.Row="0"
+               Grid.Column="0">
+            <Label.TextColor>
+                <OnPlatform x:TypeArguments="Color">
+                    <OnPlatform.Platforms>
+                        <On Platform="Android" Value="Black" />
+                    </OnPlatform.Platforms>
+                </OnPlatform>
+            </Label.TextColor>
+        </Label>
 
         <Button x:Name="iconSaveButton" 
-                Text="Use Current Folder"
-                HorizontalOptions="CenterAndExpand"
+                Text="Create Folder"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="Fill"
                 Clicked="Handle_Clicked"
-                Grid.Row="3"
+                Grid.Row="2"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"/>
     </Grid>
-
 </ContentPage>

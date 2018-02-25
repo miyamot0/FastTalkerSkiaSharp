@@ -69,6 +69,9 @@ namespace FastTalkerSkiaSharp.Pages
             customScrollView.ItemsSource = Images;
         }
 
+        /// <summary>
+        /// Loading json
+        /// </summary>
         void LoadingInitialJson()
         {
             using (var dlg = UserDialogs.Instance.Progress("Loading icon categories"))
@@ -170,7 +173,7 @@ namespace FastTalkerSkiaSharp.Pages
         /// <param name="e">E.</param>
         async void Handle_Clicked(object sender, System.EventArgs e)
         {
-            if (!needsImage && selectedIconNaming.Text.Trim().Length < 2)
+            if (needsImage || string.IsNullOrWhiteSpace(selectedIconNaming.Text) || selectedIconNaming.Text.Trim().Length < 2)
             {
                 await UserDialogs.Instance.AlertAsync("Please enter valid speech to output");
             }

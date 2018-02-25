@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using Acr.UserDialogs;
+using FastTalkerSkiaSharp.Constants;
 using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Models;
 using Xamarin.Forms;
@@ -45,6 +46,9 @@ namespace FastTalkerSkiaSharp.Pages
             InitializeComponent();
         }
 
+        /// <summary>
+        /// On appearing event
+        /// </summary>
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -58,12 +62,13 @@ namespace FastTalkerSkiaSharp.Pages
                                                                 "FolderOpenLightBlue",
                                                                 "FolderOpenRed" };
 
-
             foreach (var iconName in mFolderIcons)
             {
                 Images.Add(new DisplayImageModel
                 {
-                    Image = ImageSource.FromResource(string.Format("FastTalkerSkiaSharp.Images.{0}.png", iconName)),
+                    Image = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng +
+                                                                           "{0}" +
+                                                                           LanguageSettings.ResourceSuffixPng, iconName)),
                     Name = iconName
                 });
             }
@@ -82,7 +87,9 @@ namespace FastTalkerSkiaSharp.Pages
 
             selectedIconString = (e.Item as DisplayImageModel).Name;
 
-            previewCurrent.Source = ImageSource.FromResource(string.Format("FastTalkerSkiaSharp.Images.{0}.png", (e.Item as DisplayImageModel).Name));
+            previewCurrent.Source = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng +
+                                                                           "{0}" +
+                                                                           LanguageSettings.ResourceSuffixPng, (e.Item as DisplayImageModel).Name));
         }
 
         /// <summary>
@@ -92,7 +99,7 @@ namespace FastTalkerSkiaSharp.Pages
         /// <param name="e">E.</param>
         async void Handle_Clicked(object sender, System.EventArgs e)
         {
-            if (!needsImage && selectedFolderNaming.Text.Trim().Length < 2)
+            if (needsImage || string.IsNullOrWhiteSpace(selectedFolderNaming.Text) || selectedFolderNaming.Text.Trim().Length < 2)
             {
                 await UserDialogs.Instance.AlertAsync("Please enter at least three letters.");
             }

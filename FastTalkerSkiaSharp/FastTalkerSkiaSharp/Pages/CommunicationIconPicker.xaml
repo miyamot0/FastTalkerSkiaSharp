@@ -55,7 +55,15 @@
                                    Aspect="AspectFit"/>
                                 <Label FontSize="Default"
                                    Text="{Binding Name}"
-                                   HorizontalTextAlignment="Center"/>
+                                   HorizontalTextAlignment="Center">
+                                    <Label.TextColor>
+                                        <OnPlatform x:TypeArguments="Color">
+                                            <OnPlatform.Platforms>
+                                                <On Platform="Android" Value="Black" />
+                                            </OnPlatform.Platforms>
+                                        </OnPlatform>
+                                    </Label.TextColor>
+                                </Label>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
@@ -72,7 +80,15 @@
             <StackLayout Grid.Row="1"
                      Grid.Column="1"
                      VerticalOptions="FillAndExpand">
-                <Label Text="Name selected icon:"/>
+                <Label Text="Name selected icon:">
+                    <Label.TextColor>
+                        <OnPlatform x:TypeArguments="Color">
+                            <OnPlatform.Platforms>
+                                <On Platform="Android" Value="Black" />
+                            </OnPlatform.Platforms>
+                        </OnPlatform>
+                    </Label.TextColor>
+                </Label>
                 <Entry x:Name="selectedIconNaming"
                    Placeholder="Name for icon"/>
 
@@ -84,7 +100,15 @@
                HorizontalTextAlignment="Start"
                VerticalOptions="StartAndExpand"
                Grid.Row="0"
-               Grid.Column="0"></Label>
+               Grid.Column="0">
+            <Label.TextColor>
+                <OnPlatform x:TypeArguments="Color">
+                    <OnPlatform.Platforms>
+                        <On Platform="Android" Value="Black" />
+                    </OnPlatform.Platforms>
+                </OnPlatform>
+            </Label.TextColor>
+        </Label>
 
         <Picker x:Name="categoryPicker"
                 Grid.Row="0"
