@@ -409,10 +409,10 @@ namespace FastTalkerSkiaSharp.Pages
                     return;
 
                 case (int)SkiaSharp.Elements.CanvasView.Role.Communication:
+                    hasMoved = true;
+
                     // If pinned, prevent move
                     if (_currentElement.IsPinnedToSpot) return;
-
-                    hasMoved = true;
 
                     _currentElement.Location = new SKPoint(e.Location.X - _currentElement.Bounds.Width / 2f,
                                                            e.Location.Y - _currentElement.Bounds.Height / 2f);

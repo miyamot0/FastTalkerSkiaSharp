@@ -319,6 +319,35 @@ namespace SkiaSharp.Elements
 
                         canvas.DrawRect(_bounds, paint);
                     }
+
+                    if (IsPinnedToSpot)
+                    {
+                        var cirleWidth = _bounds.Width * 0.1f;
+
+                        using (var pinFill = new SKPaint())
+                        {
+                            pinFill.Color = SKColors.LightGray;
+                            pinFill.IsAntialias = true;
+
+                            canvas.DrawCircle(_bounds.Right - cirleWidth,
+                                              _bounds.Top + cirleWidth,
+                                              cirleWidth / 2f,
+                                              pinFill);
+
+                            using (var pinOutline = new SKPaint())
+                            {
+                                pinOutline.Color = SKColors.Black;
+                                pinOutline.IsStroke = true;
+                                pinOutline.StrokeWidth = 2f;
+                                pinOutline.IsAntialias = true;
+
+                                canvas.DrawCircle(_bounds.Right - cirleWidth,
+                                                  _bounds.Top + cirleWidth,
+                                                  cirleWidth / 2f,
+                                                  pinOutline);
+                            }
+                        }
+                    }
                 }
                 else if (this.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
                 {
