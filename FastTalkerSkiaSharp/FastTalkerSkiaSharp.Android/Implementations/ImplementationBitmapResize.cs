@@ -49,9 +49,9 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
                 stream = new FileStream(newPhotoPath, FileMode.Create);
                 croppedBitmap.Compress(Bitmap.CompressFormat.Png, 100, stream);
             }
-            catch (System.Exception ex)
+            catch
             {
-                //Debug.WriteLineIf(App.Debugging, "Failed to close: " + ex.ToString());
+                //System.Diagnostics.Debug.WriteLineIf(App.Debugging, "Failed to close: " + ex.ToString());
             }
             finally
             {
@@ -70,7 +70,7 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
                     bitmap.Dispose();
                     bitmap = null;
                 }
-                catch (System.Exception ex)
+                catch 
                 {
                     //Debug.WriteLineIf(App.Debugging, "Failed to close: " + ex.ToString());
                 }
