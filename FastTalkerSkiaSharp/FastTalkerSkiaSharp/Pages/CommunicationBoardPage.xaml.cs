@@ -506,6 +506,8 @@ namespace FastTalkerSkiaSharp.Pages
                             canvas.Elements[index] = item;
 
                             canvas.InvalidateSurface();
+
+                            canvas.Controller.PromptResave();
                         }
                     }
                     else if (hasMoved && _currentElement.IsInsertableIntoFolder)
@@ -563,6 +565,8 @@ namespace FastTalkerSkiaSharp.Pages
 
                             canvas.Elements[index] = item;
                             canvas.InvalidateSurface();
+
+                            canvas.Controller.PromptResave();
                         }
 
                         e.Handled = true;
@@ -698,6 +702,8 @@ namespace FastTalkerSkiaSharp.Pages
 
                 canvas.Elements.BringToFront(item);
                 canvas.InvalidateSurface();
+
+                canvas.Controller.PromptResave();
             }
         }
 

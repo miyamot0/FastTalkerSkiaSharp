@@ -228,9 +228,11 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <returns></returns>
         public async Task<string> IconEditOptionsAsync()
         {
-            var userResponse = await UserDialogs.Instance.ActionSheetAsync(LanguageSettings.EditTitle, LanguageSettings.EditClose,
-                                                                           LanguageSettings.EditClose, null, LanguageSettings.EditMenu());
-
+            var userResponse = await UserDialogs.Instance.ActionSheetAsync(LanguageSettings.EditTitle, 
+                                                                           LanguageSettings.EditClose,
+                                                                           LanguageSettings.EditClose, 
+                                                                           null, 
+                                                                           LanguageSettings.EditMenu());
 
             return userResponse;
         }

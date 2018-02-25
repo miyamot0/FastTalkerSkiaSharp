@@ -27,6 +27,8 @@ using SkiaSharp;
 using SkiaSharp.Elements;
 using System.IO;
 using System.Threading.Tasks;
+using System.Linq;
+using Acr.UserDialogs;
 
 namespace FastTalkerSkiaSharp.Helpers
 {
@@ -549,6 +551,16 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 case LanguageSettings.EditText:
                     newText = await App.UserInputInstance.ModifyIconTextAsync(newText);
+
+                    if (element.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder && 
+                            canvasReference.Elements.Where(elem => elem.Text == newText)
+                                                    .Any())
+                    {
+                        await UserDialogs.Instance.AlertAsync("Please select a different name for the folder.", title: "Cannot rename folder.");
+
+                        return element;
+                    }
+
                     break;
 
                 case LanguageSettings.EditClose:

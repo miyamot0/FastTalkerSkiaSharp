@@ -28,7 +28,6 @@ using Acr.UserDialogs;
 using FastTalkerSkiaSharp.Constants;
 using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Models;
-using SkiaSharp.Elements;
 using Xamarin.Forms;
 
 namespace FastTalkerSkiaSharp.Pages
