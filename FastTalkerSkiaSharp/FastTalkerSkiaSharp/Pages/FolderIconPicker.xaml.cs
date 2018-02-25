@@ -23,10 +23,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Acr.UserDialogs;
 using FastTalkerSkiaSharp.Constants;
 using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Models;
+using SkiaSharp.Elements;
 using Xamarin.Forms;
 
 namespace FastTalkerSkiaSharp.Pages
@@ -40,10 +42,25 @@ namespace FastTalkerSkiaSharp.Pages
         private bool needsImage = true;
 
         private string selectedIconString = "";
+        private IEnumerable<SkiaSharp.Elements.Element> currentFolders;
 
-        public FolderIconPicker()
+        private List<string> currentFolderStrings;
+
+        public FolderIconPicker(IEnumerable<SkiaSharp.Elements.Element> currentFolders)
         {
             InitializeComponent();
+
+            this.currentFolders = currentFolders;
+
+            currentFolderStrings = new List<string>();
+
+            if (currentFolders.Any())
+            {
+                foreach (var folder in currentFolders)
+                {
+                    currentFolderStrings.Add(folder.Text);
+                }
+            }
         }
 
         /// <summary>
@@ -102,6 +119,10 @@ namespace FastTalkerSkiaSharp.Pages
             if (needsImage || string.IsNullOrWhiteSpace(selectedFolderNaming.Text) || selectedFolderNaming.Text.Trim().Length < 2)
             {
                 await UserDialogs.Instance.AlertAsync("Please select an imange and enter a folder name with at least three letters.");
+            }
+            else if (currentFolderStrings.Count > 0 && currentFolderStrings.Contains(selectedFolderNaming.Text.Trim()))
+            {
+                await UserDialogs.Instance.AlertAsync("Please pick a folder with a unique name (cannot have two folders with same name).");
             }
             else
             {

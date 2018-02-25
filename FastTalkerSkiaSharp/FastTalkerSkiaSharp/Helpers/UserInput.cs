@@ -191,7 +191,10 @@ namespace FastTalkerSkiaSharp.Helpers
                     return;
 
                 case LanguageSettings.SettingsAddFolder:
-                    var newFolderPage = new FolderIconPicker();
+
+                    var currentFolders = canvasRef.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder);
+
+                    var newFolderPage = new FolderIconPicker(currentFolders);
                     newFolderPage.FolderConstructed += SaveFolder;
 
                     await App.Current.MainPage.Navigation.PushAsync(newFolderPage);
