@@ -515,45 +515,7 @@ namespace FastTalkerSkiaSharp.Pages
                         var folderOfInterest = canvas.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder && !elem.IsStoredInAFolder)
                                       .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds));
 
-                        if (folderOfInterest != null || folderOfInterest.Count() > 0)
-                        {
-                            Debug.WriteLineIf(outputVerbose, "In Completed: Insertable into folder: " + _currentElement.Tag);
-
-                            var folderToInsertInto = folderOfInterest.First();
-
-                            Debug.WriteLineIf(outputVerbose, "TODO: animation entry");
-
-                            var startPoint = _currentElement.Location;
-
-                            float xDiff = (folderToInsertInto.Location.X + folderToInsertInto.Bounds.Width / 2f) - (startPoint.X + _currentElement.Bounds.Width / 2f);
-                            float yDiff = (folderToInsertInto.Location.Y + folderToInsertInto.Bounds.Height / 2f) - (startPoint.Y + _currentElement.Bounds.Height / 2f);
-
-                            new Xamarin.Forms.Animation((value) =>
-                            {
-                                canvas.SuspendLayout();
-                                _currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
-                                                                      (startPoint.Y) + (yDiff * (float)value));
-                                canvas.ResumeLayout(true);
-                            }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationMoveMillis, finished: (v, c) =>
-                            {
-                                new Xamarin.Forms.Animation((value) =>
-                                {
-                                    canvas.SuspendLayout();
-
-                                    _currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
-
-                                    canvas.ResumeLayout(true);
-                                }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationShrinkMillis, finished: (v2, c2) =>
-                                {
-                                    _currentElement.IsStoredInAFolder = true;
-                                    _currentElement.Transformation = SKMatrix.MakeScale(1, 1);
-                                    _currentElement.StoredFolderTag = folderToInsertInto.Text;
-
-                                    canvas.Elements.SendToBack(_currentElement);
-                                    canvas.Controller.PromptResave();
-                                });
-                            });
-                        }
+                        App.UserInputInstance.InsertIntoFolder(_currentElement, folderOfInterest);
                     }
                     else if (hasMoved && _currentElement.IsDeletable)
                     {

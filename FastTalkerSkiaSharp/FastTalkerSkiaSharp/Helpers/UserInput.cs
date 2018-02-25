@@ -357,6 +357,49 @@ namespace FastTalkerSkiaSharp.Helpers
             }
         }
 
+        public void InsertIntoFolder(SkiaSharp.Elements.Element _currentElement, IEnumerable<SkiaSharp.Elements.Element> folderOfInterest)
+        {
+            if (folderOfInterest != null || folderOfInterest.Count() > 0)
+            {
+                Debug.WriteLineIf(App.OutputVerbose, "In Completed: Insertable into folder: " + _currentElement.Tag);
+
+                var folderToInsertInto = folderOfInterest.First();
+
+                Debug.WriteLineIf(App.OutputVerbose, "TODO: animation entry");
+
+                var startPoint = _currentElement.Location;
+
+                float xDiff = (folderToInsertInto.Location.X + folderToInsertInto.Bounds.Width / 2f) - (startPoint.X + _currentElement.Bounds.Width / 2f);
+                float yDiff = (folderToInsertInto.Location.Y + folderToInsertInto.Bounds.Height / 2f) - (startPoint.Y + _currentElement.Bounds.Height / 2f);
+
+                new Xamarin.Forms.Animation((value) =>
+                {
+                    canvasRef.SuspendLayout();
+                    _currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
+                                                          (startPoint.Y) + (yDiff * (float)value));
+                    canvasRef.ResumeLayout(true);
+                }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationMoveMillis, finished: (v, c) =>
+                {
+                    new Xamarin.Forms.Animation((value) =>
+                    {
+                        canvasRef.SuspendLayout();
+
+                        _currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
+
+                        canvasRef.ResumeLayout(true);
+                    }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationShrinkMillis, finished: (v2, c2) =>
+                    {
+                        _currentElement.IsStoredInAFolder = true;
+                        _currentElement.Transformation = SKMatrix.MakeScale(1, 1);
+                        _currentElement.StoredFolderTag = folderToInsertInto.Text;
+
+                        canvasRef.Elements.SendToBack(_currentElement);
+                        canvasRef.Controller.PromptResave();
+                    });
+                });
+            }
+        }
+
         /// <summary>
         /// Modify icon text
         /// </summary>
@@ -459,5 +502,6 @@ namespace FastTalkerSkiaSharp.Helpers
                 return null;
             }
         }
+
     }
 }
