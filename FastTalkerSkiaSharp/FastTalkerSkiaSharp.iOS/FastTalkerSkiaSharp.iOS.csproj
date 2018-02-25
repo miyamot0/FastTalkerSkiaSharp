@@ -145,39 +145,105 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-Portrait.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-Portrait%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios40.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios60.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios58.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios87.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios80.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios120.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios180.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios20.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios29.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios76.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios152.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios167.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios1024.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Landscape_fullscreen%401x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Landscape_fullscreen%402x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Landscape%401x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Landscape%402x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Portrait_fullscreen%401x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Portrait_fullscreen%402x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Portrait%401x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Portrait%402x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPhone-568h%402x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPhone-736h%403x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPhone-Default.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPhone-Default%402x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPhone-Landscape-2436h%403x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPhone-Portrait-2436h%403x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Portrait_v7%401x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Portrait_v7%402x.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-Portrait.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-Portrait%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios40.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios58.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios87.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios80.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios120.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios180.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios20.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios29.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios76.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios152.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios167.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios1024.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Landscape_fullscreen%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Landscape_fullscreen%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Landscape%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Landscape%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Portrait_fullscreen%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Portrait_fullscreen%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Portrait%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Portrait%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPhone-568h%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPhone-736h%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPhone-Default.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPhone-Default%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPhone-Landscape-2436h%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPhone-Portrait-2436h%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Portrait_v7%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Portrait_v7%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
