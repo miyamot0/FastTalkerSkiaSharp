@@ -357,6 +357,11 @@ namespace FastTalkerSkiaSharp.Helpers
             }
         }
 
+        /// <summary>
+        /// Insert an icon into a specific folder
+        /// </summary>
+        /// <param name="_currentElement"></param>
+        /// <param name="folderOfInterest"></param>
         public void InsertIntoFolder(SkiaSharp.Elements.Element _currentElement, IEnumerable<SkiaSharp.Elements.Element> folderOfInterest)
         {
             if (folderOfInterest != null || folderOfInterest.Count() > 0)
@@ -364,8 +369,6 @@ namespace FastTalkerSkiaSharp.Helpers
                 Debug.WriteLineIf(App.OutputVerbose, "In Completed: Insertable into folder: " + _currentElement.Tag);
 
                 var folderToInsertInto = folderOfInterest.First();
-
-                Debug.WriteLineIf(App.OutputVerbose, "TODO: animation entry");
 
                 var startPoint = _currentElement.Location;
 

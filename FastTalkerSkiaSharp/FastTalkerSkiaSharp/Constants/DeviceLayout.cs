@@ -50,14 +50,17 @@ namespace FastTalkerSkiaSharp.Constants
             return new SKPoint(deviceSize.Width / 2f, deviceSize.Height / 2f);
         }
 
-        public static SKPoint GetCenterPointWithJitter(SKSize deviceSize)
+        public static SKPoint GetCenterPointWithJitter(SKSize deviceSize, SKSize iconReference)
         {
-            var random = new Random();
+            Random random = new Random();
 
-            int deltaX = random.Next((int)deviceSize.Width / 10) - (int)deviceSize.Width / 5;
-            int deltaY = random.Next((int)deviceSize.Height / 10) - (int)deviceSize.Height / 5;
+            SKSize standardSize = GetSizeByGrid(deviceSize, 1f, 1f);
 
-            return new SKPoint(deviceSize.Width / 2f - deltaX, deviceSize.Height / 2f - deltaY);
+            int deltaX = random.Next((int)standardSize.Width * 2) - (int)standardSize.Width;
+            int deltaY = random.Next((int)standardSize.Height * 2) - (int)standardSize.Height;
+
+            return new SKPoint((deviceSize.Width / 2f) - (iconReference.Width/2f) - deltaX, 
+                               (deviceSize.Height / 2f - (iconReference.Height / 2f) - deltaY));
         }
 
         public static SKSize GetSizeByGrid(SKSize deviceSize, float x, float y)

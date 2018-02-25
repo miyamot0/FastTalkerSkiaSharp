@@ -680,29 +680,23 @@ namespace FastTalkerSkiaSharp.Pages
         /// <param name="obj">Object.</param>
         private void RestoreIcon(ArgsSelectedIcon obj)
         {
-            Debug.WriteLine("RestoreIcon(ArgsSelectedIcon obj)");
-            Debug.WriteLine("Name: " + obj.Name + " ImageSourceResource: " + obj.ImageSource);
+            Debug.WriteLineIf(App.OutputVerbose, "RestoreIcon(ArgsSelectedIcon obj) Name: " + obj.Name + 
+                                                " ImageSourceResource: " + obj.ImageSource);
 
             var check = canvas.Elements.Where(elem => elem.IsStoredInAFolder && elem.Text == obj.Name).Any();
 
             if (check)
             {
-                Debug.WriteLine("Pass check? " + check);
-
                 var item = canvas?.Elements.Where(elem => elem.IsStoredInAFolder && elem.Text == obj.Name).First();
 
-                Debug.WriteLine("Text: " + item.Text);
+                Debug.WriteLineIf(App.OutputVerbose, "Pass check? " + check + " Text: " + item.Text);
 
+                item.IsInsertableIntoFolder = false;
                 item.IsStoredInAFolder = false;
                 item.StoredFolderTag = "";
-                //item.Location = DeviceLayout.GetCenterPointWithJitter(canvas.CanvasSize);
-                item.Location = DeviceLayout.GetCenterPoint(canvas.CanvasSize);
+                item.Location = DeviceLayout.GetCenterPointWithJitter(canvas.CanvasSize, item.Size);
 
-                canvas.Elements.Remove(item);
-                canvas.Elements.Add(item);
-
-                //canvas.Elements.BringToFront(item);
-
+                canvas.Elements.BringToFront(item);
                 canvas.InvalidateSurface();
             }
         }
