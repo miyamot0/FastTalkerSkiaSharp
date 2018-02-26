@@ -243,6 +243,10 @@ namespace FastTalkerSkiaSharp.Pages
             {
                 Debug.WriteLineIf(App.OutputVerbose, "Null");
             }
+
+            ClearIconsInPlay();
+
+            canvas.InvalidateSurface();
         }
 
         /// <summary>
@@ -820,6 +824,17 @@ namespace FastTalkerSkiaSharp.Pages
                 for (int i = 0; i < canvas.Elements.Count; i++)
                 {
                     canvas.Elements[i].IsMainIconInPlay = false;
+                }
+            }
+            else
+            {
+                var isGreenHighlighted = false;
+
+                for (int i = 0; i < canvas.Elements.Count; i++)
+                {
+                    isGreenHighlighted = canvas.Elements[i].Bounds.IntersectsWith(stripReference.Bounds);
+
+                    canvas.Elements[i].IsSpeakable = isGreenHighlighted;
                 }
             }
         }

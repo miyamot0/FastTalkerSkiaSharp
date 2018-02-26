@@ -184,16 +184,27 @@ namespace SkiaSharp.Elements
 
         #region Public methods
 
+        /// <summary>
+        /// Overrride draw
+        /// </summary>
+        /// <param name="canvas"></param>
         public virtual void Draw(SKCanvas canvas)
         {
 
         }
 
+        /// <summary>
+        /// Manage drawing state
+        /// </summary>
         public void SuspendLayout()
         {
             _suspendLayout++;
         }
 
+        /// <summary>
+        /// Restore drawing state
+        /// </summary>
+        /// <param name="invalidate"></param>
         public void ResumeLayout(bool invalidate = false)
         {
             if (_suspendLayout > 0)
@@ -225,6 +236,9 @@ namespace SkiaSharp.Elements
             return Bounds.Contains(point);
         }
 
+        /// <summary>
+        /// Bring item to front
+        /// </summary>
         public void BringToFront()
         {
             var collector = Parent as IElementsCollector;
