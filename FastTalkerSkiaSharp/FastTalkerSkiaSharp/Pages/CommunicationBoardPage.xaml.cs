@@ -49,6 +49,7 @@ namespace FastTalkerSkiaSharp.Pages
 
         private bool holdingEmitter = false;
         private DateTime emitterPressTime;
+        private DateTime itemPressTime;
 
         private bool inInitialLoading = true;
         private bool hasMoved = false;
@@ -339,6 +340,8 @@ namespace FastTalkerSkiaSharp.Pages
             // Fail out if null
             if (_currentElement == null) return;
 
+            itemPressTime = DateTime.Now;
+
             // Get origin of element
             _startLocation = _currentElement.Location;
 
@@ -514,6 +517,33 @@ namespace FastTalkerSkiaSharp.Pages
                             canvas.Controller.PromptResave();
                         }
                     }
+                    else if (canvas.Controller.InEditMode && !_currentElement.IsInsertableIntoFolder && 
+                                                             !_currentElement.IsDeletable &&
+                                                             DateTime.Now.Subtract(itemPressTime).Seconds > 3)
+                    {
+                        Debug.WriteLineIf(outputVerbose, "Completed icon held > 3s");
+
+                        string userFeedback = await App.UserInputInstance.IconEditOptionsAsync();
+
+                        Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
+
+                        var item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
+
+                        int index = canvas.Elements.IndexOf(_currentElement);
+
+                        if (item == null || index == -1)
+                        {
+                            Debug.WriteLineIf(outputVerbose, "was null or unrefernced");
+                        }
+                        else
+                        {
+                            canvas.Elements[index] = item;
+
+                            canvas.InvalidateSurface();
+
+                            canvas.Controller.PromptResave();
+                        }
+                    }
                     else if (hasMoved && _currentElement.IsInsertableIntoFolder)
                     {
                         Debug.WriteLineIf(outputVerbose, "Icon completed, has moved");
@@ -575,6 +605,51 @@ namespace FastTalkerSkiaSharp.Pages
 
                         e.Handled = true;
                     }
+                    else if (canvas.Controller.InEditMode && _currentElement.IsDeletable &&
+                                                             DateTime.Now.Subtract(itemPressTime).Seconds > 3)
+                    {
+                        Debug.WriteLineIf(outputVerbose, "Completed folder hold");
+
+                        string userFeedback = await App.UserInputInstance.IconEditOptionsAsync();
+
+                        Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
+
+                        var item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
+
+                        int index = canvas.Elements.IndexOf(_currentElement);
+
+                        if (item == null || index == -1)
+                        {
+                            Debug.WriteLineIf(outputVerbose, "was null or unrefernced");
+                        }
+                        else
+                        {
+                            // Modify to suit new folder
+                            string oldFolderTitle = _currentElement.Text;
+
+                            if (canvas.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == oldFolderTitle).Any())
+                            {
+                                // Modify dated tags
+                                for (int i = 0; i < canvas.Elements.Count; i++)
+                                {
+                                    canvas.Elements[i].StoredFolderTag = (canvas.Elements[i].IsStoredInAFolder &&
+                                                                            canvas.Elements[i].Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication &&
+                                                                            canvas.Elements[i].StoredFolderTag == oldFolderTitle) ?
+                                        item.Text :
+                                        canvas.Elements[i].StoredFolderTag;
+                                }
+                            }
+
+                            canvas.Elements[index] = item;
+                            canvas.InvalidateSurface();
+
+                            canvas.Controller.PromptResave();
+                        }
+
+                        e.Handled = true;
+                    }
+
+
                     if (canvas.Controller.InEditMode && hasMoved && _currentElement.IsDeletable)
                     {
                         App.UserInputInstance.ConfirmDeleteFolder(_currentElement, deleteReference);
@@ -584,6 +659,29 @@ namespace FastTalkerSkiaSharp.Pages
                     else if (!canvas.Controller.InEditMode && !hasMoved)
                     {
                         Debug.WriteLineIf(outputVerbose, "Hit a folder, in user mode: " + _currentElement.Text);
+
+                        // This is where the current item is the folder in question
+                        var itemsMatching = canvas.Controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == _currentElement.Text).ToList();
+
+                        // Leave if empty
+                        if (itemsMatching == null)
+                        {
+                            e.Handled = true;
+
+                            return;
+                        }
+
+                        var page = new StoredIconPopup(_currentElement.Text, itemsMatching);
+
+                        page.IconSelected += RestoreIcon;
+
+                        await App.Current.MainPage.Navigation.PushPopupAsync(page);
+
+                        e.Handled = true;
+                    }
+                    else if (!canvas.Controller.InEditMode && DateTime.Now.Subtract(itemPressTime).Seconds > 3)
+                    {
+                        Debug.WriteLineIf(outputVerbose, "Held a folder, in user mode: " + _currentElement.Text);
 
                         // This is where the current item is the folder in question
                         var itemsMatching = canvas.Controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == _currentElement.Text).ToList();
