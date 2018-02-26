@@ -299,7 +299,8 @@ namespace FastTalkerSkiaSharp.Pages
         {
             e.Handled = true;
 
-            Debug.WriteLine(App.OutputVerbose, "e.ActionType = " + e.ActionType.ToString() + "e.InContact = " + e.InContact.ToString());
+            Debug.WriteLineIf(App.OutputVerbose, "e.ActionType = " + e.ActionType.ToString());
+            Debug.WriteLineIf(App.OutputVerbose, "e.InContact = " + e.InContact.ToString());
 
             switch (e.ActionType)
             {
