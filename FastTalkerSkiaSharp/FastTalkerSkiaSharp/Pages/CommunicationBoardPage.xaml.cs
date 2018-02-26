@@ -125,6 +125,11 @@ namespace FastTalkerSkiaSharp.Pages
             App.BoardSettings.InFramedMode = canvas.Controller.InFramedMode;
             App.BoardSettings.RequireDeselect = canvas.Controller.RequireDeselect;
 
+            if (Device.RuntimePlatform == Device.Android)
+            {
+                DependencyService.Get<InterfaceAdministration>().RequestAdmin(!canvas.Controller.InEditMode);
+            }
+
             await App.Database.InsertOrUpdateAsync(App.BoardSettings);
         }
 
