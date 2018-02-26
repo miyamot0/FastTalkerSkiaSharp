@@ -24,6 +24,7 @@ Fast Talker is a native extension of earlier work to establish a free and open s
 
 ### Derivative Works
 Fast Talker is a derivative work of an earlier project and uses licensed software:
+* [Fast Talker](https://github.com/miyamot0/FastTalker) - [GPL-V3](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) - Copyright 2016-2018 Shawn Gilroy. [www.smallnstats.com](http://www.smallnstats.com)
 * [Cross-Platform-Communication-App](https://github.com/miyamot0/Cross-Platform-Communication-App) - [GPL-V3](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) - Copyright 2016-2017 Shawn Gilroy. [www.smallnstats.com](http://www.smallnstats.com)
 
 Fast Talker uses licensed visual images in order to operate:
@@ -31,7 +32,6 @@ Fast Talker uses licensed visual images in order to operate:
 
 ### Referenced Works (Packages)
 Fast Talker uses a number of open source projects to work properly:
-
 * [LauncherHijack](https://github.com/parrotgeek1/LauncherHijack) - Permissively Licensed. Copyright (c) 2017 Ethan Nelson-Moore
 * [SimpleHTTPServer](https://gist.github.com/aksakalli/9191056) - MIT Licensed. Copyright (c) 2016 Can Güney Aksakalli
 * [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) - MIT Licensed. Copyright (c) 2007 James Newton-King 
