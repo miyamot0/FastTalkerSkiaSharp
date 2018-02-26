@@ -369,7 +369,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="folderOfInterest"></param>
         public void InsertIntoFolder(SkiaSharp.Elements.Element _currentElement, IEnumerable<SkiaSharp.Elements.Element> folderOfInterest)
         {
-            if (folderOfInterest != null || folderOfInterest.Count() > 0)
+            if (folderOfInterest != null && folderOfInterest.Count() > 0)
             {
                 Debug.WriteLineIf(App.OutputVerbose, "In Completed: Insertable into folder: " + _currentElement.Tag);
 
