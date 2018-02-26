@@ -32,6 +32,8 @@ namespace FastTalkerSkiaSharp.iOS.Implementations
     {
         public void SpeakText(string text)
         {
+            // TODO: Bind to speech finished event here?
+
             AVSpeechSynthesizer speechSynthesizer = new AVSpeechSynthesizer();
 
             AVSpeechUtterance speechUtterance = new AVSpeechUtterance(text)
