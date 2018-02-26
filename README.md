@@ -1,5 +1,5 @@
 # FastTalkerSkiaSharp
-Fast Talker is a native extension of earlier work to establish a free and open source application for use in the treatment of communication disorders.  Fast Tasker is built upon Xamarin Forms and SkiaSharp, both open-source frameworks for use in native development of applications for Android, iOS, Windows Mobile, and Blackberry.  Fast Talker is fully supported on all platforms, though only Android and iOS are actively maintained and under evaluation at this point.
+Fast Talker (Skia port) is a native extension of earlier work to establish a free and open source application for use in the treatment of communication disorders.  Fast Tasker is built upon Xamarin Forms and SkiaSharp, both open-source frameworks for use in native development of applications for Android, iOS, Windows Mobile, and Blackberry.  Fast Talker is fully supported on all platforms, though only Android and iOS are actively maintained and under evaluation at this point.
 
 ### Features
  - Native views in both iOS and Android
@@ -33,23 +33,20 @@ Fast Talker uses licensed visual images in order to operate:
 ### Referenced Works (Packages)
 Fast Talker uses a number of open source projects to work properly:
 * [LauncherHijack](https://github.com/parrotgeek1/LauncherHijack) - Permissively Licensed. Copyright (c) 2017 Ethan Nelson-Moore
-* [SimpleHTTPServer](https://gist.github.com/aksakalli/9191056) - MIT Licensed. Copyright (c) 2016 Can Güney Aksakalli
 * [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) - MIT Licensed. Copyright (c) 2007 James Newton-King 
 * [sqlite-net-pcl](https://github.com/praeclarum/sqlite-net) - MIT Licensed. Copyright (c) 2009-2016 Krueger Systems, Inc.
-* [Xamarin.Plugin.Permissions](https://github.com/jamesmontemagno/Xamarin.Plugins) - MIT Licensed. Copyright (c) 2016 James Montemagno / Refractored LLC
-* [Xamarin.Plugin.Media](https://github.com/jamesmontemagno/Xamarin.Plugins) - MIT Licensed. Copyright (c) 2016 James Montemagno / Refractored LLC
+* [Xamarin.Plugins](https://github.com/jamesmontemagno/Xamarin.Plugins) - MIT Licensed. Copyright (c) 2016 James Montemagno / Refractored LLC
 * [Xamarin Forms](https://github.com/xamarin/Xamarin.Forms) - MIT Licensed. Copyright (c) 2016 Microsoft
-* [CocosSharp2d Forms](https://github.com/mono/CocosSharp) - MIT Licensed. Copyright (c) 2016 Microsoft
 
 ### Acknowledgements and Credits
 * Joseph McCleery, Childrens Hospital of Philadelphia, University of Pennsylvania
 * Geraldine Leader, National University of Ireland, Galway
 
 ### Installation
-Fast Talker can be installed as either an Android or iOS application.  
+Fast Talker (Skia port) can be installed as either an Android or iOS application.  
 
 ### Device Owner Mode (Android)
-Fast Talker can be set to be a dedicated, SGD-only device by having the administrator run the following command from ADB:
+Fast Talker (Skia port) can be set to be a dedicated, SGD-only device by having the administrator run the following command from ADB:
 
 <i>adb shell dpm set-device-owner com.smallnstats.fasttalkerskiasharp/com.smallnstats.fasttalkerskiasharp.Base.DeviceAdminReceiverClass</i>
 
@@ -67,4 +64,4 @@ This is currently under active development and evaluation.
 
 ### License
 ----
-Fast Talker - Copyright Shawn Gilroy, Shawn P. Gilroy. GPL-Version 3
+Fast Talker (Skia port) - Copyright Shawn Gilroy, Shawn P. Gilroy. GPL-Version 3
