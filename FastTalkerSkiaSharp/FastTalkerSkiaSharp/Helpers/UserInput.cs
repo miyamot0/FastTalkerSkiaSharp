@@ -277,19 +277,19 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 new Xamarin.Forms.Animation((value) =>
                 {
-                    canvasRef.SuspendLayout();
+                    //canvasRef.SuspendLayout();
                     currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
                                                           (startPoint.Y) + (yDiff * (float)value));
-                    canvasRef.ResumeLayout(true);
+                    //canvasRef.ResumeLayout(true);
                 }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationMoveMillis, finished: (v, c) =>
                 {
                     new Xamarin.Forms.Animation((value) =>
                     {
-                        canvasRef.SuspendLayout();
+                        //canvasRef.SuspendLayout();
 
                         currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
 
-                        canvasRef.ResumeLayout(true);
+                        //canvasRef.ResumeLayout(true);
                     }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationShrinkMillis, finished: (v2, c2) =>
                     {
                         canvasRef.Elements.Remove(currentElement);
@@ -308,7 +308,7 @@ namespace FastTalkerSkiaSharp.Helpers
         {
             var response = await UserDialogs.Instance.ConfirmAsync("Delete this folder and the icons within?");
 
-            if (response)
+            if (response && currentElement != null)
             {
                 var startPoint = currentElement.Location;
 
@@ -317,46 +317,69 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 new Xamarin.Forms.Animation((value) =>
                 {
-                    canvasRef.SuspendLayout();
-                    currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
-                                                          (startPoint.Y) + (yDiff * (float)value));
-                    canvasRef.ResumeLayout(true);
+                    try
+                    {
+                        if (currentElement != null)
+                        {
+                            //canvasRef.SuspendLayout();
+                            currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
+                                                                  (startPoint.Y) + (yDiff * (float)value));
+                            //canvasRef.ResumeLayout(true);
+                        }
+                    }
+                    catch { }
+
                 }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationMoveMillis, finished: (v, c) =>
                 {
                     new Xamarin.Forms.Animation((value) =>
                     {
-                        canvasRef.SuspendLayout();
+                        try
+                        {
+                            if (currentElement != null)
+                            {
+                                //canvasRef.SuspendLayout();
 
-                        currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
+                                currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
 
-                        canvasRef.ResumeLayout(true);
+                                //canvasRef.ResumeLayout(true);
+                            }
+                        } catch { }
+
                     }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationShrinkMillis, finished: (v2, c2) =>
                     {
-                        var containedIconColl = canvasRef.Elements.Where(elem => elem.IsStoredInAFolder && 
+                        try
+                        {
+                            var containedIconColl = canvasRef.Elements.Where(elem => elem.IsStoredInAFolder &&
                                                                           elem.StoredFolderTag == currentElement.Text);
 
-                        if (containedIconColl != null && containedIconColl.Any() && containedIconColl.Count() > 0)
-                        {
-                            List<int> indicesToRemove = new List<int>();
-
-                            // Build a list of items to remove
-                            foreach (var storedIcon in containedIconColl)
+                            if (containedIconColl != null && containedIconColl.Any() && containedIconColl.Count() > 0)
                             {
-                                indicesToRemove.Add(canvasRef.Elements.IndexOf(storedIcon));
+                                List<int> indicesToRemove = new List<int>();
+
+                                // Build a list of items to remove
+                                foreach (var storedIcon in containedIconColl)
+                                {
+                                    indicesToRemove.Add(canvasRef.Elements.IndexOf(storedIcon));
+                                }
+
+                                indicesToRemove = indicesToRemove.Where(i => i != -1)
+                                                                 .OrderByDescending(i => i)
+                                                                 .ToList();
+
+                                foreach (var index in indicesToRemove)
+                                {
+                                    canvasRef.Elements.RemoveAt(index);
+                                }
                             }
 
-                            indicesToRemove = indicesToRemove.Where(i => i != -1)
-                                                             .OrderByDescending(i => i)
-                                                             .ToList();
-
-                            foreach (var index in indicesToRemove)
+                            if (currentElement != null)
                             {
-                                canvasRef.Elements.RemoveAt(index);
+                                canvasRef.Elements.Remove(currentElement);
+                                canvasRef.Controller.PromptResave();
                             }
                         }
+                        catch { }
 
-                        canvasRef.Elements.Remove(currentElement);
-                        canvasRef.Controller.PromptResave();
                     });
                 });
             }
@@ -369,7 +392,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="folderOfInterest"></param>
         public void InsertIntoFolder(SkiaSharp.Elements.Element _currentElement, IEnumerable<SkiaSharp.Elements.Element> folderOfInterest)
         {
-            if (folderOfInterest != null && folderOfInterest.Count() > 0)
+            if (folderOfInterest != null && _currentElement != null && folderOfInterest.Count() > 0)
             {
                 Debug.WriteLineIf(App.OutputVerbose, "In Completed: Insertable into folder: " + _currentElement.Tag);
 
@@ -382,27 +405,50 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 new Xamarin.Forms.Animation((value) =>
                 {
-                    canvasRef.SuspendLayout();
-                    _currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
-                                                          (startPoint.Y) + (yDiff * (float)value));
-                    canvasRef.ResumeLayout(true);
+                    if (_currentElement != null)
+                    {
+                        try
+                        {
+                            canvasRef.SuspendLayout();
+                            _currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
+                                                                  (startPoint.Y) + (yDiff * (float)value));
+                            canvasRef.ResumeLayout(true);
+                        }
+                        catch { }
+                    }
+
                 }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationMoveMillis, finished: (v, c) =>
                 {
                     new Xamarin.Forms.Animation((value) =>
                     {
-                        canvasRef.SuspendLayout();
+                        try
+                        {
+                            if (_currentElement != null)
+                            {
+                                canvasRef.SuspendLayout();
 
-                        _currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
+                                _currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
 
-                        canvasRef.ResumeLayout(true);
+                                canvasRef.ResumeLayout(true);
+                            }
+                        }
+                        catch { }
+
                     }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationShrinkMillis, finished: (v2, c2) =>
                     {
-                        _currentElement.IsStoredInAFolder = true;
-                        _currentElement.Transformation = SKMatrix.MakeScale(1, 1);
-                        _currentElement.StoredFolderTag = folderToInsertInto.Text;
+                        try
+                        {
+                            if (_currentElement != null)
+                            {
+                                _currentElement.IsStoredInAFolder = true;
+                                _currentElement.Transformation = SKMatrix.MakeScale(1, 1);
+                                _currentElement.StoredFolderTag = folderToInsertInto.Text;
 
-                        canvasRef.Elements.SendToBack(_currentElement);
-                        canvasRef.Controller.PromptResave();
+                                canvasRef.Elements.SendToBack(_currentElement);
+                                canvasRef.Controller.PromptResave();
+                            }
+                        }
+                        catch { }
                     });
                 });
             }
