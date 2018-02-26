@@ -48,22 +48,56 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
             DevicePolicyManager devicePolicyManager = (DevicePolicyManager)Application.Context.GetSystemService(Context.DevicePolicyService);
             ComponentName mDeviceAdminRcvr = new ComponentName(Application.Context, Java.Lang.Class.FromType(typeof(DeviceAdminReceiverClass)).Name);
 
-            if (devicePolicyManager.IsAdminActive(mDeviceAdminRcvr))
+            // This is the preferred, hard lock method with device as administrator
+            try
             {
-                devicePolicyManager.SetLockTaskPackages(mDeviceAdminRcvr, new String[] { Application.Context.PackageName });
-
-                if (devicePolicyManager.IsLockTaskPermitted(Application.Context.PackageName))
+                if (devicePolicyManager.IsAdminActive(mDeviceAdminRcvr))
                 {
-                    if (status)
+                    devicePolicyManager.SetLockTaskPackages(mDeviceAdminRcvr, new String[] { Application.Context.PackageName });
+
+                    if (devicePolicyManager.IsLockTaskPermitted(Application.Context.PackageName))
                     {
-                        Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.StartLockTask();
-                    }
-                    else
-                    {
-                        Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.StopLockTask();
+                        if (status)
+                        {
+                            Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.StartLockTask();
+
+                            return;
+                        }
+                        else
+                        {
+                            Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.StopLockTask();
+
+                            return;
+                        }
                     }
                 }
             }
+            catch
+            {
+
+            }
+
+            // This is the fallback, pinning the device and overriding other keys
+            try
+            {
+                ActivityManager activityManager = (ActivityManager)Application.Context.GetSystemService(Context.ActivityService);
+
+                if (status)
+                {
+                    Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.StartLockTask();
+                }
+                else
+                {
+                    Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.StopLockTask();
+
+                }
+            }
+            catch
+            {
+
+            }
+
+
         }
     }
 }

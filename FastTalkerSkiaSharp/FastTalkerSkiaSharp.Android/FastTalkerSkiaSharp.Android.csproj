@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\DeviceAdminReceiverClass.cs" />
+    <Compile Include="BindLauncher.cs" />
     <Compile Include="Controls\CustomScrollViewRenderer.cs" />
     <Compile Include="Controls\ViewCellTransparent.cs" />
     <Compile Include="Implementations\ImplementationAdministration.cs" />
