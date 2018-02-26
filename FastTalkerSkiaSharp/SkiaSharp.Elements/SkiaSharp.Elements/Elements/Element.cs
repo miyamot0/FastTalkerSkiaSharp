@@ -343,9 +343,9 @@ namespace SkiaSharp.Elements
                             pinFill.Color = SKColors.LightGray;
                             pinFill.IsAntialias = true;
 
-                            canvas.DrawCircle(_bounds.Right - cirleWidth,
-                                              _bounds.Top + cirleWidth,
-                                              cirleWidth / 2f,
+                            canvas.DrawCircle(_bounds.Right - cirleWidth / 2f,
+                                              _bounds.Top + cirleWidth / 2f,
+                                              cirleWidth / 3f,
                                               pinFill);
 
                             using (var pinOutline = new SKPaint())
@@ -355,9 +355,9 @@ namespace SkiaSharp.Elements
                                 pinOutline.StrokeWidth = 2f;
                                 pinOutline.IsAntialias = true;
 
-                                canvas.DrawCircle(_bounds.Right - cirleWidth,
-                                                  _bounds.Top + cirleWidth,
-                                                  cirleWidth / 2f,
+                                canvas.DrawCircle(_bounds.Right - cirleWidth / 2f,
+                                                  _bounds.Top + cirleWidth / 2f,
+                                                  cirleWidth / 3f,
                                                   pinOutline);
                             }
                         }
