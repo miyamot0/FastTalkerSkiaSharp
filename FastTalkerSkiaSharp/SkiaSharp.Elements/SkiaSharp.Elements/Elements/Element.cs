@@ -321,7 +321,7 @@ namespace SkiaSharp.Elements
                             {
                                 paint.Color = SKColors.Orange;
                             }
-                            else if (IsMainIconInPlay)
+                            else if (IsMainIconInPlay && !controller.IconModeAuto)
                             {
                                 paint.Color = SKColors.GreenYellow;
                             }

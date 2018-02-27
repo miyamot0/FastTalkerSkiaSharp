@@ -80,6 +80,19 @@ namespace SkiaSharp.Elements
             }
         }
 
+        private bool _iconModeAuto;
+        public bool IconModeAuto
+        {
+            get 
+            {
+                return _iconModeAuto;
+            }
+            set
+            {
+                _iconModeAuto = value;
+            }
+        }
+
         public ElementsCollection Elements { get; }
         
         #endregion Properties
@@ -112,11 +125,14 @@ namespace SkiaSharp.Elements
         /// <param name="isInFrame"></param>
         /// <param name="isAutoDeselecting"></param>
         /// <param name="overridePrompt"></param>
-        public void UpdateSettings(bool isEditing, bool isInFrame, bool isAutoDeselecting, bool overridePrompt = false)
+        public void UpdateSettings(bool isEditing, bool isInFrame, 
+                                   bool isAutoDeselecting, bool isInIconModeAuto, 
+                                   bool overridePrompt = false)
         {
             _inEditMode = isEditing;
             _inFramedMode = isInFrame;
             _requireDeselect = isAutoDeselecting;
+            _iconModeAuto = isInIconModeAuto;
 
             if (overridePrompt)
             {

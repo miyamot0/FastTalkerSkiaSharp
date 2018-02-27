@@ -99,6 +99,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 case LanguageSettings.SettingsDeselect:
                     canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
                                                          canvasView.Controller.InFramedMode,
+                                                         canvasView.Controller.IconModeAuto,
                                                          true);
 
                     return;
@@ -106,6 +107,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 case LanguageSettings.SettingsDeselectDisable:
                     canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
                                                          canvasView.Controller.InFramedMode,
+                                                         canvasView.Controller.IconModeAuto,
                                                          false);
 
                     return;
@@ -114,33 +116,66 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 #region Frame mode options
 
-                case LanguageSettings.SettingsMode:
-                    canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
-                                                         true,
-                                                         canvasView.Controller.RequireDeselect);
+                case LanguageSettings.SettingsModeQuery:
 
-                    for (int i = 0; i < canvasView.Elements.Count; i++)
+                    var responseToModeQuery = await UserDialogs.Instance.ActionSheetAsync("Select Mode",
+                                                                           LanguageSettings.SettingsClose,
+                                                                           LanguageSettings.SettingsClose,
+                                                                           null,
+                                                                           LanguageSettings.GetSpeechOutputModes());
+
+                    if (!string.IsNullOrWhiteSpace(responseToModeQuery) && responseToModeQuery != LanguageSettings.SettingsClose)
                     {
-                        canvasView.Elements[i].IsMainIconInPlay = false;
+                        switch (responseToModeQuery)
+                        {
+                            case LanguageSettings.SettingsMode2:
+                                canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
+                                     false,
+                                     canvasView.Controller.RequireDeselect,
+                                     canvasView.Controller.IconModeAuto);
+
+                                for (int i = 0; i < canvasView.Elements.Count; i++)
+                                {
+                                    canvasView.Elements[i].IsMainIconInPlay = false;
+                                }
+
+                                canvasView.InvalidateSurface();
+
+                                return;
+
+                            case LanguageSettings.SettingsMode3:
+                                canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
+                                     false,
+                                     canvasView.Controller.RequireDeselect,
+                                     true);
+
+                                for (int i = 0; i < canvasView.Elements.Count; i++)
+                                {
+                                    canvasView.Elements[i].IsMainIconInPlay = false;
+                                }
+
+                                canvasView.InvalidateSurface();
+
+                                return;
+
+                            case LanguageSettings.SettingsMode:
+                                canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
+                                     true,
+                                     canvasView.Controller.RequireDeselect,
+                                     canvasView.Controller.IconModeAuto);
+
+                                for (int i = 0; i < canvasView.Elements.Count; i++)
+                                {
+                                    canvasView.Elements[i].IsMainIconInPlay = true;
+                                }
+
+                                canvasView.InvalidateSurface();
+
+                                return;
+                        }
                     }
 
-                    canvasView.InvalidateSurface();
-
-                    return;
-
-                case LanguageSettings.SettingsMode2:
-                    canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
-                                                         false,
-                                                         canvasView.Controller.RequireDeselect);
-
-                    for (int i = 0; i < canvasView.Elements.Count; i++)
-                    {
-                        canvasView.Elements[i].IsMainIconInPlay = false;
-                    }
-
-                    canvasView.InvalidateSurface();
-
-                    return;
+                    break;
 
                 #endregion
 
@@ -206,7 +241,8 @@ namespace FastTalkerSkiaSharp.Helpers
                 case LanguageSettings.SettingsResume:
                     canvasView.Controller.UpdateSettings(false,
                                                          canvasView.Controller.InFramedMode,
-                                                         canvasView.Controller.RequireDeselect);
+                                                         canvasView.Controller.RequireDeselect,
+                                                         canvasView.Controller.IconModeAuto);
 
                     canvasView.Controller.BackgroundColor = canvasView.Controller.InEditMode ?
                                                             SKColors.Orange :

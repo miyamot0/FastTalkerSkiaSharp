@@ -34,5 +34,7 @@ namespace FastTalkerSkiaSharp.Storage
 
         public bool RequireDeselect { get; set; }
 
+        public bool InIconModeAuto { get; set; }
+
     }
 }

@@ -74,7 +74,7 @@ namespace FastTalkerSkiaSharp.Pages
         /// <param name="e">E.</param>
         private async void SaveCurrentBoard(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("Saving (event-based)");
+            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Saving (event-based)");
 
             List<Storage.CommunicationIcon> toInsert = new List<Storage.CommunicationIcon>();
 
@@ -108,7 +108,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                 int saveResult = await App.Database.InsertOrUpdateAsync(toInsert);
 
-                System.Diagnostics.Debug.WriteLine("Results: Saved " + saveResult + " icons to db");
+                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Results: Saved " + saveResult + " icons to db");
             }
         }
 
@@ -119,11 +119,17 @@ namespace FastTalkerSkiaSharp.Pages
         /// <param name="e">E.</param>
         private async void SaveCurrentSettings(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("Saving settings (event-based)");
+            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Saving settings (event-based)");
 
             App.BoardSettings.InEditMode = canvas.Controller.InEditMode;
             App.BoardSettings.InFramedMode = canvas.Controller.InFramedMode;
             App.BoardSettings.RequireDeselect = canvas.Controller.RequireDeselect;
+            App.BoardSettings.InIconModeAuto = canvas.Controller.IconModeAuto;
+
+            if (App.BoardSettings.InFramedMode)
+            {
+                App.BoardSettings.InIconModeAuto = false;
+            }
 
             if (Device.RuntimePlatform == Device.Android)
             {
@@ -261,6 +267,8 @@ namespace FastTalkerSkiaSharp.Pages
         {
             App.BoardSettings = await App.Database.GetSettingsAsync();
 
+            canvas.Controller.BackgroundColor = App.BoardSettings.InEditMode ? SKColors.DarkOrange : SKColors.DimGray;
+
             //App.BoardSettings.InEditMode = false;
             //canvas.Controller.BackgroundColor = SKColors.DimGray;
 
@@ -270,6 +278,7 @@ namespace FastTalkerSkiaSharp.Pages
             canvas.Controller.UpdateSettings(App.BoardSettings.InEditMode,
                                              App.BoardSettings.InFramedMode,
                                              App.BoardSettings.RequireDeselect,
+                                             App.BoardSettings.InIconModeAuto,
                                              overridePrompt: true);
         }
 
@@ -392,9 +401,20 @@ namespace FastTalkerSkiaSharp.Pages
                     ClearIconsInPlay();
                     canvas.Elements.BringToFront(_currentElement);
 
-                    if (!canvas.Controller.InFramedMode)
+                    if (!canvas.Controller.InFramedMode && !canvas.Controller.IconModeAuto)
                     {
                         _currentElement.IsMainIconInPlay = true;
+                    }
+                    else if (!canvas.Controller.InFramedMode && 
+                             _currentElement != null &&
+                             _currentElement.Tag == (int) SkiaSharp.Elements.CanvasView.Role.Communication &&
+                             !canvas.Controller.InEditMode &&
+                             canvas.Controller.IconModeAuto)
+                    {
+                        
+                        DependencyService.Get<InterfaceSpeechOutput>().SpeakText(_currentElement.Text);
+
+                        e.Handled = true;
                     }
 
                     return;
@@ -728,7 +748,8 @@ namespace FastTalkerSkiaSharp.Pages
 
                             canvas.Controller.UpdateSettings(!canvas.Controller.InEditMode,
                                                              canvas.Controller.InFramedMode,
-                                                             canvas.Controller.RequireDeselect);
+                                                             canvas.Controller.RequireDeselect,
+                                                             canvas.Controller.IconModeAuto);
 
                             canvas.Controller.BackgroundColor = canvas.Controller.InEditMode ? SKColors.DarkOrange : SKColors.DimGray;
 
