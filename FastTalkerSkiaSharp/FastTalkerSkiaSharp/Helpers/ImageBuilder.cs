@@ -122,9 +122,14 @@ namespace FastTalkerSkiaSharp.Helpers
         {
             SkiaSharp.Elements.Image image = null;
 
+            SKSize loadedSize = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, 1f, 1f);
+
             using (Stream stream = App.MainAssembly.GetManifestResourceStream(resource))
             {
-                SkiaSharp.SKBitmap tempBitmap = SkiaSharp.SKBitmap.Decode(stream);
+                SkiaSharp.SKBitmap tempBitmapPre = SkiaSharp.SKBitmap.Decode(stream);
+                SkiaSharp.SKBitmap tempBitmap = tempBitmapPre.Resize(new SKImageInfo((int)loadedSize.Width, (int)loadedSize.Width),
+                                                                    SKBitmapResizeMethod.Lanczos3);
+                //SkiaSharp.SKBitmap tempBitmap = SkiaSharp.SKBitmap.Decode(stream);
 
 
                 SkiaSharp.SKBitmap returnBitmap = new SkiaSharp.SKBitmap((int)Math.Round(tempBitmap.Width * 1.5),
