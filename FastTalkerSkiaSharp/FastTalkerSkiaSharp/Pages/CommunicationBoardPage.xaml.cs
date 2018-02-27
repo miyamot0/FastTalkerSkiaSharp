@@ -445,7 +445,7 @@ namespace FastTalkerSkiaSharp.Pages
                     hasMoved = true;
 
                     // If pinned, prevent move
-                    if (_currentElement.IsPinnedToSpot) return;
+                    if (_currentElement.IsPinnedToSpot && !canvas.Controller.InEditMode) return;
 
                     _currentElement.Location = new SKPoint(e.Location.X - _currentElement.Bounds.Width / 2f,
                                                            e.Location.Y - _currentElement.Bounds.Height / 2f);
