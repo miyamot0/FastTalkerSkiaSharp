@@ -44,11 +44,11 @@ namespace FastTalkerSkiaSharp.Pages
         private string FolderWithIcons;
         private List<SkiaSharp.Elements.Element> itemsMatching;
 
-        public StoredIconPopup(string _folder, List<SkiaSharp.Elements.Element> itemsMatching)
+        public StoredIconPopup(string folder, List<SkiaSharp.Elements.Element> itemsMatching)
         {
             InitializeComponent();
 
-            this.FolderWithIcons = _folder;
+            this.FolderWithIcons = folder;
             this.itemsMatching = itemsMatching;
 
             rows = new List<DisplayImageRowModel>();

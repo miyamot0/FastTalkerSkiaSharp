@@ -97,10 +97,8 @@ namespace FastTalkerSkiaSharp.Pages
                         Tag = element.Tag,
                         Local = element.LocalImage,
                         TextVisible = true,
-                        Base64 = (element.LocalImage) ? "" :
-                                                        element.ImageInformation,
-                        ResourceLocation = (element.LocalImage) ? element.ImageInformation :
-                                                                  "",
+                        Base64 = (element.LocalImage) ? "" : element.ImageInformation,
+                        ResourceLocation = (element.LocalImage) ? element.ImageInformation : "",
                         IsStoredInFolder = element.IsStoredInAFolder,
                         FolderContainingIcon = element.StoredFolderTag,
                         Scale = element.CurrentScale,
@@ -165,7 +163,7 @@ namespace FastTalkerSkiaSharp.Pages
                 while (canvas.CanvasSize.Width == 0)
                 {
                     await Task.Delay(50);
-                    Debug.WriteLine("waiting...");
+                    Debug.WriteLineIf(App.OutputVerbose, "waiting...");
                 }
 
                 Debug.WriteLineIf(App.OutputVerbose, "GetSettingsAsync");
@@ -536,7 +534,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
 
-                        var item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
+                        SkiaSharp.Elements.Element item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
 
                         int index = canvas.Elements.IndexOf(_currentElement);
 
@@ -564,7 +562,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
 
-                        var item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
+                        SkiaSharp.Elements.Element item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
 
                         int index = canvas.Elements.IndexOf(_currentElement);
 
@@ -585,14 +583,16 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         Debug.WriteLineIf(outputVerbose, "Icon completed, has moved");
 
-                        var folderOfInterest = canvas.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder && !elem.IsStoredInAFolder)
+                        IEnumerable<SkiaSharp.Elements.Element> folderOfInterest = canvas.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder && !elem.IsStoredInAFolder)
                                       .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds));
 
-                        App.UserInputInstance.InsertIntoFolder(_currentElement, folderOfInterest);
+                        App.UserInputInstance.InsertIntoFolder(_currentElement: _currentElement, 
+                                                               folderOfInterest: folderOfInterest);
                     }
                     else if (hasMoved && _currentElement.IsDeletable)
                     {
-                        App.UserInputInstance.ConfirmRemoveIcon(_currentElement, deleteReference);
+                        App.UserInputInstance.ConfirmRemoveIcon(currentElement: _currentElement, 
+                                                                deleteButton: deleteReference);
                     }
 
                     e.Handled = true;
@@ -608,7 +608,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
 
-                        var item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
+                        SkiaSharp.Elements.Element item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
 
                         int index = canvas.Elements.IndexOf(_currentElement);
 
@@ -628,9 +628,7 @@ namespace FastTalkerSkiaSharp.Pages
                                 {
                                     canvas.Elements[i].StoredFolderTag = (canvas.Elements[i].IsStoredInAFolder &&
                                                                             canvas.Elements[i].Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication &&
-                                                                            canvas.Elements[i].StoredFolderTag == oldFolderTitle) ?
-                                        item.Text :
-                                        canvas.Elements[i].StoredFolderTag;
+                                                                            canvas.Elements[i].StoredFolderTag == oldFolderTitle) ? item.Text : canvas.Elements[i].StoredFolderTag;
                                 }
                             }
 
@@ -651,7 +649,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
 
-                        var item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
+                        SkiaSharp.Elements.Element item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
 
                         int index = canvas.Elements.IndexOf(_currentElement);
 
@@ -670,10 +668,8 @@ namespace FastTalkerSkiaSharp.Pages
                                 for (int i = 0; i < canvas.Elements.Count; i++)
                                 {
                                     canvas.Elements[i].StoredFolderTag = (canvas.Elements[i].IsStoredInAFolder &&
-                                                                            canvas.Elements[i].Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication &&
-                                                                            canvas.Elements[i].StoredFolderTag == oldFolderTitle) ?
-                                        item.Text :
-                                        canvas.Elements[i].StoredFolderTag;
+                                                                          canvas.Elements[i].Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication &&
+                                                                          canvas.Elements[i].StoredFolderTag == oldFolderTitle) ? item.Text : canvas.Elements[i].StoredFolderTag;
                                 }
                             }
 
@@ -689,7 +685,8 @@ namespace FastTalkerSkiaSharp.Pages
 
                     if (canvas.Controller.InEditMode && hasMoved && _currentElement.IsDeletable)
                     {
-                        App.UserInputInstance.ConfirmDeleteFolder(_currentElement, deleteReference);
+                        App.UserInputInstance.ConfirmDeleteFolder(currentElement: _currentElement, 
+                                                                  deleteButton: deleteReference);
 
                         e.Handled = true;
                     }
@@ -698,7 +695,7 @@ namespace FastTalkerSkiaSharp.Pages
                         Debug.WriteLineIf(outputVerbose, "Hit a folder, in user mode: " + _currentElement.Text);
 
                         // This is where the current item is the folder in question
-                        var itemsMatching = canvas.Controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == _currentElement.Text).ToList();
+                        List<SkiaSharp.Elements.Element> itemsMatching = canvas.Controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == _currentElement.Text).ToList();
 
                         // Leave if empty
                         if (itemsMatching == null)
@@ -708,7 +705,8 @@ namespace FastTalkerSkiaSharp.Pages
                             return;
                         }
 
-                        var page = new StoredIconPopup(_currentElement.Text, itemsMatching);
+                        StoredIconPopup page = new StoredIconPopup(folder: _currentElement.Text, 
+                                                                   itemsMatching: itemsMatching);
 
                         page.IconSelected += RestoreIcon;
 
@@ -721,7 +719,7 @@ namespace FastTalkerSkiaSharp.Pages
                         Debug.WriteLineIf(outputVerbose, "Held a folder, in user mode: " + _currentElement.Text);
 
                         // This is where the current item is the folder in question
-                        var itemsMatching = canvas.Controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == _currentElement.Text).ToList();
+                        List<SkiaSharp.Elements.Element> itemsMatching = canvas.Controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == _currentElement.Text).ToList();
 
                         // Leave if empty
                         if (itemsMatching == null)
@@ -731,7 +729,8 @@ namespace FastTalkerSkiaSharp.Pages
                             return;
                         }
 
-                        var page = new StoredIconPopup(_currentElement.Text, itemsMatching);
+                        StoredIconPopup page = new StoredIconPopup(folder: _currentElement.Text, 
+                                                                   itemsMatching: itemsMatching);
 
                         page.IconSelected += RestoreIcon;
 
@@ -753,10 +752,10 @@ namespace FastTalkerSkiaSharp.Pages
                         if ((DateTime.Now - emitterPressTime).Seconds >= 3 && !canvas.Controller.InEditMode)
                         {
 
-                            canvas.Controller.UpdateSettings(!canvas.Controller.InEditMode,
-                                                             canvas.Controller.InFramedMode,
-                                                             canvas.Controller.RequireDeselect,
-                                                             canvas.Controller.IconModeAuto);
+                            canvas.Controller.UpdateSettings(isEditing: !canvas.Controller.InEditMode,
+                                                             isInFrame: canvas.Controller.InFramedMode,
+                                                             isAutoDeselecting: canvas.Controller.RequireDeselect,
+                                                             isInIconModeAuto: canvas.Controller.IconModeAuto);
 
                             canvas.Controller.BackgroundColor = canvas.Controller.InEditMode ? SKColors.DarkOrange : SKColors.DimGray;
 
@@ -779,7 +778,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                                     Debug.WriteLineIf(outputVerbose, "Verbal output (Frame): " + output);
 
-                                    commInterface.SpeakText(output);
+                                    commInterface.SpeakText(text: output);
                                 }
                             }
                             else if (!canvas.Controller.IconModeAuto)
@@ -793,7 +792,7 @@ namespace FastTalkerSkiaSharp.Pages
                                 {
                                     Debug.WriteLineIf(outputVerbose, "Verbal output (Icon): " + selectedElements);
 
-                                    commInterface.SpeakText(selectedElements);
+                                    commInterface.SpeakText(text: selectedElements);
                                 }
 
                                 if (canvas.Controller.RequireDeselect)
@@ -811,7 +810,8 @@ namespace FastTalkerSkiaSharp.Pages
                     // Item is deleteable
                     else if (canvas.Controller.InEditMode && _currentElement.IsDeletable)
                     {
-                        App.UserInputInstance.ConfirmRemoveIcon(_currentElement, deleteReference);
+                        App.UserInputInstance.ConfirmRemoveIcon(currentElement: _currentElement, 
+                                                                deleteButton: deleteReference);
                     }
 
                     return;
@@ -827,18 +827,19 @@ namespace FastTalkerSkiaSharp.Pages
             Debug.WriteLineIf(App.OutputVerbose, "RestoreIcon(ArgsSelectedIcon obj) Name: " + obj.Name + 
                                                 " ImageSourceResource: " + obj.ImageSource);
 
-            var check = canvas.Elements.Where(elem => elem.IsStoredInAFolder && elem.Text == obj.Name).Any();
+            bool check = canvas.Elements.Where(elem => elem.IsStoredInAFolder && elem.Text == obj.Name).Any();
 
             if (check)
             {
-                var item = canvas?.Elements.Where(elem => elem.IsStoredInAFolder && elem.Text == obj.Name).First();
+                SkiaSharp.Elements.Element item = canvas?.Elements.Where(elem => elem.IsStoredInAFolder && elem.Text == obj.Name).First();
 
                 Debug.WriteLineIf(App.OutputVerbose, "Pass check? " + check + " Text: " + item.Text);
 
                 item.IsInsertableIntoFolder = false;
                 item.IsStoredInAFolder = false;
                 item.StoredFolderTag = "";
-                item.Location = DeviceLayout.GetCenterPointWithJitter(canvas.CanvasSize, item.Size);
+                item.Location = DeviceLayout.GetCenterPointWithJitter(deviceSize: canvas.CanvasSize, 
+                                                                      iconReference: item.Size);
 
                 canvas.Elements.BringToFront(item);
                 canvas.InvalidateSurface();
@@ -877,35 +878,31 @@ namespace FastTalkerSkiaSharp.Pages
         /// </summary>
         private void AddStaticContent()
         {
-            Debug.WriteLine("Adding Static Content");
-            Debug.WriteLine("Width: " + canvas.CanvasSize.Width);
-            Debug.WriteLine("Height: " + canvas.CanvasSize.Height);
+            Debug.WriteLineIf(App.OutputVerbose, "Adding Static Content");
+            Debug.WriteLineIf(App.OutputVerbose, "Width: " + canvas.CanvasSize.Width);
+            Debug.WriteLineIf(App.OutputVerbose, "Height: " + canvas.CanvasSize.Height);
 
-            Debug.WriteLine("Layout Width: " + hackLayout.Width);
-            Debug.WriteLine("Layout Height: " + hackLayout.Height);
+            Debug.WriteLineIf(App.OutputVerbose, "Layout Width: " + hackLayout.Width);
+            Debug.WriteLineIf(App.OutputVerbose, "Layout Height: " + hackLayout.Height);
 
             // Sentence Strip
             stripReference = App.ImageBuilderInstance.BuildSentenceStrip();
 
-            Debug.WriteLine("stripRef: " + stripReference.X);
-            Debug.WriteLine("stripRef: " + stripReference.Y);
-            Debug.WriteLine("stripRef: " + stripReference.Width);
-
             canvas.Elements.Add(stripReference);
 
             // Speech Emitter
-            emitterReference = App.ImageBuilderInstance.BuildStaticElement("FastTalkerSkiaSharp.Images.Speaker.png",
-                                                                           2f,
-                                                                           1.5f,
-                                                                           (int)SkiaSharp.Elements.CanvasView.Role.Emitter);
+            emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: "FastTalkerSkiaSharp.Images.Speaker.png",
+                                                                           xPercent: 2f,
+                                                                           yPercent: 1.5f,
+                                                                           tag: (int)SkiaSharp.Elements.CanvasView.Role.Emitter);
             canvas.Elements.Add(emitterReference);
 
             // Settings
-            SkiaSharp.Elements.Element settingsElement = App.ImageBuilderInstance.BuildNamedIcon("FastTalkerSkiaSharp.Images.Settings.png",
-                                                                                                 "Settings",
-                                                                                                 canvas.CanvasSize.Width - Constants.DeviceLayout.Bezel,
-                                                                                                 canvas.CanvasSize.Height - Constants.DeviceLayout.Bezel,
-                                                                                                 (int)SkiaSharp.Elements.CanvasView.Role.Settings,
+            SkiaSharp.Elements.Element settingsElement = App.ImageBuilderInstance.BuildNamedIcon(resource: "FastTalkerSkiaSharp.Images.Settings.png",
+                                                                                                 text: "Settings",
+                                                                                                 x: canvas.CanvasSize.Width - Constants.DeviceLayout.Bezel,
+                                                                                                 y: canvas.CanvasSize.Height - Constants.DeviceLayout.Bezel,
+                                                                                                 tagCode: (int)SkiaSharp.Elements.CanvasView.Role.Settings,
                                                                                                  alignRight: true,
                                                                                                  alignBottom: true,
                                                                                                  opaqueBackground: true);
@@ -913,11 +910,11 @@ namespace FastTalkerSkiaSharp.Pages
             canvas.Elements.Add(settingsElement);
 
             // Delete zone
-            deleteReference = App.ImageBuilderInstance.BuildNamedIcon("FastTalkerSkiaSharp.Images.Trash.png",
-                                                                      "Delete",
-                                                                      Constants.DeviceLayout.Bezel,
-                                                                      canvas.CanvasSize.Height - Constants.DeviceLayout.Bezel,
-                                                                      (int)SkiaSharp.Elements.CanvasView.Role.Delete,
+            deleteReference = App.ImageBuilderInstance.BuildNamedIcon(resource: "FastTalkerSkiaSharp.Images.Trash.png",
+                                                                      text: "Delete",
+                                                                      x: Constants.DeviceLayout.Bezel,
+                                                                      y: canvas.CanvasSize.Height - Constants.DeviceLayout.Bezel,
+                                                                      tagCode: (int)SkiaSharp.Elements.CanvasView.Role.Delete,
                                                                       alignBottom: true,
                                                                       opaqueBackground: true);
 

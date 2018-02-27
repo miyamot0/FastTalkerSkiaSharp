@@ -43,9 +43,9 @@ namespace FastTalkerSkiaSharp.Constants
         public const string SettingsDeselectDisable = "Disable Auto Deselect";
 
         public const string SettingsModeQuery = "Change Mode";
-        public const string SettingsMode = "Change to Framed Mode";
-        public const string SettingsMode2 = "Change to Icon Mode (Manual Speaking)";
-        public const string SettingsMode3 = "Change to Icon Mode (Auto Speaking)";
+        public const string SettingsFramedMode = "Change to Framed Mode";
+        public const string SettingsIconManual = "Change to Icon Mode (Manual Speaking)";
+        public const string SettingsIconAuto = "Change to Icon Mode (Auto Speaking)";
         public const string SettingsAddIcon = "Add Icon";
         public const string SettingsTakePhoto = "Take a Photo";
         public const string SettingsAddFolder = "Add a Folder";
@@ -104,9 +104,9 @@ namespace FastTalkerSkiaSharp.Constants
         public static string[] GetSpeechOutputModes()
         {
             return new string[] {
-                SettingsMode2,
-                SettingsMode3,
-                SettingsMode
+                SettingsIconManual,
+                SettingsIconAuto,
+                SettingsFramedMode
             };
         }
     }

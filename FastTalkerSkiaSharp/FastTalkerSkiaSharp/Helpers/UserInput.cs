@@ -31,6 +31,7 @@ using Acr.UserDialogs;
 using FastTalkerSkiaSharp.Constants;
 using FastTalkerSkiaSharp.Interfaces;
 using FastTalkerSkiaSharp.Pages;
+using FastTalkerSkiaSharp.Storage;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using SkiaSharp;
@@ -57,13 +58,13 @@ namespace FastTalkerSkiaSharp.Helpers
                 canvasRef = canvasView;
             }
 
-            var userResponse = await UserDialogs.Instance.ActionSheetAsync(LanguageSettings.SettingsTitle,
-                                                                           LanguageSettings.SettingsClose,
-                                                                           LanguageSettings.SettingsClose,
-                                                                           null,
-                                                                           LanguageSettings.SettingsMenu(canvasView.Controller));
+            string userResponse = await UserDialogs.Instance.ActionSheetAsync(LanguageSettings.SettingsTitle,
+                                                                              LanguageSettings.SettingsClose,
+                                                                              LanguageSettings.SettingsClose,
+                                                                              null,
+                                                                              LanguageSettings.SettingsMenu(canvasRef.Controller));
 
-            ResponseToQuery(canvasView, userResponse);
+            ResponseToQuery(userResponse);
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="canvasView">Canvas view.</param>
         /// <param name="userResponse">User response.</param>
         /// <param name="saveSettingsAsync">Save settings async.</param>
-        public async void ResponseToQuery(CanvasView canvasView, string userResponse)
+        public async void ResponseToQuery(string userResponse)
         {
             switch (userResponse)
             {
@@ -90,25 +91,25 @@ namespace FastTalkerSkiaSharp.Helpers
                     return;
 
                 case LanguageSettings.SettingsSave:
-                    canvasView.Controller.PromptResave();
+                    canvasRef.Controller.PromptResave();
 
                     return;
 
                 #region Auto De-selecting options
 
                 case LanguageSettings.SettingsDeselect:
-                    canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
-                                                         canvasView.Controller.InFramedMode,
-                                                         true,
-                                                         canvasView.Controller.IconModeAuto);
+                    canvasRef.Controller.UpdateSettings(isEditing: canvasRef.Controller.InEditMode,
+                                                        isInFrame: canvasRef.Controller.InFramedMode,
+                                                        isAutoDeselecting: true,
+                                                        isInIconModeAuto: canvasRef.Controller.IconModeAuto);
 
                     return;
 
                 case LanguageSettings.SettingsDeselectDisable:
-                    canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
-                                                         canvasView.Controller.InFramedMode,
-                                                         false,
-                                                         canvasView.Controller.IconModeAuto);
+                    canvasRef.Controller.UpdateSettings(isEditing: canvasRef.Controller.InEditMode,
+                                                        isInFrame: canvasRef.Controller.InFramedMode,
+                                                        isAutoDeselecting: false,
+                                                        isInIconModeAuto: canvasRef.Controller.IconModeAuto);
 
                     return;
 
@@ -118,58 +119,58 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 case LanguageSettings.SettingsModeQuery:
 
-                    var responseToModeQuery = await UserDialogs.Instance.ActionSheetAsync("Select Mode",
-                                                                           LanguageSettings.SettingsClose,
-                                                                           LanguageSettings.SettingsClose,
-                                                                           null,
-                                                                           LanguageSettings.GetSpeechOutputModes());
+                    string responseToModeQuery = await UserDialogs.Instance.ActionSheetAsync(title: "Select Mode",
+                                                                                             cancel: LanguageSettings.SettingsClose,
+                                                                                             destructive: LanguageSettings.SettingsClose,
+                                                                                             cancelToken: null,
+                                                                                             buttons: LanguageSettings.GetSpeechOutputModes());
 
                     if (!string.IsNullOrWhiteSpace(responseToModeQuery) && responseToModeQuery != LanguageSettings.SettingsClose)
                     {
                         switch (responseToModeQuery)
                         {
-                            case LanguageSettings.SettingsMode2:
-                                canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
-                                     false,
-                                     canvasView.Controller.RequireDeselect,
-                                     false);
+                            case LanguageSettings.SettingsIconManual:
+                                canvasRef.Controller.UpdateSettings(isEditing: canvasRef.Controller.InEditMode,
+                                                                    isInFrame: false,
+                                                                    isAutoDeselecting: canvasRef.Controller.RequireDeselect,
+                                                                    isInIconModeAuto: false);
 
-                                for (int i = 0; i < canvasView.Elements.Count; i++)
+                                for (int i = 0; i < canvasRef.Elements.Count; i++)
                                 {
-                                    canvasView.Elements[i].IsMainIconInPlay = false;
+                                    canvasRef.Elements[i].IsMainIconInPlay = false;
                                 }
 
-                                canvasView.InvalidateSurface();
+                                canvasRef.InvalidateSurface();
 
                                 return;
 
-                            case LanguageSettings.SettingsMode3:
-                                canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
-                                     false,
-                                     canvasView.Controller.RequireDeselect,
-                                     true);
+                            case LanguageSettings.SettingsIconAuto:
+                                canvasRef.Controller.UpdateSettings(isEditing: canvasRef.Controller.InEditMode,
+                                                                    isInFrame: false,
+                                                                    isAutoDeselecting: canvasRef.Controller.RequireDeselect,
+                                                                    isInIconModeAuto: true);
 
-                                for (int i = 0; i < canvasView.Elements.Count; i++)
+                                for (int i = 0; i < canvasRef.Elements.Count; i++)
                                 {
-                                    canvasView.Elements[i].IsMainIconInPlay = false;
+                                    canvasRef.Elements[i].IsMainIconInPlay = false;
                                 }
 
-                                canvasView.InvalidateSurface();
+                                canvasRef.InvalidateSurface();
 
                                 return;
 
-                            case LanguageSettings.SettingsMode:
-                                canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
-                                     true,
-                                     canvasView.Controller.RequireDeselect,
-                                     canvasView.Controller.IconModeAuto);
+                            case LanguageSettings.SettingsFramedMode:
+                                canvasRef.Controller.UpdateSettings(isEditing: canvasRef.Controller.InEditMode,
+                                                                    isInFrame: true,
+                                                                    isAutoDeselecting: canvasRef.Controller.RequireDeselect,
+                                                                    isInIconModeAuto: canvasRef.Controller.IconModeAuto);
 
-                                for (int i = 0; i < canvasView.Elements.Count; i++)
+                                for (int i = 0; i < canvasRef.Elements.Count; i++)
                                 {
-                                    canvasView.Elements[i].IsMainIconInPlay = true;
+                                    canvasRef.Elements[i].IsMainIconInPlay = true;
                                 }
 
-                                canvasView.InvalidateSurface();
+                                canvasRef.InvalidateSurface();
 
                                 return;
                         }
@@ -179,9 +180,11 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 #endregion
 
+                #region Adding icons
+
                 case LanguageSettings.SettingsAddIcon:
 
-                    var newCommunicationPage = new CommunicationIconPicker();
+                    CommunicationIconPicker newCommunicationPage = new CommunicationIconPicker();
                     newCommunicationPage.IconConstructed += SaveCommunicationIcon;
 
                     await App.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
@@ -189,11 +192,11 @@ namespace FastTalkerSkiaSharp.Helpers
                     return;
 
                 case LanguageSettings.SettingsTakePhoto:
-                    var base64 = await GetImageFromCameraCallAsync();
+                    string[] base64 = await GetImageFromCameraCallAsync();
 
                     if (base64 == null) return;
 
-                    var dynamicIcon = new FastTalkerSkiaSharp.Storage.CommunicationIcon()
+                    CommunicationIcon dynamicIcon = new CommunicationIcon()
                     {
                         Tag = (int)SkiaSharp.Elements.CanvasView.Role.Communication,
                         Text = base64[0],
@@ -210,7 +213,7 @@ namespace FastTalkerSkiaSharp.Helpers
 
                     try
                     {
-                        testImage = App.ImageBuilderInstance.BuildCommunicationIconDynamic(dynamicIcon);
+                        testImage = App.ImageBuilderInstance.BuildCommunicationIconDynamic(icon: dynamicIcon);
 
                         canvasRef.Elements.Add(testImage);
 
@@ -227,26 +230,26 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 case LanguageSettings.SettingsAddFolder:
 
-                    var currentFolders = canvasRef.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder);
+                    IEnumerable<SkiaSharp.Elements.Element> foldersInField = canvasRef.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder);
 
-                    var newFolderPage = new FolderIconPicker(currentFolders);
+                    FolderIconPicker newFolderPage = new FolderIconPicker(currentFolders: foldersInField);
                     newFolderPage.FolderConstructed += SaveFolder;
 
                     await App.Current.MainPage.Navigation.PushAsync(newFolderPage);
 
                     return;
 
+                #endregion
+
                 #region Resume User Behavior - Done
 
                 case LanguageSettings.SettingsResume:
-                    canvasView.Controller.UpdateSettings(false,
-                                                         canvasView.Controller.InFramedMode,
-                                                         canvasView.Controller.RequireDeselect,
-                                                         canvasView.Controller.IconModeAuto);
+                    canvasRef.Controller.UpdateSettings(isEditing: false,
+                                                        isInFrame: canvasRef.Controller.InFramedMode,
+                                                        isAutoDeselecting: canvasRef.Controller.RequireDeselect,
+                                                        isInIconModeAuto: canvasRef.Controller.IconModeAuto);
 
-                    canvasView.Controller.BackgroundColor = canvasView.Controller.InEditMode ?
-                                                            SKColors.Orange :
-                                                            SKColors.DimGray;
+                    canvasRef.Controller.BackgroundColor = canvasRef.Controller.InEditMode ? SKColors.Orange : SKColors.DimGray;
 
                     return;
 
