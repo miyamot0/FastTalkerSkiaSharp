@@ -54,6 +54,8 @@ namespace FastTalkerSkiaSharp.Pages
         private bool inInitialLoading = true;
         private bool hasMoved = false;
 
+        InterfaceSpeechOutput commInterface;
+
         public CommunicationBoardPage()
         {
             InitializeComponent();
@@ -62,6 +64,8 @@ namespace FastTalkerSkiaSharp.Pages
 
             canvas.Controller.OnElementsChanged += SaveCurrentBoard;
             canvas.Controller.OnSettingsChanged += SaveCurrentSettings;
+
+            commInterface = DependencyService.Get<InterfaceSpeechOutput>();
 
             NavigationPage.SetHasNavigationBar(this, false);
             NavigationPage.SetHasBackButton(this, false);
@@ -411,8 +415,8 @@ namespace FastTalkerSkiaSharp.Pages
                              !canvas.Controller.InEditMode &&
                              canvas.Controller.IconModeAuto)
                     {
-                        
-                        DependencyService.Get<InterfaceSpeechOutput>().SpeakText(_currentElement.Text);
+
+                        commInterface.SpeakText(_currentElement.Text);
 
                         e.Handled = true;
                     }
@@ -772,7 +776,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                                     Debug.WriteLineIf(outputVerbose, "Verbal output (Frame): " + output);
 
-                                    DependencyService.Get<InterfaceSpeechOutput>().SpeakText(output);
+                                    commInterface.SpeakText(output);
                                 }
                             }
                             else
@@ -786,7 +790,7 @@ namespace FastTalkerSkiaSharp.Pages
                                 {
                                     Debug.WriteLineIf(outputVerbose, "Verbal output (Icon): " + selectedElements);
 
-                                    DependencyService.Get<InterfaceSpeechOutput>().SpeakText(selectedElements);
+                                    commInterface.SpeakText(selectedElements);
                                 }
 
                                 if (canvas.Controller.RequireDeselect)

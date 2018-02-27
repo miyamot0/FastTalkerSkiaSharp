@@ -21,6 +21,7 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
+using System;
 using AVFoundation;
 using FastTalkerSkiaSharp.Interfaces;
 using FastTalkerSkiaSharp.iOS.Implementations;
@@ -30,21 +31,46 @@ namespace FastTalkerSkiaSharp.iOS.Implementations
 {
     public class ImplementationSpeechOutput : InterfaceSpeechOutput
     {
+        private AVSpeechSynthesizer speechSynthesizer;
+
+        private AVSpeechUtterance speechUtterance;
+
+        private bool isThisCurrentlySpeaking = false;
+
+        public ImplementationSpeechOutput() { }
+
         public void SpeakText(string text)
         {
-            // TODO: Bind to speech finished event here?
-
-            AVSpeechSynthesizer speechSynthesizer = new AVSpeechSynthesizer();
-
-            AVSpeechUtterance speechUtterance = new AVSpeechUtterance(text)
+            if (speechSynthesizer == null)
             {
-                Rate = AVSpeechUtterance.MaximumSpeechRate / 3,
-                Voice = AVSpeechSynthesisVoice.FromLanguage("en-US"),
-                Volume = 0.9f,
-                PitchMultiplier = 1.0f
-            };
+                speechSynthesizer = new AVSpeechSynthesizer();
+            }
 
-            speechSynthesizer.SpeakUtterance(speechUtterance);
+            if (!isThisCurrentlySpeaking)
+            {
+                isThisCurrentlySpeaking = true;
+
+                speechUtterance = new AVSpeechUtterance(text)
+                {
+                    Rate = AVSpeechUtterance.MaximumSpeechRate / 3,
+                    Voice = AVSpeechSynthesisVoice.FromLanguage("en-US"),
+                    Volume = 0.9f,
+                    PitchMultiplier = 1.0f
+                };
+                speechSynthesizer.DidFinishSpeechUtterance += FinishedSpeaking;
+                speechSynthesizer.DidCancelSpeechUtterance += FinishedSpeaking;
+                speechSynthesizer.SpeakUtterance(speechUtterance);
+            }
+        }
+
+        /// <summary>
+        /// Prevent relentless chains of text from being emitted
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        private void FinishedSpeaking(object sender, AVSpeechSynthesizerUteranceEventArgs e)
+        {
+            isThisCurrentlySpeaking = false;
         }
     }
 }

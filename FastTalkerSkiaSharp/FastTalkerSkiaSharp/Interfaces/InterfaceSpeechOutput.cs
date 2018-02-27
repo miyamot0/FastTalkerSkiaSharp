@@ -20,6 +20,7 @@
 
    Email: shawn(dot)gilroy(at)temple.edu
 */
+using System;
 
 namespace FastTalkerSkiaSharp.Interfaces
 {
