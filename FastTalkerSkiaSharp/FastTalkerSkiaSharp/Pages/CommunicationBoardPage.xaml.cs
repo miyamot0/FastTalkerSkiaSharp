@@ -223,11 +223,11 @@ namespace FastTalkerSkiaSharp.Pages
 
             if (icons != null && icons.Count > 0)
             {
-                Debug.WriteLine("icon: " + icons.Count);
+                Debug.WriteLineIf(App.OutputVerbose, "icon: " + icons.Count);
 
                 foreach (var icon in icons)
                 {
-                    Debug.WriteLine(App.OutputVerbose,
+                    Debug.WriteLineIf(App.OutputVerbose,
                                     "Tag: " + icon.Tag +
                                     " Name: " + icon.Text +
                                     " Scale: " + icon.Scale +
