@@ -112,9 +112,14 @@ namespace FastTalkerSkiaSharp.Pages
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">E.</param>
-        async void Handle_SelectedIndexChanged(object sender, System.EventArgs e)
+        void Handle_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            using (var dlg = UserDialogs.Instance.Progress("Loading icon images"))
+            LoadIcons();
+        }
+
+        async void LoadIcons()
+        {
+            using (var dlg = UserDialogs.Instance.Progress("Loading..."))
             {
                 List<string> checkList = new List<string>() { categoryPicker.SelectedItem.ToString() };
 
@@ -126,24 +131,38 @@ namespace FastTalkerSkiaSharp.Pages
 
                 Images.Clear();
 
-                int count = 0;
+                double counter = 0d;
+                double total = mIcons.Count;
+
+                int current = 0;
+                int saved = 0;
 
                 foreach (var iconName in mIcons)
                 {
                     Images.Add(new DisplayImageModel
                     {
                         Image = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng +
-                                                                           "{0}" +
-                                                                           LanguageSettings.ResourceSuffixPng, iconName)),
+                                                                            "{0}" +
+                                                                            LanguageSettings.ResourceSuffixPng, iconName)),
                         Name = iconName
                     });
 
                     await Task.Delay(50);
 
-                    count++;
+                    counter += 1d;
 
-                    dlg.PercentComplete = (int)(((double)count / (double)mIcons.Count)*100);
+                    current = (int) Math.Floor(((counter / total)*100) / 5);
+
+                    if (current != saved)
+                    {
+                        saved = current;
+
+                        dlg.PercentComplete = saved * 20;
+                    }
+
                 }
+
+                dlg.Title = "Drawing...";
 
                 customScrollView.ItemsSource = Images;
             }
