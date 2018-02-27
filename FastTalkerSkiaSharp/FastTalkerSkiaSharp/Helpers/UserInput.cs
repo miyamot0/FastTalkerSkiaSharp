@@ -99,16 +99,16 @@ namespace FastTalkerSkiaSharp.Helpers
                 case LanguageSettings.SettingsDeselect:
                     canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
                                                          canvasView.Controller.InFramedMode,
-                                                         canvasView.Controller.IconModeAuto,
-                                                         true);
+                                                         true,
+                                                         canvasView.Controller.IconModeAuto);
 
                     return;
 
                 case LanguageSettings.SettingsDeselectDisable:
                     canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
                                                          canvasView.Controller.InFramedMode,
-                                                         canvasView.Controller.IconModeAuto,
-                                                         false);
+                                                         false,
+                                                         canvasView.Controller.IconModeAuto);
 
                     return;
 
@@ -132,7 +132,7 @@ namespace FastTalkerSkiaSharp.Helpers
                                 canvasView.Controller.UpdateSettings(canvasView.Controller.InEditMode,
                                      false,
                                      canvasView.Controller.RequireDeselect,
-                                     canvasView.Controller.IconModeAuto);
+                                     false);
 
                                 for (int i = 0; i < canvasView.Elements.Count; i++)
                                 {

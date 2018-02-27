@@ -133,6 +133,8 @@ namespace FastTalkerSkiaSharp.Pages
             if (App.BoardSettings.InFramedMode)
             {
                 App.BoardSettings.InIconModeAuto = false;
+
+                canvas.InvalidateSurface();
             }
 
             if (Device.RuntimePlatform == Device.Android)
@@ -551,9 +553,10 @@ namespace FastTalkerSkiaSharp.Pages
                             canvas.Controller.PromptResave();
                         }
                     }
-                    else if (canvas.Controller.InEditMode && !_currentElement.IsInsertableIntoFolder && 
-                                                             !_currentElement.IsDeletable &&
-                                                             DateTime.Now.Subtract(itemPressTime).Seconds > 3)
+                    else if (canvas.Controller.InEditMode && 
+                             !_currentElement.IsInsertableIntoFolder && 
+                             !_currentElement.IsDeletable &&
+                             DateTime.Now.Subtract(itemPressTime).Seconds > 3)
                     {
                         Debug.WriteLineIf(outputVerbose, "Completed icon held > 3s");
 
@@ -779,7 +782,7 @@ namespace FastTalkerSkiaSharp.Pages
                                     commInterface.SpeakText(output);
                                 }
                             }
-                            else
+                            else if (!canvas.Controller.IconModeAuto)
                             {
                                 var selectedElements = canvas?.Elements
                                                               .Where(elem => elem.IsMainIconInPlay && elem.Tag != (int)SkiaSharp.Elements.CanvasView.Role.Folder)
