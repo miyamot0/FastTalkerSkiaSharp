@@ -33,10 +33,11 @@ using Xamarin.Forms;
 [assembly: Dependency(typeof(FastTalkerSkiaSharp.Droid.Implementations.ImplementationSpeechOutput))]
 namespace FastTalkerSkiaSharp.Droid.Implementations
 {
-    public class ImplementationSpeechOutput : Java.Lang.Object, InterfaceSpeechOutput, TextToSpeech.IOnInitListener
+    public class ImplementationSpeechOutput : Java.Lang.Object, InterfaceSpeechOutput, TextToSpeech.IOnInitListener, TextToSpeech.IOnUtteranceCompletedListener
     {
-        TextToSpeech speaker;
-        string toSpeak;
+        private TextToSpeech speaker;
+        private string toSpeak;
+        private bool isSpeaking = false;
 
         public ImplementationSpeechOutput() { }
 
@@ -51,11 +52,22 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
                 int amStreamMusicMaxVol = am.GetStreamMaxVolume(Android.Media.Stream.Music);
                 am.SetStreamVolume(Stream.Music, amStreamMusicMaxVol, 0);
                 speaker = new TextToSpeech(ctx, this);
+                speaker.SetOnUtteranceCompletedListener(this);
             }
             else
             {
                 SpeakRoute(toSpeak);
             }
+        }
+
+        /// <summary>
+        /// Finished listener
+        /// </summary>
+        /// <param name="utteranceId"></param>
+        [Obsolete("Message")]
+        public void OnUtteranceCompleted(string utteranceId)
+        {
+            isSpeaking = false;
         }
 
         #region IOnInitListener implementation
@@ -82,6 +94,8 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         [Obsolete("Message")]
         private void SpeakRoute(string text)
         {
+            if (isSpeaking) return;
+
             if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
             {
                 ApiOver21(text);
@@ -99,6 +113,8 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         [Obsolete("Message")]
         private void ApiUnder20(string text)
         {
+            isSpeaking = true;
+
             Dictionary<string, string> map = new Dictionary<string, string>();
             map.Add(TextToSpeech.Engine.KeyParamUtteranceId, "MessageId");
             speaker.Speak(text, QueueMode.Flush, map);
@@ -110,6 +126,8 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         /// <param name="text"></param>
         private void ApiOver21(string text)
         {
+            isSpeaking = true;
+
             string utteranceId = this.GetHashCode() + "";
             speaker.Speak(text, QueueMode.Flush, null, utteranceId);
         }
