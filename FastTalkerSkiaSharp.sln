@@ -20,9 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE-Xamarin_Forms = LICENSE-Xamarin_Forms
 		LICENSE-Xamarin_Plugins = LICENSE-Xamarin_Plugins
 		README.md = README.md
-		LICENSE-ACR_UserDialogs = LICENSE-ACR_UserDialogs
-		LICENSE-RG_Plugins_Popup = LICENSE-RG_Plugins_Popup
-		LICENSE-SkiaSharp = LICENSE-SkiaSharp
 	EndProjectSection
 EndProject
 Global
