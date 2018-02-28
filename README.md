@@ -48,7 +48,7 @@ Fast Talker (Skia port) can be installed as either an Android or iOS application
 ### Device Owner Mode (Android)
 Fast Talker (Skia port) can be set to be a dedicated, SGD-only device by having the administrator run the following command from ADB:
 
-<i>adb shell dpm set-device-owner com.smallnstats.fasttalkerskiasharp/com.smallnstats.fasttalkerskiasharp.Base.DeviceAdminReceiverClass</i>
+<i>adb shell dpm set-device-owner com.smallnstats.FastTalkerSkiaSharp/com.smallnstats.FastTalkerSkiaSharp.Base.DeviceAdminReceiverClass</i>
 
 Optionally, administators can disable the user warnings displayed on the screen by running the following command from ADB:
 
