@@ -32,8 +32,11 @@ Fast Talker uses licensed visual images in order to operate:
 
 ### Referenced Works (Packages)
 Fast Talker uses a number of open source projects to work properly:
+* [ACR UserDialogs](https://github.com/aritchie/userdialogs) - MIT Licensed - Copyright (c) 2016 Allan Ritchie
 * [LauncherHijack](https://github.com/parrotgeek1/LauncherHijack) - Permissively Licensed. Copyright (c) 2017 Ethan Nelson-Moore
 * [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) - MIT Licensed. Copyright (c) 2007 James Newton-King 
+* [RotorGames.Popup](https://github.com/rotorgames/Rg.Plugins.Popup) - MIT Licensed. Copyright (c) 2017 RotorGames
+* [SkiaSharp](https://github.com/mono/SkiaSharp) - MIT Licensed. Copyright (c) 2015-2016 Xamarin, Inc. Copyright (c) 2017-2018 Microsoft Corporation.
 * [sqlite-net-pcl](https://github.com/praeclarum/sqlite-net) - MIT Licensed. Copyright (c) 2009-2016 Krueger Systems, Inc.
 * [Xamarin.Plugins](https://github.com/jamesmontemagno/Xamarin.Plugins) - MIT Licensed. Copyright (c) 2016 James Montemagno / Refractored LLC
 * [Xamarin Forms](https://github.com/xamarin/Xamarin.Forms) - MIT Licensed. Copyright (c) 2016 Microsoft
@@ -54,7 +57,7 @@ Optionally, administators can disable the user warnings displayed on the screen 
 
 <i>adb shell appops set android TOAST_WINDOW deny</i>
 
-Issuing this demand will perform indefinite screen pinning, much as single-use devices (e.g., inventory counters, touch screen cash registers) function.
+Issuing this command will perform indefinite screen pinning, much as single-use devices (e.g., inventory counters, touch screen cash registers) function.
 
 ### Download
 All downloads, if/when posted, will be hosted at [Small N Stats](http://www.smallnstats.com). Formal app store/market release planned following formal evaluation through research and clinical development.

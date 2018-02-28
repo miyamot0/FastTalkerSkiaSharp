@@ -358,10 +358,10 @@ namespace FastTalkerSkiaSharp.Helpers
                     {
                         if (currentElement != null)
                         {
-                            //canvasRef.SuspendLayout();
+                            canvasRef.SuspendLayout();
                             currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
                                                                   (startPoint.Y) + (yDiff * (float)value));
-                            //canvasRef.ResumeLayout(true);
+                            canvasRef.ResumeLayout(true);
                         }
                     }
                     catch { }
@@ -374,11 +374,9 @@ namespace FastTalkerSkiaSharp.Helpers
                         {
                             if (currentElement != null)
                             {
-                                //canvasRef.SuspendLayout();
-
+                                canvasRef.SuspendLayout();
                                 currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
-
-                                //canvasRef.ResumeLayout(true);
+                                canvasRef.ResumeLayout(true);
                             }
                         } catch { }
 

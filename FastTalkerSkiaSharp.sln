@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastTalkerSkiaSharp.Android
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastTalkerSkiaSharp.iOS", "FastTalkerSkiaSharp\FastTalkerSkiaSharp.iOS\FastTalkerSkiaSharp.iOS.csproj", "{B4D5ADF2-B055-4890-B4E3-45259E928DB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastTalkerSkiaSharp", "FastTalkerSkiaSharp\FastTalkerSkiaSharp\FastTalkerSkiaSharp.csproj", "{FD1A2DC8-3298-43FE-A592-2BF3F02A3908}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastTalkerSkiaSharp", "FastTalkerSkiaSharp\FastTalkerSkiaSharp\FastTalkerSkiaSharp.csproj", "{FD1A2DC8-3298-43FE-A592-2BF3F02A3908}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkiaSharp.Elements", "FastTalkerSkiaSharp\SkiaSharp.Elements\SkiaSharp.Elements\SkiaSharp.Elements.csproj", "{5E03B166-C293-49D1-99C6-A972B126591D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkiaSharp.Elements", "FastTalkerSkiaSharp\SkiaSharp.Elements\SkiaSharp.Elements\SkiaSharp.Elements.csproj", "{5E03B166-C293-49D1-99C6-A972B126591D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CD2AF992-9E4E-4CD6-A32B-3002E85F305D}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,6 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE-Xamarin_Forms = LICENSE-Xamarin_Forms
 		LICENSE-Xamarin_Plugins = LICENSE-Xamarin_Plugins
 		README.md = README.md
+		LICENSE-ACR_UserDialogs = LICENSE-ACR_UserDialogs
+		LICENSE-RG_Plugins_Popup = LICENSE-RG_Plugins_Popup
+		LICENSE-SkiaSharp = LICENSE-SkiaSharp
 	EndProjectSection
 EndProject
 Global
@@ -155,19 +158,5 @@ Global
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
 		$0.TextStylePolicy = $5
-		$2.inheritsSet = null
-		$2.scope = text/x-csharp
-		$0.CSharpFormattingPolicy = $3
-		$3.scope = text/x-csharp
-		$4.FileWidth = 80
-		$4.TabsToSpaces = True
-		$4.scope = text/plain
-		$5.inheritsSet = null
-		$5.scope = application/android+xml
-		$0.XmlFormattingPolicy = $6
-		$6.inheritsSet = null
-		$6.scope = application/android+xml
-		$0.StandardHeader = $7
-		$0.VersionControlPolicy = $8
 	EndGlobalSection
 EndGlobal
