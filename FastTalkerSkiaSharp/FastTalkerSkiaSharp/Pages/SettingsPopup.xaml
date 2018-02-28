@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             x:Class="FastTalkerSkiaSharp.Pages.SettingsPopup"
+             HasSystemPadding="{Binding IsSystemPadding}"
+             Padding="{Binding Padding}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Text="Settings"
+               Grid.Row="0"
+               Grid.Column="0"
+               Grid.ColumnSpan="3"/>
+        
+        <Button x:Name="btnSave"
+                Grid.Row="1"
+                Grid.Column="0"
+                Text="Save"/>
+
+        <Button x:Name="btnDeselect"
+                Grid.Row="1"
+                Grid.Column="1"
+                Text="Save"/>
+
+        <Button x:Name="btnMode"
+                Grid.Row="1"
+                Grid.Column="2"
+                Text="Save"/>
+
+        <Button x:Name="btnAddLocal"
+                Grid.Row="2"
+                Grid.Column="0"
+                Text="Add Local Image"/>
+
+        <Button x:Name="btnTakePhoto"
+                Grid.Row="2"
+                Grid.Column="1"
+                Text="Take Photo"/>
+
+        <Button x:Name="btnAddSaved"
+                Grid.Row="2"
+                Grid.ColumnSpan="3"
+                Text="Add Stored Image"/>
+
+        <Button x:Name="btnAddFolder"
+                Grid.Row="3"
+                Grid.Column="0"
+                Text="Add Folder"/>
+
+        <Button x:Name="btnHelp"
+                Grid.Row="3"
+                Grid.Column="1"
+                Text="Add Folder"/>
+
+        <Button x:Name="btnAbout"
+                Grid.Row="3"
+                Grid.Column="2"
+                Text="Add Folder"/>
+
+        <Button x:Name="btnSave"
+                Grid.Row="4"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Text="Save"/>
+    </Grid>
+</pages:PopupPage>
