@@ -57,6 +57,15 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="saveSettingsAsync">Save settings async.</param>
         public async void QueryUserMainSettingsAsync()
         {
+            SettingsPage settingsPopupPage = new SettingsPage();
+
+            //page.IconSelected += RestoreIcon;
+
+            await App.Current.MainPage.Navigation.PushPopupAsync(settingsPopupPage);
+            //await Navigation.PushAsync(new NavigationPage(settingsPopupPage));
+
+
+            /*
             string userResponse = await UserDialogs.Instance.ActionSheetAsync(LanguageSettings.SettingsTitle,
                                                                               LanguageSettings.SettingsClose,
                                                                               LanguageSettings.SettingsClose,
@@ -64,6 +73,7 @@ namespace FastTalkerSkiaSharp.Helpers
                                                                               LanguageSettings.SettingsMenu(canvasRef.Controller));
 
             ResponseToQuery(userResponse);
+            */
         }
 
         /// <summary>

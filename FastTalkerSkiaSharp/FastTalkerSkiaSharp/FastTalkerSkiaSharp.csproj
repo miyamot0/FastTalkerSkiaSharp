@@ -38,6 +38,7 @@
     <Compile Remove="Pages\AppHelpPopup.xaml.cs" />
     <Compile Remove="Pages\HelpPagePopup2.xaml.cs" />
     <Compile Remove="Pages\SettingsPopup.xaml.cs" />
+    <Compile Remove="Pages\SettingsPage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="App.xaml.cs">
@@ -46,8 +47,8 @@
     <Compile Update="Pages\HelpPagePopup.xaml.cs">
       <DependentUpon>HelpPagePopup.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Pages\SettingsPopup.xaml.cs">
-      <DependentUpon>SettingsPopup.xaml</DependentUpon>
+    <Compile Update="Pages\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

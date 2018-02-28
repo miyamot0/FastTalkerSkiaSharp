@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             x:Class="FastTalkerSkiaSharp.Pages.SettingsPage">
+    <ContentPage.Content>
+
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     Orientation="Vertical"
+                     BackgroundColor="Black">
+            <Label Text="Testing"
+                   HorizontalTextAlignment="Start"
+                   TextColor="Black"></Label>
+        </StackLayout>
+
+    </ContentPage.Content>
+</pages:PopupPage>
