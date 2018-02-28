@@ -53,7 +53,7 @@ namespace FastTalkerSkiaSharp.Pages
 
             rows = new List<DisplayImageRowModel>();
 
-            BindingContext = new PopupUpViewModel()
+            BindingContext = new ViewModels.PopupUpViewModel()
             {
                 Padding = new Thickness(100, 100, 100, 100),
                 IsSystemPadding = true
@@ -70,13 +70,16 @@ namespace FastTalkerSkiaSharp.Pages
             LoadInformationAsync();
         }
 
+        /// <summary>
+        /// Load information into bindings
+        /// </summary>
         private async void LoadInformationAsync()
         {
             // Wait for android
             while (coreLayout.Width == 0 || coreLayout.Width == -1)
             {
                 await Task.Delay(50);
-                Debug.WriteLine("waiting...");
+                Debug.WriteLineIf(App.OutputVerbose, "waiting...");
             }
 
             var recommendedWidth = this.Width / 4;
@@ -93,8 +96,8 @@ namespace FastTalkerSkiaSharp.Pages
                 tempName1 = tempName2 = tempName3 = null;
                 source1 = source2 = source3 = null;
 
-                Debug.WriteLine("ResourceName: " + itemsMatching[i].ImageInformation);
-                Debug.WriteLine("Width: " + itemsMatching[i].ImageInformation);
+                Debug.WriteLineIf(App.OutputVerbose, "ResourceName: " + itemsMatching[i].ImageInformation);
+                Debug.WriteLineIf(App.OutputVerbose, "Width: " + itemsMatching[i].ImageInformation);
 
                 for (j = 0; j < 3 && (j + i) < totalCount; j++)
                 {
@@ -221,7 +224,7 @@ namespace FastTalkerSkiaSharp.Pages
         {
             string iconToReintroduce = obj as string;
 
-            Debug.WriteLine("Tapped Command: " + obj as string);
+            Debug.WriteLineIf(App.OutputVerbose, "Tapped Command: " + obj as string);
 
             IconSelected(new ArgsSelectedIcon
             {
@@ -275,47 +278,6 @@ namespace FastTalkerSkiaSharp.Pages
 #pragma warning disable CS0618 // Type or member is obsolete
             await PopupNavigation.PopAsync();
 #pragma warning restore CS0618 // Type or member is obsolete
-        }
-    }
-
-    public class PopupUpViewModel : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this,
-                    new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        private Thickness _padding;
-        public Thickness Padding
-        {
-            get
-            {
-                return _padding;
-            }
-            set
-            {
-                _padding = value;
-                OnPropertyChanged("Padding");
-            }
-        }
-
-        private bool _isSystemPadding = true;
-        public bool IsSystemPadding
-        {
-            get
-            {
-                return _isSystemPadding;
-            }
-            set
-            {
-                _isSystemPadding = value;
-                OnPropertyChanged("IsSystemPadding");
-            }
         }
     }
 }

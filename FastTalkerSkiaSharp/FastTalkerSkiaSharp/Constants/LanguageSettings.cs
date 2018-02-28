@@ -36,6 +36,8 @@ namespace FastTalkerSkiaSharp.Constants
 
         public const string SettingsClose = "Close";
 
+        public const string SettingsAbout = "About";
+
         public const string SettingsResume = "Resume Child Operation";
         public const string SettingsServerStart = "Start Server";
         public const string SettingsSave = "Prompt Save";
@@ -63,7 +65,8 @@ namespace FastTalkerSkiaSharp.Constants
                 SettingsModeQuery,
                 SettingsAddIcon,
                 SettingsTakePhoto,
-                SettingsAddFolder
+                SettingsAddFolder,
+                SettingsAbout
             };
         }
 

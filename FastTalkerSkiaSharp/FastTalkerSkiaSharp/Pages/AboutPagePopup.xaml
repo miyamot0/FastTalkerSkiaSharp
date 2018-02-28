@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+                 xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 x:Class="FastTalkerSkiaSharp.Pages.AboutPagePopup"
+                 HasSystemPadding="{Binding IsSystemPadding}"
+                 Padding="{Binding Padding}">
+
+
+    <StackLayout BackgroundColor="Black"
+                 Padding="5,5,5,5">
+            <ScrollView VerticalOptions="FillAndExpand" 
+                HorizontalOptions="FillAndExpand" 
+                BackgroundColor="White">
+
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             Margin="10"
+                             Orientation="Vertical">
+
+                    <Label HorizontalTextAlignment="Center">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="Credits and Acknowledgements" 
+                                FontAttributes="Bold" 
+                                FontSize="Large"/>
+                        </FormattedString>
+                      </Label.FormattedText>
+                    </Label>
+
+                    <Label Margin="0, 10, 0, 0">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="The " 
+                                FontSize="Default"/>
+                          <Span Text="Fast Talker" 
+                                FontAttributes="Bold" 
+                                FontSize="Default"/>
+                          <Span Text=" mobile application is an open-source project designed to provide a free and open sourced evidence-based application for use in work with individuals with various forms of social and communicative impairments. " 
+                                FontSize="Default"/>  
+
+                          <Span Text="The " 
+                                FontSize="Default"/>
+                          <Span Text="Fast Talker" 
+                                FontAttributes="Bold" 
+                                FontSize="Default"/>
+                          <Span Text=" application is was developed by Dr. Shawn Gilroy under the General Public License, Version 3, and all of the source code necessary to compile, reverse-engineer, or extend this application is provided at: "
+                                FontSize="Default"/>
+                          <Span Text="https://github.com/miyamot0/FastTalkerSkiaSharp"  
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                          <Span Text=". Alternatively, you may also find more information about the FastTalker application at his website: "
+                                FontSize="Default"/>
+                          <Span Text="www.smallnstats.com"  
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                          <Span Text="."  
+                                FontSize="Default"/>
+
+                          <Span Text="&#13;&#13;"/>  
+
+
+                          <Span Text="The " 
+                                FontSize="Default"/>
+                          <Span Text="Fast Talker" 
+                                FontAttributes="Bold" 
+                                FontSize="Default"/>
+                          <Span Text=" application is designed to be used alongside evidence-based therapies and users are strongly encouraged to enlist support from trained and certified professionals (e.g., Behavior analysts, speech pathologists) before using this application for therapeutic purposes" 
+                                FontSize="Default"/>
+                          <Span Text="--this application alone provides no therapeutic or educational value." 
+                                FontSize="Default"/>
+                        </FormattedString>
+                      </Label.FormattedText>
+                    </Label>
+                    
+                    <Label Margin="0, 10, 0, 0">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="Fast Talker (SkiaSharp Port) is a derivative work of an earlier project and uses licensed software:" 
+                                FontAttributes="Bold" 
+                                FontSize="Default"/>
+                        </FormattedString>
+                      </Label.FormattedText>
+                    </Label>
+
+                    <Label>
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="&#x2022; Fast Talker - GPLv3 - Copyright 2016-2018 Shawn Gilroy. "  
+                                FontSize="Default"/>
+                          <Span Text="www.smallnstats.com"  
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                    <Label>
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="&#x2022; Cross-Platform-Communication-App - GPLv3 - Copyright 2016-2017 Shawn Gilroy. "  
+                                FontSize="Default"/>
+                          <Span Text="www.smallnstats.com"  
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                    <Label Margin="0, 10, 0, 0">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="Fast Talker (SkiaSharp Port) uses licensed visual images in order to operate:"  
+                                FontAttributes="Bold" 
+                                FontSize="Default"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                    <Label>
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="&#x2022; Mulberry Symbols - CC-BY-SA 2.0. - Copyright 2008-2012 Garry Paxton. " 
+                                FontSize="Default"/>
+                          <Span Text="www.straight-street.com" 
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                    <Label Margin="0, 10, 0, 0">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="Fast Talker (SkiaSharp Port) uses a number of open source projects to work properly: "  
+                                FontAttributes="Bold" 
+                                FontSize="Default"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                    <Label>
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="&#x2022; ACR UserDialogs - MIT Licensed - Copyright (c) 2016 Allan Ritchie. "  
+                                FontSize="Default"/>
+                          <Span Text="https://github.com/aritchie/userdialogs" 
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                    <Label>
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="&#x2022; LauncherHijack - Permissively Licensed. Copyright (c) 2017 Ethan Nelson-Moore. " 
+                                FontSize="Default"/>
+                          <Span Text="https://github.com/parrotgeek1/LauncherHijack" 
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                    <Label>
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="&#x2022; Newtonsoft.Json - MIT Licensed. Copyright (c) 2007 James Newton-King. " 
+                                FontSize="Default"/>
+                          <Span Text="https://github.com/JamesNK/Newtonsoft.Json" 
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                    <Label>
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="&#x2022; RotorGames.Popup - MIT Licensed. Copyright (c) 2017 RotorGames. " 
+                                FontSize="Default"/>
+                          <Span Text="https://github.com/rotorgames/Rg.Plugins.Popup" 
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                    <Label>
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="&#x2022; SkiaSharp - MIT Licensed. Copyright (c) 2015-2016 Xamarin, Inc. Copyright (c) 2017-2018 Microsoft Corporation. " 
+                                FontSize="Default"/>
+                          <Span Text="https://github.com/mono/SkiaSharp" 
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                    <Label>
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="&#x2022; sqlite-net-pcl - MIT Licensed. Copyright (c) 2009-2016 Krueger Systems, Inc. "
+                                FontSize="Default"/>
+                          <Span Text="https://github.com/praeclarum/sqlite-net" 
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                    <Label>
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="&#x2022; Xamarin.Plugins - MIT Licensed. Copyright (c) 2016 James Montemagno / Refractored LLC " 
+                                FontSize="Default"/>
+                          <Span Text="https://github.com/jamesmontemagno/Xamarin.Plugins" 
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                    <Label>
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="&#x2022; Xamarin Forms - MIT Licensed. Copyright (c) 2016 Microsoft. " 
+                                FontSize="Default"/>
+                          <Span Text="https://github.com/xamarin/Xamarin.Forms" 
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                </StackLayout>
+            </ScrollView>
+    </StackLayout>
+</pages:PopupPage>

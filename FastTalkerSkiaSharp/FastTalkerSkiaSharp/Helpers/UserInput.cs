@@ -34,6 +34,7 @@ using FastTalkerSkiaSharp.Pages;
 using FastTalkerSkiaSharp.Storage;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
+using Rg.Plugins.Popup.Extensions;
 using SkiaSharp;
 using SkiaSharp.Elements;
 using Xamarin.Forms;
@@ -253,6 +254,14 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 #endregion
 
+                case LanguageSettings.SettingsAbout:
+
+                    AboutPagePopup page = new AboutPagePopup();
+
+                    await App.Current.MainPage.Navigation.PushPopupAsync(page);
+
+                    return;
+
                 default:
 
                     return;
@@ -444,10 +453,10 @@ namespace FastTalkerSkiaSharp.Helpers
                     {
                         try
                         {
-                            //canvasRef.SuspendLayout();
+                            canvasRef.SuspendLayout();
                             _currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
                                                                   (startPoint.Y) + (yDiff * (float)value));
-                            //canvasRef.ResumeLayout(true);
+                            canvasRef.ResumeLayout(true);
                         }
                         catch { }
                     }
@@ -460,11 +469,11 @@ namespace FastTalkerSkiaSharp.Helpers
                         {
                             if (_currentElement != null)
                             {
-                                //canvasRef.SuspendLayout();
+                                canvasRef.SuspendLayout();
 
                                 _currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
 
-                                //canvasRef.ResumeLayout(true);
+                                canvasRef.ResumeLayout(true);
                             }
                         }
                         catch { }
