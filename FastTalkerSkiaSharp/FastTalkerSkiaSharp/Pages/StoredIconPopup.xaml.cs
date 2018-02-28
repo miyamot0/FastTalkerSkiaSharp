@@ -32,6 +32,7 @@ using System.Diagnostics;
 using FastTalkerSkiaSharp.Helpers;
 using System.Threading.Tasks;
 using FastTalkerSkiaSharp.ViewTemplates;
+using FastTalkerSkiaSharp.ViewModels;
 
 namespace FastTalkerSkiaSharp.Pages
 {
@@ -42,18 +43,27 @@ namespace FastTalkerSkiaSharp.Pages
         private List<DisplayImageRowModel> rows;
 
         private string FolderWithIcons;
-        private List<SkiaSharp.Elements.Element> itemsMatching;
+
+        private List<SkiaSharp.Elements.Element> ItemsMatching;
+
+        private double recommendedWidth;
+
+        private int i, j;
+
+        private string tempName1, tempName2, tempName3;
+
+        private ImageSource source1, source2, source3;
 
         public StoredIconPopup(string folder, List<SkiaSharp.Elements.Element> itemsMatching)
         {
             InitializeComponent();
 
-            this.FolderWithIcons = folder;
-            this.itemsMatching = itemsMatching;
+            FolderWithIcons = folder;
+            ItemsMatching = itemsMatching;
 
             rows = new List<DisplayImageRowModel>();
 
-            BindingContext = new ViewModels.PopupUpViewModel()
+            BindingContext = new PopupUpViewModel()
             {
                 Padding = new Thickness(100, 100, 100, 100),
                 IsSystemPadding = true
@@ -82,39 +92,35 @@ namespace FastTalkerSkiaSharp.Pages
                 Debug.WriteLineIf(App.OutputVerbose, "waiting...");
             }
 
-            var recommendedWidth = this.Width / 4;
+            recommendedWidth = this.Width / 4;
 
-            int totalCount = itemsMatching.Count;
+            i = 0;
+            j = 0;
 
-            string tempName1, tempName2, tempName3;
-            ImageSource source1, source2, source3;
-
-            int i = 0, j = 0;
-
-            for (i = 0; (j + i) < totalCount;)
+            for (i = 0; (j + i) < ItemsMatching.Count;)
             {
                 tempName1 = tempName2 = tempName3 = null;
                 source1 = source2 = source3 = null;
 
-                Debug.WriteLineIf(App.OutputVerbose, "ResourceName: " + itemsMatching[i].ImageInformation);
-                Debug.WriteLineIf(App.OutputVerbose, "Width: " + itemsMatching[i].ImageInformation);
+                Debug.WriteLineIf(App.OutputVerbose, "ResourceName: " + ItemsMatching[i].ImageInformation);
+                Debug.WriteLineIf(App.OutputVerbose, "Width: " + ItemsMatching[i].ImageInformation);
 
-                for (j = 0; j < 3 && (j + i) < totalCount; j++)
+                for (j = 0; j < 3 && (j + i) < ItemsMatching.Count; j++)
                 {
                     if (j == 0)
                     {
-                        tempName1 = itemsMatching[j + i].Text;
-                        source1 = ImageSource.FromResource(itemsMatching[j + i].ImageInformation);
+                        tempName1 = ItemsMatching[j + i].Text;
+                        source1 = ImageSource.FromResource(ItemsMatching[j + i].ImageInformation);
                     }
                     else if (j == 1)
                     {
-                        tempName2 = itemsMatching[j + i].Text;
-                        source2 = ImageSource.FromResource(itemsMatching[j + i].ImageInformation);
+                        tempName2 = ItemsMatching[j + i].Text;
+                        source2 = ImageSource.FromResource(ItemsMatching[j + i].ImageInformation);
                     }
                     else if (j == 2)
                     {
-                        tempName3 = itemsMatching[j + i].Text;
-                        source3 = ImageSource.FromResource(itemsMatching[j + i].ImageInformation);
+                        tempName3 = ItemsMatching[j + i].Text;
+                        source3 = ImageSource.FromResource(ItemsMatching[j + i].ImageInformation);
                     }
                 }
 
