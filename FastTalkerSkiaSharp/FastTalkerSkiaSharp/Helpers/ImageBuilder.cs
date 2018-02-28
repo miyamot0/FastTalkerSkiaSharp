@@ -225,8 +225,6 @@ namespace FastTalkerSkiaSharp.Helpers
 
             SKSize loadedSize = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, icon.Scale, icon.Scale);
 
-            System.Diagnostics.Debug.WriteLine("Loaded Size: " + loadedSize.Width);
-
             using (Stream stream = App.MainAssembly.GetManifestResourceStream(icon.ResourceLocation))
             {
                 SkiaSharp.SKBitmap tempBitmapPre = SkiaSharp.SKBitmap.Decode(stream);
@@ -311,12 +309,8 @@ namespace FastTalkerSkiaSharp.Helpers
 
             SKSize loadedSize = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, icon.Scale, icon.Scale);
 
-            System.Diagnostics.Debug.WriteLine("Loaded Size: " + loadedSize.Width);
-
             using (Stream stream = new MemoryStream(data))
             {
-                System.Diagnostics.Debug.WriteLine(App.OutputVerbose, "In Memory Stream");
-
                 SkiaSharp.SKBitmap tempBitmapPre = SkiaSharp.SKBitmap.Decode(stream);
                 SkiaSharp.SKBitmap tempBitmap = tempBitmapPre.Resize(new SKImageInfo((int)loadedSize.Width, (int)loadedSize.Width),
                                                                  SKBitmapResizeMethod.Lanczos3);
@@ -328,8 +322,6 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 using (SkiaSharp.SKCanvas canvas2 = new SkiaSharp.SKCanvas(returnBitmap))
                 {
-                    System.Diagnostics.Debug.WriteLine(App.OutputVerbose, "In Canvas");
-
                     canvas2.Clear(SkiaSharp.SKColors.Transparent);
 
                     canvas2.DrawBitmap(tempBitmap, SkiaSharp.SKRect.Create(Convert.ToInt16(tempBitmap.Width * 0.2),
@@ -339,8 +331,6 @@ namespace FastTalkerSkiaSharp.Helpers
 
                     using (SkiaSharp.SKPaint paint = new SkiaSharp.SKPaint())
                     {
-                        System.Diagnostics.Debug.WriteLine(App.OutputVerbose, "In SKPaint");
-
                         paint.TextSize = DeviceLayout.TextSizeDefault * App.DisplayScaleFactor * icon.Scale;
                         paint.IsAntialias = true;
                         paint.Color = SkiaSharp.SKColors.Black;
@@ -369,8 +359,6 @@ namespace FastTalkerSkiaSharp.Helpers
                 {
                     settingsPoint = new SkiaSharp.SKPoint(icon.X, icon.Y);
                 }
-
-                System.Diagnostics.Debug.WriteLine(App.OutputVerbose, "Creating Image...");
 
                 image = new SkiaSharp.Elements.Image(returnBitmap)
                 {
@@ -536,8 +524,6 @@ namespace FastTalkerSkiaSharp.Helpers
             string newText = element.Text;
             bool isPinned = element.IsPinnedToSpot;
 
-            System.Diagnostics.Debug.WriteLine("Change Action = " + changeActions);
-
             switch (changeActions)
             {
                 case LanguageSettings.EditGrow:
@@ -563,9 +549,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 case LanguageSettings.EditText:
                     newText = await App.UserInputInstance.ModifyIconTextAsync(newText);
 
-                    if (element.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder && 
-                            canvasReference.Elements.Where(elem => elem.Text == newText)
-                                                    .Any())
+                    if (element.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder &&  canvasReference.Elements.Where(elem => elem.Text == newText).Any())
                     {
                         await UserDialogs.Instance.AlertAsync("Please select a different name for the folder.", title: "Cannot rename folder.");
 

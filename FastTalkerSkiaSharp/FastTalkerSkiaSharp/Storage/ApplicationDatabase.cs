@@ -85,10 +85,13 @@ namespace FastTalkerSkiaSharp.Storage
             return await database.InsertOrReplaceAsync(item);
         }
 
+        /// <summary>
+        /// Inserts items, as lists
+        /// </summary>
+        /// <returns>The or update async.</returns>
+        /// <param name="items">Items.</param>
         public async Task<int> InsertOrUpdateAsync(System.Collections.Generic.List<CommunicationIcon> items)
         {
-            System.Diagnostics.Debug.WriteLine("Fired insert all");
-
             database.DropTableAsync<CommunicationIcon>().Wait();
             database.CreateTableAsync<CommunicationIcon>().Wait();
 

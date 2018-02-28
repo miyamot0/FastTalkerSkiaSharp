@@ -61,6 +61,7 @@ namespace FastTalkerSkiaSharp.Pages
             InitializeComponent();
 
             App.ImageBuilderInstance = new ImageBuilder(canvas);
+            App.UserInputInstance = new UserInput(canvas);
 
             canvas.Controller.OnElementsChanged += SaveCurrentBoard;
             canvas.Controller.OnSettingsChanged += SaveCurrentSettings;
@@ -273,12 +274,6 @@ namespace FastTalkerSkiaSharp.Pages
 
             canvas.Controller.BackgroundColor = App.BoardSettings.InEditMode ? SKColors.DarkOrange : SKColors.DimGray;
 
-            //App.BoardSettings.InEditMode = false;
-            //canvas.Controller.BackgroundColor = SKColors.DimGray;
-
-            App.BoardSettings.InEditMode = true;
-            canvas.Controller.BackgroundColor = SKColors.DarkOrange;
-
             canvas.Controller.UpdateSettings(App.BoardSettings.InEditMode,
                                              App.BoardSettings.InFramedMode,
                                              App.BoardSettings.RequireDeselect,
@@ -384,7 +379,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                 case (int)SkiaSharp.Elements.CanvasView.Role.Settings:
                     Debug.WriteLineIf(outputVerbose, "Hit settings");
-                    if (canvas.Controller.InEditMode) App.UserInputInstance.QueryUserMainSettingsAsync(canvas);
+                    if (canvas.Controller.InEditMode) App.UserInputInstance.QueryUserMainSettingsAsync();
 
                     return;
 

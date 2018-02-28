@@ -44,20 +44,18 @@ namespace FastTalkerSkiaSharp.Helpers
     {
         CanvasView canvasRef = null;
 
-        public UserInput() { }
+        public UserInput(CanvasView _canvasRef) 
+        {
+            canvasRef = _canvasRef;
+        }
 
         /// <summary>
         /// Queries the user main settings async.
         /// </summary>
         /// <param name="canvasView">Canvas view.</param>
         /// <param name="saveSettingsAsync">Save settings async.</param>
-        public async void QueryUserMainSettingsAsync(CanvasView canvasView)
+        public async void QueryUserMainSettingsAsync()
         {
-            if (canvasRef == null)
-            {
-                canvasRef = canvasView;
-            }
-
             string userResponse = await UserDialogs.Instance.ActionSheetAsync(LanguageSettings.SettingsTitle,
                                                                               LanguageSettings.SettingsClose,
                                                                               LanguageSettings.SettingsClose,
@@ -316,19 +314,19 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 new Xamarin.Forms.Animation((value) =>
                 {
-                    //canvasRef.SuspendLayout();
+                    canvasRef.SuspendLayout();
                     currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
                                                           (startPoint.Y) + (yDiff * (float)value));
-                    //canvasRef.ResumeLayout(true);
+                    canvasRef.ResumeLayout(true);
                 }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationMoveMillis, finished: (v, c) =>
                 {
                     new Xamarin.Forms.Animation((value) =>
                     {
-                        //canvasRef.SuspendLayout();
+                        canvasRef.SuspendLayout();
 
                         currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
 
-                        //canvasRef.ResumeLayout(true);
+                        canvasRef.ResumeLayout(true);
                     }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationShrinkMillis, finished: (v2, c2) =>
                     {
                         canvasRef.Elements.Remove(currentElement);

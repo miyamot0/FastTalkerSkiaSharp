@@ -32,7 +32,7 @@ namespace FastTalkerSkiaSharp
 {
     public partial class App : Application
 	{
-        public static bool OutputVerbose = true;
+        public static bool OutputVerbose = false;
 
         public static bool HasAdmin = false;
 
@@ -85,8 +85,6 @@ namespace FastTalkerSkiaSharp
             InitializeComponent();
 
             MainAssembly = GetType().GetTypeInfo().Assembly;
-
-            UserInputInstance = new UserInput();
 
             Database.Init();
 
