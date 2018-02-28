@@ -6,9 +6,9 @@ using Xamarin.Forms;
 
 namespace FastTalkerSkiaSharp.Pages
 {
-    public partial class HelpPagePopup : PopupPage
+    public partial class HelpPopup : PopupPage
     {
-        public HelpPagePopup()
+        public HelpPopup()
         {
             InitializeComponent();
 

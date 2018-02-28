@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             HasSystemPadding="{Binding IsSystemPadding}"
+             Padding="{Binding Padding}"
+             x:Class="FastTalkerSkiaSharp.Pages.HelpPopup">
+         <StackLayout BackgroundColor="Black"
+                 Padding="5,5,5,5">
+            <ScrollView VerticalOptions="FillAndExpand" 
+                HorizontalOptions="FillAndExpand" 
+                BackgroundColor="White">
+
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             Margin="10"
+                             Orientation="Vertical">
+
+                    <Label HorizontalTextAlignment="Center">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="Help and Getting Started" 
+                                FontAttributes="Bold" 
+                                FontSize="Large"/>
+                        </FormattedString>
+                      </Label.FormattedText>
+                    </Label>
+
+                    <Label Margin="0, 10, 0, 0">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="Setting up and building a board" 
+                                FontAttributes="Bold" 
+                                FontSize="Default"/>
+                        </FormattedString>
+                      </Label.FormattedText>
+                    </Label>
+
+                            <Label>
+                              <Label.FormattedText>
+                                <FormattedString>
+                                  <Span Text="To edit your board, you will need to be in 'Edit Mode'. In this mode, you will be able to add, edit, and delete icons on the board."  
+                                        FontSize="Default"/>
+                                  <Span Text=" To enter 'Edit Mode', you will need to hold the Speaker/Emitter icon for three seconds and then release. This is toggled in this way to prevent accidental operation by young users."  
+                                        FontSize="Default"/>
+                                  <Span Text=" Once you're finished editing, press the 'Settings' icon in the lower right corner of the screen to 'Resume Operation'."  
+                                        FontSize="Default"/>
+                                </FormattedString>
+                              </Label.FormattedText>
+                            </Label>
+
+
+                    <Label Margin="0, 10, 0, 0">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="Adding a new icon" 
+                                FontAttributes="Bold" 
+                                FontSize="Default"/>
+                        </FormattedString>
+                      </Label.FormattedText>
+                    </Label>
+
+                            <Label>
+                              <Label.FormattedText>
+                                <FormattedString>
+                                  <Span Text="In order to add a new icon, you need to choose between a "  
+                                        FontSize="Default"/>
+                                  <Span Text="Local (picture that comes with app) " FontAttributes="Bold"/>
+                                  <Span Text="or a "/>
+                                  <Span Text="Downloaded (a photo you've taken or downloaded) " FontAttributes="Bold"/>
+                                  <Span Text="image. "/>
+                                </FormattedString>
+                              </Label.FormattedText>
+                            </Label>
+
+                            <Label>
+                              <Label.FormattedText>
+                                <FormattedString>
+                                  <Span Text="&#x2022; The " FontSize="Default"/>
+                                  <Span Text="Local " FontAttributes="Bold"/>
+                                  <Span Text="images come the device and you can add them to the board by hitting the 'Add Local Icon' button in the settings menu."/>
+                                </FormattedString>
+                              </Label.FormattedText>
+                            </Label>
+
+                            <Label>
+                              <Label.FormattedText>
+                                <FormattedString>
+                                  <Span Text="&#x2022; The " FontSize="Default"/>
+                                  <Span Text="Downloaded " FontAttributes="Bold"/>
+                                  <Span Text="images are ones that you've either taken with your camera or have downloaded onto your device."/>
+                                </FormattedString>
+                              </Label.FormattedText>
+                            </Label>
+
+                    <Label Margin="0, 10, 0, 0">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="Editing an Icon..." 
+                                FontAttributes="Bold" 
+                                FontSize="Default"/>
+                        </FormattedString>
+                      </Label.FormattedText>
+                    </Label>
+                
+                    <Label Margin="0, 10, 0, 0">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="Mode of operation..." 
+                                FontAttributes="Bold" 
+                                FontSize="Default"/>
+                        </FormattedString>
+                      </Label.FormattedText>
+                    </Label>
+
+                    <Label Margin="0, 10, 0, 0">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="Auto-deselecting..." 
+                                FontAttributes="Bold" 
+                                FontSize="Default"/>
+                        </FormattedString>
+                      </Label.FormattedText>
+                    </Label>
+
+                    <Label Margin="0, 10, 0, 0">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="Icon pinning..." 
+                                FontAttributes="Bold" 
+                                FontSize="Default"/>
+                        </FormattedString>
+                      </Label.FormattedText>
+                    </Label>
+
+
+                
+                </StackLayout>
+            </ScrollView>
+    </StackLayout>
+</pages:PopupPage>

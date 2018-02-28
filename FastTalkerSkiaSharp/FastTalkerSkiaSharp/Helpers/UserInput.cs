@@ -254,6 +254,21 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 #endregion
 
+                case LanguageSettings.SettingsHelp:
+
+                    Debug.WriteLine("Fired pre help");
+
+                    HelpPopup mPopup = new HelpPopup();
+
+                    //HelpPagePopup helpPage = new HelpPagePopup();
+
+                    await App.Current.MainPage.Navigation.PushPopupAsync(mPopup);
+                    //await App.Current.MainPage.Navigation.PushAsync(mPopup);
+
+                    Debug.WriteLine("Fired post help");
+
+                    return;
+
                 case LanguageSettings.SettingsAbout:
 
                     AboutPagePopup page = new AboutPagePopup();

@@ -10,6 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="Pages\HelpPagePopup.xaml" />
+    <EmbeddedResource Remove="Pages\HelpPagePopup2.xaml" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Data\StoredJson.json" />
     <EmbeddedResource Include="Images\*.png" />
   </ItemGroup>
@@ -31,6 +35,8 @@
 
   <ItemGroup>
     <Compile Remove="Pages\HelpPagePopup.xaml.cs" />
+    <Compile Remove="Pages\AppHelpPopup.xaml.cs" />
+    <Compile Remove="Pages\HelpPagePopup2.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="App.xaml.cs">
