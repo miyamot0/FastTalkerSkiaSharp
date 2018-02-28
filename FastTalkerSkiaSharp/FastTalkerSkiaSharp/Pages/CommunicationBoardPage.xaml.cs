@@ -348,7 +348,7 @@ namespace FastTalkerSkiaSharp.Pages
         /// </summary>
         /// <param name="e"></param>
         /// <param name="outputVerbose"></param>
-        void ProcessInitialTouchEvent(SkiaSharp.Views.Forms.SKTouchEventArgs e, bool outputVerbose = false)
+        async void ProcessInitialTouchEvent(SkiaSharp.Views.Forms.SKTouchEventArgs e, bool outputVerbose = false)
         {
             _currentElement = canvas.GetElementAtPoint(e.Location);
 
@@ -379,7 +379,18 @@ namespace FastTalkerSkiaSharp.Pages
 
                 case (int)SkiaSharp.Elements.CanvasView.Role.Settings:
                     Debug.WriteLineIf(outputVerbose, "Hit settings");
-                    if (canvas.Controller.InEditMode) App.UserInputInstance.QueryUserMainSettingsAsync();
+                    if (canvas.Controller.InEditMode) 
+                    {
+                        App.UserInputInstance.QueryUserMainSettingsAsync();
+
+                        //SettingsPage settingsPopupPage = new SettingsPage();
+
+                        //page.IconSelected += RestoreIcon;
+
+                        //await App.Current.MainPage.Navigation.PushPopupAsync(settingsPopupPage);
+                    }
+
+                        
 
                     return;
 

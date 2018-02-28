@@ -2,17 +2,30 @@
 <pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             HasSystemPadding="{Binding IsSystemPadding}"
+             Padding="{Binding Padding}"
              x:Class="FastTalkerSkiaSharp.Pages.SettingsPage">
-    <ContentPage.Content>
+        <StackLayout BackgroundColor="Black"
+                     Padding="5,5,5,5">
+            <ScrollView VerticalOptions="FillAndExpand" 
+                HorizontalOptions="FillAndExpand" 
+                BackgroundColor="White">
 
-        <StackLayout HorizontalOptions="FillAndExpand"
-                     VerticalOptions="FillAndExpand"
-                     Orientation="Vertical"
-                     BackgroundColor="Black">
-            <Label Text="Testing"
-                   HorizontalTextAlignment="Start"
-                   TextColor="Black"></Label>
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             Margin="10"
+                             Orientation="Vertical">
+
+                    <Label HorizontalTextAlignment="Center">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="Help and Getting Started" 
+                                FontAttributes="Bold" 
+                                FontSize="Large"/>
+                        </FormattedString>
+                      </Label.FormattedText>
+                    </Label>
+
+                </StackLayout>
+            </ScrollView>
         </StackLayout>
-
-    </ContentPage.Content>
 </pages:PopupPage>

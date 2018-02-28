@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 using Rg.Plugins.Popup.Pages;
+using FastTalkerSkiaSharp.ViewModels;
 
 namespace FastTalkerSkiaSharp.Pages
 {
@@ -11,6 +12,12 @@ namespace FastTalkerSkiaSharp.Pages
         public SettingsPage()
         {
             InitializeComponent();
+
+            BindingContext = new PopupUpViewModel()
+            {
+                Padding = new Thickness(100, 100, 100, 100),
+                IsSystemPadding = true
+            };
         }
     }
 }
