@@ -6,7 +6,6 @@
                  HasSystemPadding="{Binding IsSystemPadding}"
                  Padding="{Binding Padding}">
 
-
     <StackLayout BackgroundColor="Black"
                  Padding="5,5,5,5">
             <ScrollView VerticalOptions="FillAndExpand" 

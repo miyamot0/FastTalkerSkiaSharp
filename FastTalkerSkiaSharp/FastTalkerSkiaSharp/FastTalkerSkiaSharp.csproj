@@ -30,8 +30,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\HelpPagePopup.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="App.xaml.cs">
       <DependentUpon>*.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\HelpPagePopup.xaml.cs">
+      <DependentUpon>HelpPagePopup.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
