@@ -11,12 +11,12 @@
             <Grid BackgroundColor="White"
                   HorizontalOptions="FillAndExpand"
                   VerticalOptions="FillAndExpand">
+
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -45,6 +45,7 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding ButtonResetSize}"
                             BorderWidth="1"
                             BorderRadius="2"/>
                 </StackLayout>
@@ -61,6 +62,7 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding ButtonIncreaseSize}"
                             BorderWidth="1"
                             BorderRadius="2"/>
                 </StackLayout>
@@ -77,6 +79,7 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding ButtonIncreaseSize2}"
                             BorderWidth="1"
                             BorderRadius="2"/>
                 </StackLayout>
@@ -93,6 +96,7 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding ButtonEditText}"
                             BorderWidth="1"
                             BorderRadius="2"/>
                 </StackLayout>
@@ -109,6 +113,7 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding ButtonDecreaseSize}"
                             BorderWidth="1"
                             BorderRadius="2"/>
                 </StackLayout>
@@ -125,6 +130,7 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding ButtonDecreaseSize2}"
                             BorderWidth="1"
                             BorderRadius="2"/>
                 </StackLayout>
@@ -141,23 +147,10 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding ButtonPinning}"
                             BorderWidth="1"
                             BorderRadius="2"/>
                 </StackLayout>
-
-                <!-- Save button settings -->
-                <Button x:Name="btnSaveIcon"
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="3"
-                        Text="Save and Close"/>
-
-
-
-
-
-            
             </Grid>
         </StackLayout>
-    
 </pages:PopupPage>

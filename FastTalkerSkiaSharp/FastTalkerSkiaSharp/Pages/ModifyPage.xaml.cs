@@ -8,11 +8,11 @@ namespace FastTalkerSkiaSharp.Pages
 {
     public partial class ModifyPage : PopupPage
     {
-        public ModifyPage()
+        public ModifyPage(SkiaSharp.Elements.Element _currentElement, SkiaSharp.Elements.ElementsController _controller)
         {
             InitializeComponent();
 
-            BindingContext = new PopupUpViewModel()
+            BindingContext = new ModifyIconViewModel(_currentElement, _controller)
             {
                 Padding = new Thickness(100, 100, 100, 100),
                 IsSystemPadding = true

@@ -552,9 +552,10 @@ namespace FastTalkerSkiaSharp.Pages
 
                             canvas.Controller.PromptResave();
                         }
+
                         */
 
-                        var iconModificationPopup = new ModifyPage();
+                        var iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
 
                         await Navigation.PushPopupAsync(iconModificationPopup);
                     }
