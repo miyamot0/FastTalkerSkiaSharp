@@ -543,7 +543,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     break;
 
                 case LanguageSettings.EditResetSize:
-                    newScale = element.CurrentScale * 1.0f;
+                    newScale = 1.5f;
                     break;
 
                 case LanguageSettings.EditText:
