@@ -5,27 +5,220 @@
              HasSystemPadding="{Binding IsSystemPadding}"
              Padding="{Binding Padding}"
              x:Class="FastTalkerSkiaSharp.Pages.SettingsPage">
+
+        <ContentPage.Resources>
+            <ResourceDictionary>
+                <Color x:FactoryMethod="FromHex" 
+                       x:Key="ButtonColor">
+                    <x:Arguments><x:String>#C7E8EA</x:String></x:Arguments>
+                </Color>
+                <Color x:FactoryMethod="FromHex" 
+                       x:Key="BorderColor">
+                    <x:Arguments><x:String>#000000</x:String></x:Arguments>
+                </Color>
+            </ResourceDictionary>
+        </ContentPage.Resources>
+
         <StackLayout BackgroundColor="Black"
                      Padding="5,5,5,5">
-            <ScrollView VerticalOptions="FillAndExpand" 
-                HorizontalOptions="FillAndExpand" 
-                BackgroundColor="White">
+            <Grid BackgroundColor="White"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                <StackLayout HorizontalOptions="FillAndExpand"
-                             Margin="10"
-                             Orientation="Vertical">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                    <Label HorizontalTextAlignment="Center">
-                      <Label.FormattedText>
-                        <FormattedString>
-                          <Span Text="Help and Getting Started" 
-                                FontAttributes="Bold" 
-                                FontSize="Large"/>
-                        </FormattedString>
-                      </Label.FormattedText>
-                    </Label>
+                <Label Text="Settings"
+                       HorizontalTextAlignment="Center"
+                       FontSize="Large"
+                       FontAttributes="Bold"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3"/>
 
+                <!-- Saving board -->
+                <StackLayout Margin="5"
+                             Grid.Row="1"
+                             Grid.Column="0"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnSave"
+                            Text="Resume User Operation"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource BorderColor}"
+                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"
+                            Clicked="Click_Resume_Operation"/>
                 </StackLayout>
-            </ScrollView>
+
+                <!-- Deselecting behavior -->
+                <StackLayout Margin="5"
+                             Grid.Row="1"
+                             Grid.Column="1"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnDeselect"
+                            Text="Auto Deselect: "
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource BorderColor}"
+                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"
+                            Clicked="Click_Deselecting"/>
+                </StackLayout>
+
+                <!-- Interaction mode -->
+                <StackLayout Margin="5"
+                             Grid.Row="1"
+                             Grid.Column="2"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnMode"
+                            Text="Mode: "
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource BorderColor}"
+                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"
+                            Clicked="Click_Mode"/>
+                </StackLayout>
+            
+                <!-- Add Local Image -->
+                <StackLayout Margin="5"
+                             Grid.Row="2"
+                             Grid.Column="0"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnAddLocal"
+                            Text="Add Local Image"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource BorderColor}"
+                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"
+                            Clicked="Click_Add_Local_Icon"/>
+                </StackLayout>
+
+                <!-- Take Photo -->
+                <StackLayout Margin="5"
+                             Grid.Row="2"
+                             Grid.Column="1"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnTakePhoto"
+                            Text="Take Photo"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource BorderColor}"
+                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"
+                            Clicked="Click_Add_Photo_Icon"/>
+                </StackLayout>
+
+
+
+
+
+
+            
+                <!-- Add Stored Image -->
+                <StackLayout Margin="5"
+                             Grid.Row="2"
+                             Grid.Column="2"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnAddSaved"
+                            Text="Add Stored Image"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource BorderColor}"
+                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"/>
+                </StackLayout>
+
+
+
+
+
+
+
+
+            
+                <!-- Add Folder -->
+                <StackLayout Margin="5"
+                             Grid.Row="3"
+                             Grid.Column="0"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnAddFolder"
+                            Text="Add Folder"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource BorderColor}"
+                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"
+                            Clicked="Click_Add_Folder"/>
+                </StackLayout>
+            
+                <!-- Show Help -->
+                <StackLayout Margin="5"
+                             Grid.Row="3"
+                             Grid.Column="1"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnHelp"
+                            Text="Show Help"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource BorderColor}"
+                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"
+                            Clicked="Click_Help_Popup"/>
+                </StackLayout>
+            
+                <!-- Show Info -->
+                <StackLayout Margin="5"
+                             Grid.Row="3"
+                             Grid.Column="2"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnAbout"
+                            Text="About"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource BorderColor}"
+                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"
+                            Clicked="Click_About_Popup"/>
+                </StackLayout>
+
+                <!-- Save button settings -->
+                <Button x:Name="btnSaveSettings"
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Clicked="Click_Close_Button"
+                        Text="Save and Close"/>
+            </Grid>
         </StackLayout>
 </pages:PopupPage>

@@ -14,7 +14,7 @@ namespace FastTalkerSkiaSharp.Pages
 
             BindingContext = new PopupUpViewModel()
             {
-                Padding = new Thickness(100, 100, 100, 100),
+                Padding = new Thickness(50, 50, 50, 50),
                 IsSystemPadding = true
             };
         }

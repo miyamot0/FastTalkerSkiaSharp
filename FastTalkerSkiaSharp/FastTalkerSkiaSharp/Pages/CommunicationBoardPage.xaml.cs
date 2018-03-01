@@ -382,12 +382,6 @@ namespace FastTalkerSkiaSharp.Pages
                     if (canvas.Controller.InEditMode) 
                     {
                         App.UserInputInstance.QueryUserMainSettingsAsync();
-
-                        //SettingsPage settingsPopupPage = new SettingsPage();
-
-                        //page.IconSelected += RestoreIcon;
-
-                        //await App.Current.MainPage.Navigation.PushPopupAsync(settingsPopupPage);
                     }
 
                         

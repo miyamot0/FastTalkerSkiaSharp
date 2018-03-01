@@ -57,6 +57,17 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="saveSettingsAsync">Save settings async.</param>
         public async void QueryUserMainSettingsAsync()
         {
+            SettingsPage settingsPopupPage = new SettingsPage(canvasRef.Controller);
+            settingsPopupPage.SettingsActionEvent += SettingsInteraction;
+            settingsPopupPage.SaveCommunicationIconEvent += SettingsIconInteraction;
+            settingsPopupPage.SaveCommunicationElementEvent += SettingsElementInteraction;
+
+            //page.IconSelected += RestoreIcon;
+
+            await App.Current.MainPage.Navigation.PushPopupAsync(settingsPopupPage);
+
+
+            /*
             string userResponse = await UserDialogs.Instance.ActionSheetAsync(LanguageSettings.SettingsTitle,
                                                                               LanguageSettings.SettingsClose,
                                                                               LanguageSettings.SettingsClose,
@@ -64,6 +75,80 @@ namespace FastTalkerSkiaSharp.Helpers
                                                                               LanguageSettings.SettingsMenu(canvasRef.Controller));
 
             ResponseToQuery(userResponse);
+            */
+        }
+
+        /// <summary>
+        /// Add icon from local
+        /// </summary>
+        /// <param name="obj">Object.</param>
+        private void SettingsIconInteraction(ArgsSelectedIcon obj)
+        {
+            canvasRef.Elements.Add(App.ImageBuilderInstance.BuildCommunicationIconLocal(obj));
+
+            canvasRef.Controller.PromptResave();
+        }
+
+        /// <summary>
+        /// Add icon from image/base64
+        /// </summary>
+        /// <param name="obj">Object.</param>
+        private void SettingsElementInteraction(SkiaSharp.Elements.Element obj)
+        {
+            try
+            {
+                canvasRef.Elements.Add(obj);
+
+                canvasRef.InvalidateSurface();
+            }
+            catch
+            {
+                return;
+            }
+
+            canvasRef.Controller.PromptResave();
+        }
+
+
+        /// <summary>
+        /// Delegate for settings changes
+        /// </summary>
+        /// <param name="obj">Object.</param>
+        private void SettingsInteraction(SettingsPage.SettingsAction obj)
+        {
+            Debug.WriteLine(obj);
+
+            switch(obj)
+            {
+                case SettingsPage.SettingsAction.SaveBoard:
+                    canvasRef.Controller.PromptResave();
+
+                    UserDialogs.Instance.Toast("Saved Current Board");
+
+                    break;
+
+                case SettingsPage.SettingsAction.InvalidateBoardIcon:
+                    for (int i = 0; i < canvasRef.Elements.Count; i++)
+                    {
+                        canvasRef.Elements[i].IsMainIconInPlay = false;
+                    }
+
+                    canvasRef.InvalidateSurface();
+
+                    break;
+
+                case SettingsPage.SettingsAction.InvalidateBoardFrame:
+                    for (int i = 0; i < canvasRef.Elements.Count; i++)
+                    {
+                        canvasRef.Elements[i].IsMainIconInPlay = false;
+                    }
+
+                    canvasRef.InvalidateSurface();
+
+                    break;
+            }
+
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -255,16 +340,13 @@ namespace FastTalkerSkiaSharp.Helpers
                 #endregion
 
                 case LanguageSettings.SettingsHelp:
-                    //HelpPopup mPopup = new HelpPopup();
-
-                    SettingsPage mPopup = new SettingsPage();
+                    HelpPopup mPopup = new HelpPopup();
 
                     await App.Current.MainPage.Navigation.PushPopupAsync(mPopup);
 
                     return;
 
                 case LanguageSettings.SettingsAbout:
-
                     AboutPagePopup page = new AboutPagePopup();
 
                     await App.Current.MainPage.Navigation.PushPopupAsync(page);
@@ -527,7 +609,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// Make call to camera
         /// </summary>
         /// <returns></returns>
-        public async Task<string[]> GetImageFromCameraCallAsync()
+        public static async Task<string[]> GetImageFromCameraCallAsync()
         {
             if (!(CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported))
             {
@@ -558,7 +640,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// </summary>
         /// <param name="mediaOptions"></param>
         /// <returns></returns>
-        public async Task<string[]> GetImageAndCrop(StoreCameraMediaOptions mediaOptions)
+        public static async Task<string[]> GetImageAndCrop(StoreCameraMediaOptions mediaOptions)
         {
             try
             {
