@@ -111,8 +111,6 @@ namespace FastTalkerSkiaSharp.Helpers
                 case SettingsPage.SettingsAction.SaveBoard:
                     canvasRef.Controller.PromptResave();
 
-                    UserDialogs.Instance.Toast("Saved Current Board");
-
                     break;
 
                 case SettingsPage.SettingsAction.InvalidateBoardIcon:

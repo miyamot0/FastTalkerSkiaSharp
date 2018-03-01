@@ -530,6 +530,8 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         Debug.WriteLineIf(outputVerbose, "Completed icon tap");
 
+                        /*
+
                         string userFeedback = await App.UserInputInstance.IconEditOptionsAsync();
 
                         Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
@@ -550,6 +552,11 @@ namespace FastTalkerSkiaSharp.Pages
 
                             canvas.Controller.PromptResave();
                         }
+                        */
+
+                        var iconModificationPopup = new ModifyPage();
+
+                        await Navigation.PushPopupAsync(iconModificationPopup);
                     }
                     else if (canvas.Controller.InEditMode && 
                              !_currentElement.IsInsertableIntoFolder && 

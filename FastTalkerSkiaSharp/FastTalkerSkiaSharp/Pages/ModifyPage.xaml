@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             HasSystemPadding="{Binding IsSystemPadding}"
+             Padding="{Binding Padding}"
+             x:Class="FastTalkerSkiaSharp.Pages.ModifyPage">
+
+        <StackLayout BackgroundColor="Black"
+                     Padding="5,5,5,5">
+            <Grid BackgroundColor="White"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Modify"
+                       HorizontalTextAlignment="Center"
+                       FontSize="Large"
+                       FontAttributes="Bold"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3"/>
+            </Grid>
+        </StackLayout>
+    
+</pages:PopupPage>
