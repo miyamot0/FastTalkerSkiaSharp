@@ -530,32 +530,7 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         Debug.WriteLineIf(outputVerbose, "Completed icon tap");
 
-                        /*
-
-                        string userFeedback = await App.UserInputInstance.IconEditOptionsAsync();
-
-                        Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
-
-                        SkiaSharp.Elements.Element item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
-
-                        int index = canvas.Elements.IndexOf(_currentElement);
-
-                        if (item == null || index == -1)
-                        {
-                            Debug.WriteLineIf(outputVerbose, "was null or unrefernced");
-                        }
-                        else
-                        {                            
-                            canvas.Elements[index] = item;
-
-                            canvas.InvalidateSurface();
-
-                            canvas.Controller.PromptResave();
-                        }
-
-                        */
-
-                        var iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
+                        ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
 
                         await Navigation.PushPopupAsync(iconModificationPopup);
                     }
@@ -566,32 +541,16 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         Debug.WriteLineIf(outputVerbose, "Completed icon held > 3s");
 
-                        string userFeedback = await App.UserInputInstance.IconEditOptionsAsync();
+                        ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
 
-                        Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
-
-                        SkiaSharp.Elements.Element item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
-
-                        int index = canvas.Elements.IndexOf(_currentElement);
-
-                        if (item == null || index == -1)
-                        {
-                            Debug.WriteLineIf(outputVerbose, "was null or unrefernced");
-                        }
-                        else
-                        {
-                            canvas.Elements[index] = item;
-
-                            canvas.InvalidateSurface();
-
-                            canvas.Controller.PromptResave();
-                        }
+                        await Navigation.PushPopupAsync(iconModificationPopup);
                     }
                     else if (hasMoved && _currentElement.IsInsertableIntoFolder)
                     {
                         Debug.WriteLineIf(outputVerbose, "Icon completed, has moved");
 
-                        IEnumerable<SkiaSharp.Elements.Element> folderOfInterest = canvas.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder && !elem.IsStoredInAFolder)
+                        IEnumerable<SkiaSharp.Elements.Element> folderOfInterest = canvas.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder && 
+                                                                                                         !elem.IsStoredInAFolder)
                                       .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds));
 
                         App.UserInputInstance.InsertIntoFolder(_currentElement: _currentElement, 
@@ -612,39 +571,9 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         Debug.WriteLineIf(outputVerbose, "Completed folder tap");
 
-                        string userFeedback = await App.UserInputInstance.IconEditOptionsAsync();
+                        ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
 
-                        Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
-
-                        SkiaSharp.Elements.Element item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
-
-                        int index = canvas.Elements.IndexOf(_currentElement);
-
-                        if (item == null || index == -1)
-                        {
-                            Debug.WriteLineIf(outputVerbose, "was null or unrefernced");
-                        }
-                        else
-                        {
-                            // Modify to suit new folder
-                            string oldFolderTitle = _currentElement.Text;
-
-                            if (canvas.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == oldFolderTitle).Any())
-                            {
-                                // Modify dated tags
-                                for (int i = 0; i < canvas.Elements.Count; i++)
-                                {
-                                    canvas.Elements[i].StoredFolderTag = (canvas.Elements[i].IsStoredInAFolder &&
-                                                                            canvas.Elements[i].Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication &&
-                                                                            canvas.Elements[i].StoredFolderTag == oldFolderTitle) ? item.Text : canvas.Elements[i].StoredFolderTag;
-                                }
-                            }
-
-                            canvas.Elements[index] = item;
-                            canvas.InvalidateSurface();
-
-                            canvas.Controller.PromptResave();
-                        }
+                        await Navigation.PushPopupAsync(iconModificationPopup);
 
                         e.Handled = true;
                     }
@@ -653,43 +582,12 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         Debug.WriteLineIf(outputVerbose, "Completed folder hold");
 
-                        string userFeedback = await App.UserInputInstance.IconEditOptionsAsync();
+                        ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
 
-                        Debug.WriteLineIf(outputVerbose, "User Feedback: " + userFeedback);
-
-                        SkiaSharp.Elements.Element item = await App.ImageBuilderInstance.AmendIconImage(_currentElement, userFeedback);
-
-                        int index = canvas.Elements.IndexOf(_currentElement);
-
-                        if (item == null || index == -1)
-                        {
-                            Debug.WriteLineIf(outputVerbose, "was null or unrefernced");
-                        }
-                        else
-                        {
-                            // Modify to suit new folder
-                            string oldFolderTitle = _currentElement.Text;
-
-                            if (canvas.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == oldFolderTitle).Any())
-                            {
-                                // Modify dated tags
-                                for (int i = 0; i < canvas.Elements.Count; i++)
-                                {
-                                    canvas.Elements[i].StoredFolderTag = (canvas.Elements[i].IsStoredInAFolder &&
-                                                                          canvas.Elements[i].Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication &&
-                                                                          canvas.Elements[i].StoredFolderTag == oldFolderTitle) ? item.Text : canvas.Elements[i].StoredFolderTag;
-                                }
-                            }
-
-                            canvas.Elements[index] = item;
-                            canvas.InvalidateSurface();
-
-                            canvas.Controller.PromptResave();
-                        }
+                        await Navigation.PushPopupAsync(iconModificationPopup);
 
                         e.Handled = true;
                     }
-
 
                     if (canvas.Controller.InEditMode && hasMoved && _currentElement.IsDeletable)
                     {

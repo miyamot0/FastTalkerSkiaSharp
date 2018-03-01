@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Xamarin.Forms;
 using FastTalkerSkiaSharp.Constants;
+using System.Linq;
 
 namespace FastTalkerSkiaSharp.ViewModels
 {
@@ -53,6 +54,22 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
             else
             {
+                if (currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
+                {
+                    string oldFolderTitle = currentElement.Text;
+
+                    if (controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == oldFolderTitle).Any())
+                    {
+                        // Modify dated tags
+                        for (int i = 0; i < controller.Elements.Count; i++)
+                        {
+                            controller.Elements[i].StoredFolderTag = (controller.Elements[i].IsStoredInAFolder &&
+                                                                      controller.Elements[i].Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication &&
+                                                                      controller.Elements[i].StoredFolderTag == oldFolderTitle) ? item.Text : controller.Elements[i].StoredFolderTag;
+                        }
+                    }
+                }
+
                 controller.Elements[index] = item;
 
                 controller.Invalidate();

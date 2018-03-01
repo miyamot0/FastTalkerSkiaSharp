@@ -135,6 +135,8 @@ namespace FastTalkerSkiaSharp.Helpers
             }
         }
 
+        /*
+
         /// <summary>
         /// Get options from user
         /// </summary>
@@ -149,6 +151,8 @@ namespace FastTalkerSkiaSharp.Helpers
 
             return userResponse;
         }
+
+        */
 
         /// <summary>
         /// Confirms the remove icon, with some animation.
