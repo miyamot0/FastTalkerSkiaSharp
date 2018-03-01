@@ -348,7 +348,7 @@ namespace FastTalkerSkiaSharp.Pages
         /// </summary>
         /// <param name="e"></param>
         /// <param name="outputVerbose"></param>
-        async void ProcessInitialTouchEvent(SkiaSharp.Views.Forms.SKTouchEventArgs e, bool outputVerbose = false)
+        void ProcessInitialTouchEvent(SkiaSharp.Views.Forms.SKTouchEventArgs e, bool outputVerbose = false)
         {
             _currentElement = canvas.GetElementAtPoint(e.Location);
 

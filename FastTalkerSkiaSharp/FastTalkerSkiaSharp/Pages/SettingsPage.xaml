@@ -131,12 +131,6 @@
                             Clicked="Click_Add_Photo_Icon"/>
                 </StackLayout>
 
-
-
-
-
-
-            
                 <!-- Add Stored Image -->
                 <StackLayout Margin="5"
                              Grid.Row="2"
@@ -150,17 +144,10 @@
                             BorderColor="{StaticResource BorderColor}"
                             BackgroundColor="{StaticResource ButtonColor}"
                             BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderRadius="2"
+                            Clicked="Click_Add_Downloaded_Icon"/>
                 </StackLayout>
 
-
-
-
-
-
-
-
-            
                 <!-- Add Folder -->
                 <StackLayout Margin="5"
                              Grid.Row="3"

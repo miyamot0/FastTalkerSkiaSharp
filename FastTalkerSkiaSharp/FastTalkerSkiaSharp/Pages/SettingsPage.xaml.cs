@@ -10,6 +10,13 @@ using Rg.Plugins.Popup.Extensions;
 using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Storage;
 using System.Linq;
+using Plugin.Media;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
+using Acr.UserDialogs;
+using System.IO;
+using FastTalkerSkiaSharp.Interfaces;
+using Plugin.Media.Abstractions;
 
 namespace FastTalkerSkiaSharp.Pages
 {
@@ -93,7 +100,7 @@ namespace FastTalkerSkiaSharp.Pages
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">E.</param>
-		void Click_Save_Board(object sender, System.EventArgs e)
+        void Click_Save_Board(object sender, System.EventArgs e)
         {
             SettingsActionEvent(SettingsAction.SaveBoard);
         }
@@ -114,6 +121,99 @@ namespace FastTalkerSkiaSharp.Pages
         }
 
         /// <summary>
+        /// Adds a local, downloaded image
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        async void Click_Add_Downloaded_Icon(object sender, System.EventArgs e)
+        {
+            await Navigation.PopAllPopupAsync();
+
+            await CrossMedia.Current.Initialize();
+
+            var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Photos);
+
+            if (status != PermissionStatus.Granted)
+            {
+                if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Photos))
+                {
+                    await UserDialogs.Instance.AlertAsync("Need access to photos to make icon");
+                }
+
+                var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Photos });
+
+                status = results[Permission.Photos];
+            }
+
+            if (status == PermissionStatus.Granted)
+            {
+                var userInput = await UserDialogs.Instance.PromptAsync("Name the icon to add");
+
+                if (userInput == null || string.IsNullOrWhiteSpace(userInput.Text)) return;
+
+                Plugin.Media.Abstractions.MediaFile file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions 
+                { 
+                    CustomPhotoSize = 500, 
+                    CompressionQuality = 80,
+                    RotateImage = true,
+                });
+
+                if (file == null || file.Path == null)
+                {
+                    return;
+                }
+
+                if (File.Exists(@file.Path))
+                { 
+                    byte[] imageArray = null;
+
+                    //if (Device.RuntimePlatform == Device.Android)
+                    //{
+                    //    imageArray = DependencyService.Get<InterfaceBitmapResize>().RotateImage(@file.Path);
+                    //}
+                    //else
+                    //{
+                        imageArray = File.ReadAllBytes(@file.Path);
+                    //}
+
+                    string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+
+                    file.Dispose();
+
+                    CommunicationIcon dynamicIcon = new CommunicationIcon()
+                    {
+                        Tag = (int)SkiaSharp.Elements.CanvasView.Role.Communication,
+                        Text = userInput.Text,
+                        Local = false,
+                        IsStoredInFolder = false,
+                        FolderContainingIcon = "",
+                        Base64 = base64ImageRepresentation,
+                        Scale = 1f,
+                        X = -1,
+                        Y = -1
+                    };
+
+                    SkiaSharp.Elements.Image testImage = null;
+
+                    try
+                    {
+                        testImage = App.ImageBuilderInstance.BuildCommunicationIconDynamic(icon: dynamicIcon);
+                    }
+                    catch
+                    {
+                        return;
+                    }
+
+                    SaveCommunicationElementEvent(testImage);
+                }
+            }
+            else if (status != PermissionStatus.Unknown)
+            {
+                await UserDialogs.Instance.AlertAsync("Can not continue, try again");
+            }
+        }
+
+        /// <summary>
         /// Adds photos from the camera to the field, as icons
         /// </summary>
         /// <param name="sender">Sender.</param>
@@ -122,7 +222,7 @@ namespace FastTalkerSkiaSharp.Pages
         {
             await Navigation.PopAllPopupAsync();
 
-            string[] base64 = await UserInput.GetImageFromCameraCallAsync();
+            string[] base64 = await App.UserInputInstance.GetImageFromCameraCallAsync();
 
             if (base64 == null) return;
 

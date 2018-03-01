@@ -34,6 +34,8 @@ using FastTalkerSkiaSharp.Pages;
 using FastTalkerSkiaSharp.Storage;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using Rg.Plugins.Popup.Extensions;
 using SkiaSharp;
 using SkiaSharp.Elements;
@@ -62,10 +64,7 @@ namespace FastTalkerSkiaSharp.Helpers
             settingsPopupPage.SaveCommunicationIconEvent += SettingsIconInteraction;
             settingsPopupPage.SaveCommunicationElementEvent += SettingsElementInteraction;
 
-            //page.IconSelected += RestoreIcon;
-
             await App.Current.MainPage.Navigation.PushPopupAsync(settingsPopupPage);
-
 
             /*
             string userResponse = await UserDialogs.Instance.ActionSheetAsync(LanguageSettings.SettingsTitle,
@@ -109,7 +108,6 @@ namespace FastTalkerSkiaSharp.Helpers
             canvasRef.Controller.PromptResave();
         }
 
-
         /// <summary>
         /// Delegate for settings changes
         /// </summary>
@@ -147,9 +145,9 @@ namespace FastTalkerSkiaSharp.Helpers
 
                     break;
             }
-
-            //throw new NotImplementedException();
         }
+
+        /*
 
         /// <summary>
         /// Responses to query.
@@ -359,6 +357,8 @@ namespace FastTalkerSkiaSharp.Helpers
             }
         }
 
+        */
+
         /// <summary>
         /// Get options from user
         /// </summary>
@@ -373,6 +373,8 @@ namespace FastTalkerSkiaSharp.Helpers
 
             return userResponse;
         }
+
+        /*
 
         /// <summary>
         /// Saves the communication icon.
@@ -395,6 +397,8 @@ namespace FastTalkerSkiaSharp.Helpers
 
             canvasRef.Controller.PromptResave();
         }
+
+        */
 
         /// <summary>
         /// Confirms the remove icon, with some animation.
@@ -609,7 +613,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// Make call to camera
         /// </summary>
         /// <returns></returns>
-        public static async Task<string[]> GetImageFromCameraCallAsync()
+        public async Task<string[]> GetImageFromCameraCallAsync()
         {
             if (!(CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported))
             {
@@ -634,6 +638,136 @@ namespace FastTalkerSkiaSharp.Helpers
 
             return await GetImageAndCrop(mediaOptions);
         }
+
+        /*
+
+        public async Task<string[]> GetImageFromStorageCallAsync()
+        {
+            try
+            {
+                var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Photos);
+
+                Debug.WriteLine("Status: " + status);
+
+                if (status != PermissionStatus.Granted)
+                {
+                    // Request permissions
+                    if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Photos))
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Need photos", "Need access to photos to make icon", "OK");
+                    }
+
+                    var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Photos });
+
+                    status = results[Permission.Photos];
+                }
+
+                if (status == PermissionStatus.Granted)
+                {
+                    Debug.WriteLine("Status: granted");
+                    // If permissions granted, query selection and call back
+
+                    var results = await GetsFileBase64();
+
+                    return results;
+                    //mLayer.CallBackIcon(results[0], results[1], results[2], null);
+                }
+                else if (status != PermissionStatus.Unknown)
+                {
+                    Debug.WriteLine("Status: Not granted");
+
+                    await UserDialogs.Instance.AlertAsync("Can not continue, try again");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLineIf(App.OutputVerbose, ex.ToString());
+            }
+
+            return null;
+        }
+
+        */
+
+        /*
+
+        public async Task<string[]> GetsFileBase64()
+        {
+            //await CrossMedia.Current.Initialize();
+
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                await UserDialogs.Instance.AlertAsync("Permissions Not Granted");
+
+                return null;
+            }
+            else
+            {
+                Debug.WriteLine("is supported");
+            }
+
+            try
+            {
+                Plugin.Media.Abstractions.MediaFile file = await CrossMedia.Current.PickPhotoAsync();
+
+                if (file == null || file.Path == null) 
+                {
+                    Debug.WriteLineIf(App.OutputVerbose, "File ref null");
+
+                    return null;
+                } 
+
+                if (File.Exists(@file.Path))
+                {
+                    // If the photo can be found, query user for icon label
+
+                    Debug.WriteLine("File exists");
+
+                    var nameString = await UserDialogs.Instance.PromptAsync("Please name the icon");
+
+                    Debug.WriteLine("past prompt async");
+
+                    if (nameString == null || string.IsNullOrWhiteSpace(nameString.Text)) return null;
+
+                    Debug.WriteLine("past null check");
+
+                    byte[] imageArray = null;
+
+                    if (Device.RuntimePlatform == Device.Android)
+                    {
+                        imageArray = DependencyService.Get<InterfaceBitmapResize>().RotateImage(@file.Path);
+                    }
+                    else
+                    {
+                        imageArray = File.ReadAllBytes(@file.Path);
+                    }
+
+                    Debug.WriteLine("got byte array");
+
+                    string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+
+                    Debug.WriteLine("got base 64");
+
+                    file.Dispose();
+
+                    return new string[] { nameString.Text, base64ImageRepresentation };
+                }
+                else
+                {
+                    Debug.WriteLineIf(App.OutputVerbose, "File doesnt exist");
+
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLineIf(App.OutputVerbose, ex.ToString());
+
+                return null;
+            }
+        }
+
+        */
 
         /// <summary>
         /// Get saved image
