@@ -6,19 +6,6 @@
              Padding="{Binding Padding}"
              x:Class="FastTalkerSkiaSharp.Pages.SettingsPage">
 
-        <ContentPage.Resources>
-            <ResourceDictionary>
-                <Color x:FactoryMethod="FromHex" 
-                       x:Key="ButtonColor">
-                    <x:Arguments><x:String>#C7E8EA</x:String></x:Arguments>
-                </Color>
-                <Color x:FactoryMethod="FromHex" 
-                       x:Key="BorderColor">
-                    <x:Arguments><x:String>#000000</x:String></x:Arguments>
-                </Color>
-            </ResourceDictionary>
-        </ContentPage.Resources>
-
         <StackLayout BackgroundColor="Black"
                      Padding="5,5,5,5">
             <Grid BackgroundColor="White"
@@ -56,8 +43,8 @@
                             Text="Resume User Operation"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource BorderColor}"
-                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
                             BorderWidth="1"
                             BorderRadius="2"
                             Clicked="Click_Resume_Operation"/>
@@ -73,8 +60,8 @@
                             Text="Auto Deselect: "
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource BorderColor}"
-                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
                             BorderWidth="1"
                             BorderRadius="2"
                             Clicked="Click_Deselecting"/>
@@ -90,8 +77,8 @@
                             Text="Mode: "
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource BorderColor}"
-                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
                             BorderWidth="1"
                             BorderRadius="2"
                             Clicked="Click_Mode"/>
@@ -107,8 +94,8 @@
                             Text="Add Local Image"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource BorderColor}"
-                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
                             BorderWidth="1"
                             BorderRadius="2"
                             Clicked="Click_Add_Local_Icon"/>
@@ -124,8 +111,8 @@
                             Text="Take Photo"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource BorderColor}"
-                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
                             BorderWidth="1"
                             BorderRadius="2"
                             Clicked="Click_Add_Photo_Icon"/>
@@ -141,8 +128,8 @@
                             Text="Add Stored Image"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource BorderColor}"
-                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
                             BorderWidth="1"
                             BorderRadius="2"
                             Clicked="Click_Add_Downloaded_Icon"/>
@@ -158,8 +145,8 @@
                             Text="Add Folder"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource BorderColor}"
-                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
                             BorderWidth="1"
                             BorderRadius="2"
                             Clicked="Click_Add_Folder"/>
@@ -175,8 +162,8 @@
                             Text="Show Help"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource BorderColor}"
-                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
                             BorderWidth="1"
                             BorderRadius="2"
                             Clicked="Click_Help_Popup"/>
@@ -192,8 +179,8 @@
                             Text="About"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource BorderColor}"
-                            BackgroundColor="{StaticResource ButtonColor}"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
                             BorderWidth="1"
                             BorderRadius="2"
                             Clicked="Click_About_Popup"/>

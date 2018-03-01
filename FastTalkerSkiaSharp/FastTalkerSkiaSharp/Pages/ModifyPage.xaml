@@ -32,6 +32,131 @@
                        Grid.Row="0"
                        Grid.Column="0"
                        Grid.ColumnSpan="3"/>
+
+                <!-- Reset Icon -->
+                <StackLayout Margin="5"
+                             Grid.Row="1"
+                             Grid.Column="0"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnResetSize"
+                            Text="Reset Size"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"/>
+                </StackLayout>
+
+                <!-- Increase Icon Size + 10% -->
+                <StackLayout Margin="5"
+                             Grid.Row="1"
+                             Grid.Column="1"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnGrow"
+                            Text="Increase Size 10%"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"/>
+                </StackLayout>
+
+                <!-- Increase Icon Size + 50% -->
+                <StackLayout Margin="5"
+                             Grid.Row="1"
+                             Grid.Column="2"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnGrow2"
+                            Text="Increase Size 50%"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"/>
+                </StackLayout>
+
+                <!-- Edit Icon Text -->
+                <StackLayout Margin="5"
+                             Grid.Row="2"
+                             Grid.Column="0"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnEditText"
+                            Text="Edit Icon Text"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"/>
+                </StackLayout>
+
+                <!-- Decrease Icon Size - 10% -->
+                <StackLayout Margin="5"
+                             Grid.Row="2"
+                             Grid.Column="1"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnShrink"
+                            Text="Decrease Size 10%"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"/>
+                </StackLayout>
+
+                <!-- Decrease Icon Size - 50% -->
+                <StackLayout Margin="5"
+                             Grid.Row="2"
+                             Grid.Column="2"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnShrink2"
+                            Text="Decrease Size 50%"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"/>
+                </StackLayout>
+
+                <!-- Edit Pinning Status -->
+                <StackLayout Margin="5"
+                             Grid.Row="3"
+                             Grid.Column="0"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button x:Name="btnPin"
+                            Text="Pinning Icon"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
+                            BorderWidth="1"
+                            BorderRadius="2"/>
+                </StackLayout>
+
+                <!-- Save button settings -->
+                <Button x:Name="btnSaveIcon"
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Text="Save and Close"/>
+
+
+
+
+
+            
             </Grid>
         </StackLayout>
     
