@@ -68,7 +68,6 @@ namespace FastTalkerSkiaSharp.Helpers
                                                     SkiaSharp.SKColors.Black.Blue, 200),
                 Tag = (int)SkiaSharp.Elements.CanvasView.Role.SentenceFrame,
                 IsStoredInAFolder = false,
-                IsDeletable = false,
             };
         }
 

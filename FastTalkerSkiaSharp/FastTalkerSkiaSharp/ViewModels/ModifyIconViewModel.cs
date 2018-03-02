@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using FastTalkerSkiaSharp.Constants;
 using System.Linq;
+using Rg.Plugins.Popup.Services;
 
 namespace FastTalkerSkiaSharp.ViewModels
 {
@@ -18,6 +19,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         public ICommand ButtonDecreaseSize2 { get; set; }
         public ICommand ButtonEditText { get; set; }
         public ICommand ButtonPinning { get; set; }
+        public ICommand ButtonDelete { get; set; }
 
         public ModifyIconViewModel(SkiaSharp.Elements.Element _currentElement, SkiaSharp.Elements.ElementsController _controller)
         {
@@ -33,7 +35,7 @@ namespace FastTalkerSkiaSharp.ViewModels
             ButtonDecreaseSize2 = new Command(DecreaseSizeOfIconLarge);
 
             ButtonEditText = new Command(EditIconText);
-            ButtonPinning = new Command(PinIcon);
+            ButtonDelete = new Command(DeleteIcon);
         }
 
         /// <summary>
@@ -148,6 +150,27 @@ namespace FastTalkerSkiaSharp.ViewModels
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Pin Icon");
 
             UpdateIconInController(LanguageSettings.EditPinning);
+        }
+    
+        /// <summary>
+        /// Confirm deletion
+        /// </summary>
+        async void DeleteIcon()
+        {
+            if (currentElement == null) return;
+
+            switch (currentElement.Tag)
+            {
+                case (int) SkiaSharp.Elements.CanvasView.Role.Folder:
+                    App.UserInputInstance.ConfirmDeleteFolder(currentElement);
+
+                    break;
+
+                case (int) SkiaSharp.Elements.CanvasView.Role.Communication:
+                    App.UserInputInstance.ConfirmRemoveIcon(currentElement);
+
+                    break;
+            }
         }
     }
 }

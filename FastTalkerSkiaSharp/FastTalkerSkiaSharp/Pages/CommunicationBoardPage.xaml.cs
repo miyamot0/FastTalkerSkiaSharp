@@ -44,9 +44,7 @@ namespace FastTalkerSkiaSharp.Pages
         private SkiaSharp.Elements.Element _currentElement;
         private SKPoint? _startLocation;
 
-        private SkiaSharp.Elements.Element emitterReference,
-                                           deleteReference,
-                                           stripReference;
+        private SkiaSharp.Elements.Element emitterReference, stripReference;
 
         private bool holdingEmitter = false;
         private DateTime emitterPressTime;
@@ -388,11 +386,6 @@ namespace FastTalkerSkiaSharp.Pages
 
                     return;
 
-                case (int)SkiaSharp.Elements.CanvasView.Role.Delete:
-                    Debug.WriteLineIf(outputVerbose, "Hit Delete");
-
-                    return;
-
                 case (int)SkiaSharp.Elements.CanvasView.Role.Folder:
                     Debug.WriteLineIf(outputVerbose, "Hit Folder");
                     ClearIconsInPlay();
@@ -469,13 +462,6 @@ namespace FastTalkerSkiaSharp.Pages
                         _currentElement.IsMainIconInPlay = true;
                     }
 
-                    _currentElement.IsDeletable = _currentElement.Bounds.IntersectsWith(deleteReference.Bounds);
-
-                    if (_currentElement.IsDeletable && canvas.Controller.InEditMode)
-                    {
-                        Debug.WriteLineIf(outputVerbose, "Can delete communication icon");
-                    }
-
                     _currentElement.IsInsertableIntoFolder = canvas.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
                                         .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds))
                                         .Any();
@@ -493,13 +479,6 @@ namespace FastTalkerSkiaSharp.Pages
                                         e.Location.Y - _currentElement.Bounds.Height / 2f);
 
                     ClampCurrentIconToCanvasBounds();
-
-                    _currentElement.IsDeletable = _currentElement.Bounds.IntersectsWith(deleteReference.Bounds);
-
-                    if (_currentElement.IsDeletable && canvas.Controller.InEditMode)
-                    {
-                        Debug.WriteLineIf(outputVerbose, "Can delete folder icon");
-                    }
 
                     _startLocation = _currentElement.Location;
 
@@ -535,7 +514,6 @@ namespace FastTalkerSkiaSharp.Pages
                     }
                     else if (canvas.Controller.InEditMode && 
                              !_currentElement.IsInsertableIntoFolder && 
-                             !_currentElement.IsDeletable &&
                              DateTime.Now.Subtract(itemPressTime).Seconds > 3)
                     {
                         Debug.WriteLineIf(outputVerbose, "Completed icon held > 3s");
@@ -555,11 +533,6 @@ namespace FastTalkerSkiaSharp.Pages
                         App.UserInputInstance.InsertIntoFolder(_currentElement: _currentElement, 
                                                                folderOfInterest: folderOfInterest);
                     }
-                    else if (hasMoved && _currentElement.IsDeletable)
-                    {
-                        App.UserInputInstance.ConfirmRemoveIcon(currentElement: _currentElement, 
-                                                                deleteButton: deleteReference);
-                    }
 
                     e.Handled = true;
 
@@ -576,8 +549,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                         e.Handled = true;
                     }
-                    else if (canvas.Controller.InEditMode && _currentElement.IsDeletable &&
-                                                             DateTime.Now.Subtract(itemPressTime).Seconds > 3)
+                    else if (canvas.Controller.InEditMode && DateTime.Now.Subtract(itemPressTime).Seconds > 3)
                     {
                         Debug.WriteLineIf(outputVerbose, "Completed folder hold");
 
@@ -588,14 +560,7 @@ namespace FastTalkerSkiaSharp.Pages
                         e.Handled = true;
                     }
 
-                    if (canvas.Controller.InEditMode && hasMoved && _currentElement.IsDeletable)
-                    {
-                        App.UserInputInstance.ConfirmDeleteFolder(currentElement: _currentElement, 
-                                                                  deleteButton: deleteReference);
-
-                        e.Handled = true;
-                    }
-                    else if (!canvas.Controller.InEditMode && !hasMoved)
+                    if (!canvas.Controller.InEditMode && !hasMoved)
                     {
                         Debug.WriteLineIf(outputVerbose, "Hit a folder, in user mode: " + _currentElement.Text);
 
@@ -732,12 +697,6 @@ namespace FastTalkerSkiaSharp.Pages
 
                         e.Handled = true;
                     }
-                    // Item is deleteable
-                    else if (canvas.Controller.InEditMode && _currentElement.IsDeletable)
-                    {
-                        App.UserInputInstance.ConfirmRemoveIcon(currentElement: _currentElement, 
-                                                                deleteButton: deleteReference);
-                    }
 
                     return;
             }
@@ -834,6 +793,7 @@ namespace FastTalkerSkiaSharp.Pages
 
             canvas.Elements.Add(settingsElement);
 
+            /*
             // Delete zone
             deleteReference = App.ImageBuilderInstance.BuildNamedIcon(resource: "FastTalkerSkiaSharp.Images.Trash.png",
                                                                       text: "Delete",
@@ -844,6 +804,7 @@ namespace FastTalkerSkiaSharp.Pages
                                                                       opaqueBackground: true);
 
             canvas.Elements.Add(deleteReference);
+            */
         }
     }
 }

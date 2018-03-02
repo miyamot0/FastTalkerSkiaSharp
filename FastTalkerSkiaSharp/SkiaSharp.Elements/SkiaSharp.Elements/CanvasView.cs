@@ -14,7 +14,7 @@ namespace SkiaSharp.Elements
             Emitter,        // For speech
             SentenceFrame,
             Settings,
-            Delete,
+            //Delete,
             Folder
         }
 

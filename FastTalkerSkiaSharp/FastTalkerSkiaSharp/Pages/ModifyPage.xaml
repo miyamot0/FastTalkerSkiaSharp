@@ -152,6 +152,22 @@
                             BorderWidth="1"
                             BorderRadius="2"/>
                 </StackLayout>
+
+                <!-- Edit Pinning Status -->
+                <StackLayout Margin="5"
+                             Grid.Row="3"
+                             Grid.Column="1"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Button Text="Delete Icon"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            BorderColor="{StaticResource GlobalBorderColor}"
+                            BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding ButtonDelete}"
+                            BorderWidth="1"
+                            BorderRadius="2"/>
+                </StackLayout>
             </Grid>
         </StackLayout>
 </pages:PopupPage>

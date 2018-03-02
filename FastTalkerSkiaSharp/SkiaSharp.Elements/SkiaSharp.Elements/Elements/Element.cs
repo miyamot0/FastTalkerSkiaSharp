@@ -66,9 +66,6 @@ namespace SkiaSharp.Elements
         public float Right => Bounds.Right;
         public float Bottom => Bounds.Bottom;
 
-        // Can this be deleted/colored red?
-        public bool IsDeletable = false;
-
         // Can this be spoken/colored green?
         public bool IsSpeakable = false;
 
@@ -302,10 +299,6 @@ namespace SkiaSharp.Elements
                             {
                                 paint.Color = SKColors.Orange;
                             }
-                            else if (IsDeletable && controller.InEditMode)
-                            {
-                                paint.Color = SKColors.Red;
-                            }
                             else
                             {
                                 paint.Color = SKColors.White;
@@ -313,11 +306,7 @@ namespace SkiaSharp.Elements
                         }
                         else
                         {
-                            if (IsDeletable && controller.InEditMode)
-                            {
-                                paint.Color = SKColors.Red;
-                            }
-                            else if (IsInsertableIntoFolder)
+                            if (IsInsertableIntoFolder)
                             {
                                 paint.Color = SKColors.Orange;
                             }
@@ -367,16 +356,7 @@ namespace SkiaSharp.Elements
                 {
                     using (var paint = new SKPaint())
                     {
-                        var controller = GetController();
-
-                        if (IsDeletable && controller.InEditMode)
-                        {
-                            paint.Color = SKColors.Red;
-                        }
-                        else
-                        {
-                            paint.Color = SKColors.White;
-                        }
+                        paint.Color = SKColors.White;
 
                         canvas.DrawRect(_bounds, paint);
                     }
