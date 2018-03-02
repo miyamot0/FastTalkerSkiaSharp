@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FastTalkerSkiaSharp.Pages.StoredIconPopup"
@@ -21,8 +21,78 @@
                       SeparatorColor="Transparent"
                       HorizontalOptions="FillAndExpand"
                       VerticalOptions="FillAndExpand"
+                      ItemsSource="{Binding Rows}"
                       HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
+                                <Image HeightRequest="{Binding WidthRequest}"
+                                       Source="{Binding Image1}"
+                                       Grid.Row="0"
+                                       Grid.Column="0">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding TappedCommand}"
+                                                              CommandParameter="{Binding Name1}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+
+                                <Image HeightRequest="{Binding WidthRequest}"
+                                       Source="{Binding Image2}"
+                                       Grid.Row="0"
+                                       Grid.Column="1">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding TappedCommand}"
+                                                              CommandParameter="{Binding Name2}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+
+                                <Image HeightRequest="{Binding WidthRequest}"
+                                       Source="{Binding Image3}"
+                                       Grid.Row="0"
+                                       Grid.Column="2">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding TappedCommand}"
+                                                              CommandParameter="{Binding Name3}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+
+                                <Label Text="{Binding Name1}"
+                                       Grid.Row="1"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center"
+                                       FontAttributes="Bold"
+                                       FontSize="Default"
+                                       Grid.Column="0"/>
+                                <Label Text="{Binding Name2}"
+                                       Grid.Row="1"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center"
+                                       FontAttributes="Bold"
+                                       FontSize="Default"
+                                       Grid.Column="1"/>
+                                <Label Text="{Binding Name3}"
+                                       Grid.Row="1"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center"
+                                       FontAttributes="Bold"
+                                       FontSize="Default"
+                                       Grid.Column="2"/>
+                                
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
     </StackLayout>

@@ -35,6 +35,7 @@ using Plugin.Permissions.Abstractions;
 using Rg.Plugins.Popup.Extensions;
 using SkiaSharp;
 using Xamarin.Forms;
+using FastTalkerSkiaSharp.ViewModels;
 
 namespace FastTalkerSkiaSharp.Pages
 {
@@ -609,10 +610,25 @@ namespace FastTalkerSkiaSharp.Pages
                             return;
                         }
 
-                        StoredIconPopup page = new StoredIconPopup(folder: _currentElement.Text, 
-                                                                   itemsMatching: itemsMatching);
+                        StoredIconPopupViewModel viewModel = new StoredIconPopupViewModel
+                        {
+                            Padding = new Thickness(100, 100, 100, 100),
+                            IsSystemPadding = true,
+                            FolderWithIcons = _currentElement.Text,
+                            ItemsMatching = itemsMatching,
+                        };
 
-                        page.IconSelected += RestoreIcon;
+                        viewModel.IconSelected += RestoreIcon;
+
+                        //StoredIconPopup page = new StoredIconPopup(folder: _currentElement.Text, 
+                        //                                           itemsMatching: itemsMatching);
+
+                        //page.IconSelected += RestoreIcon;
+
+                        StoredIconPopup page = new StoredIconPopup()
+                        {
+                            BindingContext = viewModel
+                        };
 
                         await App.Current.MainPage.Navigation.PushPopupAsync(page);
 
@@ -633,10 +649,32 @@ namespace FastTalkerSkiaSharp.Pages
                             return;
                         }
 
+                        StoredIconPopupViewModel viewModel = new StoredIconPopupViewModel
+                        {
+                            Padding = new Thickness(100, 100, 100, 100),
+                            IsSystemPadding = true,
+                            FolderWithIcons = _currentElement.Text,
+                            ItemsMatching = itemsMatching,
+                        };
+
+                        viewModel.IconSelected += RestoreIcon;
+
+
+
+
+                        /*
+
                         StoredIconPopup page = new StoredIconPopup(folder: _currentElement.Text, 
                                                                    itemsMatching: itemsMatching);
 
                         page.IconSelected += RestoreIcon;
+
+                        */
+
+                        StoredIconPopup page = new StoredIconPopup()
+                        {
+                            BindingContext = viewModel
+                        };
 
                         await App.Current.MainPage.Navigation.PushPopupAsync(page);
 

@@ -38,8 +38,11 @@ namespace FastTalkerSkiaSharp.Pages
 {
     public partial class StoredIconPopup : PopupPage
     {
-        public event Action<ArgsSelectedIcon> IconSelected = delegate { };
+        //public event Action<ArgsSelectedIcon> IconSelected = delegate { };
 
+        //StoredIconPopupViewModel viewModel;
+
+        /*
         private List<DisplayImageRowModel> rows;
 
         private string FolderWithIcons;
@@ -53,21 +56,33 @@ namespace FastTalkerSkiaSharp.Pages
         private string tempName1, tempName2, tempName3;
 
         private ImageSource source1, source2, source3;
+        */
 
-        public StoredIconPopup(string folder, List<SkiaSharp.Elements.Element> itemsMatching)
+        public StoredIconPopup()
         {
             InitializeComponent();
 
-            FolderWithIcons = folder;
-            ItemsMatching = itemsMatching;
+            //string folder, List<SkiaSharp.Elements.Element> itemsMatching, Action<ArgsSelectedIcon> iconSelected
 
-            rows = new List<DisplayImageRowModel>();
+            //FolderWithIcons = folder;
+            //ItemsMatching = itemsMatching;
 
-            BindingContext = new PopupUpViewModel()
+            //rows = new List<DisplayImageRowModel>();
+
+            /*
+            viewModel = new StoredIconPopupViewModel()
             {
                 Padding = new Thickness(100, 100, 100, 100),
-                IsSystemPadding = true
+                IsSystemPadding = true,
+                FolderWithIcons = folder,
+                ItemsMatching = itemsMatching
             };
+
+            viewModel.IconSelected += iconSelected;
+
+            BindingContext = viewModel;
+
+            */
         }
 
         /// <summary>
@@ -77,7 +92,9 @@ namespace FastTalkerSkiaSharp.Pages
         {
             base.OnAppearing();
 
-            LoadInformationAsync();
+            (BindingContext as StoredIconPopupViewModel).LoadInformationAsync(coreLayout);
+
+            //LoadInformationAsync();
         }
 
         /// <summary>
@@ -85,6 +102,7 @@ namespace FastTalkerSkiaSharp.Pages
         /// </summary>
         private async void LoadInformationAsync()
         {
+            /*
             // Wait for android
             while (coreLayout.Width == 0 || coreLayout.Width == -1)
             {
@@ -133,7 +151,10 @@ namespace FastTalkerSkiaSharp.Pages
 
             dynamicListView.ItemTemplate = new DataTemplate(typeof(FolderIconTemplate));
             dynamicListView.ItemsSource = rows;
+            */
         }
+
+        /*
 
         /// <summary>
         /// Send back to canvas
@@ -198,5 +219,7 @@ namespace FastTalkerSkiaSharp.Pages
             await PopupNavigation.PopAsync();
 #pragma warning restore CS0618 // Type or member is obsolete
         }
+
+        */
     }
 }
