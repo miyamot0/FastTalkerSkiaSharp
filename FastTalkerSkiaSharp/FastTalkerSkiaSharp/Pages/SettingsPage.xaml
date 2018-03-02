@@ -45,9 +45,9 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding CommandSaveBoard}"
                             BorderWidth="1"
-                            BorderRadius="2"
-                            Clicked="Click_Resume_Operation"/>
+                            BorderRadius="2"/>
                 </StackLayout>
 
                 <!-- Deselecting behavior -->
@@ -57,14 +57,14 @@
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
                     <Button x:Name="btnDeselect"
-                            Text="Auto Deselect: "
+                            Text="{Binding DeselectText}"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding CommandDeselecting}"
                             BorderWidth="1"
-                            BorderRadius="2"
-                            Clicked="Click_Deselecting"/>
+                            BorderRadius="2"/>
                 </StackLayout>
 
                 <!-- Interaction mode -->
@@ -74,14 +74,14 @@
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
                     <Button x:Name="btnMode"
-                            Text="Mode: "
+                            Text="{Binding ModeText}"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding CommandOperatingMode}"
                             BorderWidth="1"
-                            BorderRadius="2"
-                            Clicked="Click_Mode"/>
+                            BorderRadius="2"/>
                 </StackLayout>
             
                 <!-- Add Local Image -->
@@ -96,9 +96,9 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding CommandAddIconLocal}"
                             BorderWidth="1"
-                            BorderRadius="2"
-                            Clicked="Click_Add_Local_Icon"/>
+                            BorderRadius="2"/>
                 </StackLayout>
 
                 <!-- Take Photo -->
@@ -113,9 +113,9 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding CommandAddIconPhoto}"
                             BorderWidth="1"
-                            BorderRadius="2"
-                            Clicked="Click_Add_Photo_Icon"/>
+                            BorderRadius="2"/>
                 </StackLayout>
 
                 <!-- Add Stored Image -->
@@ -130,9 +130,9 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding CommandAddIconStored}"
                             BorderWidth="1"
-                            BorderRadius="2"
-                            Clicked="Click_Add_Downloaded_Icon"/>
+                            BorderRadius="2"/>
                 </StackLayout>
 
                 <!-- Add Folder -->
@@ -147,9 +147,9 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding CommandAddFolder}"
                             BorderWidth="1"
-                            BorderRadius="2"
-                            Clicked="Click_Add_Folder"/>
+                            BorderRadius="2"/>
                 </StackLayout>
             
                 <!-- Show Help -->
@@ -164,9 +164,9 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding CommandHelp}"
                             BorderWidth="1"
-                            BorderRadius="2"
-                            Clicked="Click_Help_Popup"/>
+                            BorderRadius="2"/>
                 </StackLayout>
             
                 <!-- Show Info -->
@@ -181,9 +181,9 @@
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
+                            Command="{Binding CommandAbout}"
                             BorderWidth="1"
-                            BorderRadius="2"
-                            Clicked="Click_About_Popup"/>
+                            BorderRadius="2"/>
                 </StackLayout>
 
                 <!-- Save button settings -->
@@ -191,7 +191,7 @@
                         Grid.Row="4"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
-                        Clicked="Click_Close_Button"
+                        Command="{Binding CommandClose}"
                         Text="Save and Close"/>
             </Grid>
         </StackLayout>

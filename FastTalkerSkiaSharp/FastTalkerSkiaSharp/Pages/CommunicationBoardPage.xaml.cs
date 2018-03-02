@@ -379,12 +379,11 @@ namespace FastTalkerSkiaSharp.Pages
 
                 case (int)SkiaSharp.Elements.CanvasView.Role.Settings:
                     Debug.WriteLineIf(outputVerbose, "Hit settings");
+
                     if (canvas.Controller.InEditMode) 
                     {
                         App.UserInputInstance.QueryUserMainSettingsAsync();
                     }
-
-                        
 
                     return;
 
@@ -415,7 +414,6 @@ namespace FastTalkerSkiaSharp.Pages
                              !canvas.Controller.InEditMode &&
                              canvas.Controller.IconModeAuto)
                     {
-
                         commInterface.SpeakText(_currentElement.Text);
 
                         e.Handled = true;

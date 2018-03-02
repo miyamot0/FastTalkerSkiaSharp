@@ -40,6 +40,7 @@ using Rg.Plugins.Popup.Extensions;
 using SkiaSharp;
 using SkiaSharp.Elements;
 using Xamarin.Forms;
+using FastTalkerSkiaSharp.ViewModels;
 
 namespace FastTalkerSkiaSharp.Helpers
 {
@@ -59,10 +60,16 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="saveSettingsAsync">Save settings async.</param>
         public async void QueryUserMainSettingsAsync()
         {
-            SettingsPage settingsPopupPage = new SettingsPage(canvasRef.Controller);
-            settingsPopupPage.SettingsActionEvent += SettingsInteraction;
-            settingsPopupPage.SaveCommunicationIconEvent += SettingsIconInteraction;
-            settingsPopupPage.SaveCommunicationElementEvent += SettingsElementInteraction;
+            SettingsPageViewModel viewModel = new SettingsPageViewModel(canvasRef.Controller)
+            {
+                Padding = new Thickness(100, 100, 100, 100),
+                IsSystemPadding = true
+            };
+
+            viewModel.SaveCommunicationIconEvent += SettingsIconInteraction;
+            viewModel.SaveCommunicationElementEvent += SettingsElementInteraction;
+
+            SettingsPage settingsPopupPage = new SettingsPage(canvasRef.Controller, viewModel);
 
             await App.Current.MainPage.Navigation.PushPopupAsync(settingsPopupPage);
         }
@@ -97,62 +104,6 @@ namespace FastTalkerSkiaSharp.Helpers
 
             canvasRef.Controller.PromptResave();
         }
-
-        /// <summary>
-        /// Delegate for settings changes
-        /// </summary>
-        /// <param name="obj">Object.</param>
-        private void SettingsInteraction(SettingsPage.SettingsAction obj)
-        {
-            Debug.WriteLineIf(App.OutputVerbose, obj);
-
-            switch(obj)
-            {
-                case SettingsPage.SettingsAction.SaveBoard:
-                    canvasRef.Controller.PromptResave();
-
-                    break;
-
-                case SettingsPage.SettingsAction.InvalidateBoardIcon:
-                    for (int i = 0; i < canvasRef.Elements.Count; i++)
-                    {
-                        canvasRef.Elements[i].IsMainIconInPlay = false;
-                    }
-
-                    canvasRef.InvalidateSurface();
-
-                    break;
-
-                case SettingsPage.SettingsAction.InvalidateBoardFrame:
-                    for (int i = 0; i < canvasRef.Elements.Count; i++)
-                    {
-                        canvasRef.Elements[i].IsMainIconInPlay = false;
-                    }
-
-                    canvasRef.InvalidateSurface();
-
-                    break;
-            }
-        }
-
-        /*
-
-        /// <summary>
-        /// Get options from user
-        /// </summary>
-        /// <returns></returns>
-        public async Task<string> IconEditOptionsAsync()
-        {
-            var userResponse = await UserDialogs.Instance.ActionSheetAsync(LanguageSettings.EditTitle, 
-                                                                           LanguageSettings.EditClose,
-                                                                           LanguageSettings.EditClose, 
-                                                                           null, 
-                                                                           LanguageSettings.EditMenu());
-
-            return userResponse;
-        }
-
-        */
 
         /// <summary>
         /// Confirms the remove icon, with some animation.
