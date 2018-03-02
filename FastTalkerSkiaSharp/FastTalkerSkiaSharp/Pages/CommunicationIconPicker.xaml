@@ -1,9 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FastTalkerSkiaSharp.Pages.CommunicationIconPicker"
              x:local="clr-namespace:FastTalkerSkiaSharp;assembly=FastTalkerSkiaSharp"
              xmlns:controls="clr-namespace:FastTalkerSkiaSharp.Controls;assembly=FastTalkerSkiaSharp" 
+             x:Name="StoredIconPickerPage"
              Title="Add New Icon">
 
     <Grid HorizontalOptions="FillAndExpand"
@@ -40,8 +41,8 @@
 
             <controls:CustomScrollView x:Name="customScrollView"
                                    Orientation="Horizontal" 
-                                   ItemSelected="Handle_ItemSelected"
                                    VerticalOptions="FillAndExpand"
+                                   ItemsSource="{Binding Images}"
                                    Grid.Row="0"
                                    Grid.Column="0"
                                    Grid.ColumnSpan="2">
@@ -52,7 +53,12 @@
                                 <Image Source="{Binding Image}" 
                                    WidthRequest="140"
                                    HeightRequest="140"
-                                   Aspect="AspectFit"/>
+                                   Aspect="AspectFit">
+                                   <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:Reference Name=StoredIconPickerPage}, Path=BindingContext.IconSelectedFromList}"
+                                                              CommandParameter="{Binding Name}"/>
+                                   </Image.GestureRecognizers>
+                                </Image>
                                 <Label FontSize="Default"
                                    Text="{Binding Name}"
                                    HorizontalTextAlignment="Center">
@@ -75,6 +81,7 @@
                Grid.Column="0"
                VerticalOptions="FillAndExpand"
                Aspect="AspectFit"
+               Source="{Binding PreviewCurrentIcon}"
                Margin="10" />
 
             <StackLayout Grid.Row="1"
@@ -90,7 +97,8 @@
                     </Label.TextColor>
                 </Label>
                 <Entry x:Name="selectedIconNaming"
-                   Placeholder="Name for icon"/>
+                   Placeholder="Name for icon"
+                   Text="{Binding IconNameText}"/>
 
             </StackLayout>
         </Grid>
@@ -112,7 +120,8 @@
 
         <Picker x:Name="categoryPicker"
                 Grid.Row="0"
-                SelectedIndexChanged="Handle_SelectedIndexChanged"
+                ItemsSource="{Binding Categories}"
+                SelectedItem="{Binding SelectedCategory}"
                 Grid.Column="1"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="StartAndExpand">
@@ -122,7 +131,7 @@
                 Text="Use Current Icon"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="Fill"
-                Clicked="Handle_Clicked"
+                Command="{Binding CommandSaveClicked}"
                 Grid.Row="2"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"/>

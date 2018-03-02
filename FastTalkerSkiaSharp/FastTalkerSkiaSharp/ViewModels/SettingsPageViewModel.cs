@@ -33,6 +33,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         public ICommand CommandClose { get; set; }
 
         public event Action<ArgsSelectedIcon> SaveCommunicationIconEvent = delegate { };
+        public event Action<ArgsSelectedIcon> SaveFolderEvent = delegate { };
         public event Action<SkiaSharp.Elements.Element> SaveCommunicationElementEvent = delegate { };
 
         string _deselectText;
@@ -167,8 +168,13 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             await App.Current.MainPage.Navigation.PopAllPopupAsync();
 
-            CommunicationIconPicker newCommunicationPage = new CommunicationIconPicker();
-            newCommunicationPage.IconConstructed += SaveCommunicationIconEvent;
+            CommunicationIconPickerViewModel viewModel = new CommunicationIconPickerViewModel();
+            viewModel.IconConstructed += SaveCommunicationIconEvent;
+
+            CommunicationIconPicker newCommunicationPage = new CommunicationIconPicker()
+            {
+                BindingContext = viewModel
+            };
 
             await App.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
         }
@@ -312,7 +318,7 @@ namespace FastTalkerSkiaSharp.ViewModels
             IEnumerable<SkiaSharp.Elements.Element> foldersInField = controller.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder);
 
             FolderIconPickerViewModel viewModel = new FolderIconPickerViewModel(foldersInField);
-            viewModel.FolderConstructed += SaveCommunicationIconEvent;
+            viewModel.FolderConstructed += SaveFolderEvent;
 
             FolderIconPicker folderPicker = new FolderIconPicker()
             {

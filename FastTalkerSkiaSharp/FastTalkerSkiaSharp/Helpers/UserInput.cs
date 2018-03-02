@@ -68,6 +68,7 @@ namespace FastTalkerSkiaSharp.Helpers
 
             viewModel.SaveCommunicationIconEvent += SettingsIconInteraction;
             viewModel.SaveCommunicationElementEvent += SettingsElementInteraction;
+            viewModel.SaveFolderEvent += SettingsFolderInteraction;
 
             SettingsPage settingsPopupPage = new SettingsPage(canvasRef.Controller, viewModel);
 
@@ -101,6 +102,17 @@ namespace FastTalkerSkiaSharp.Helpers
             {
                 return;
             }
+
+            canvasRef.Controller.PromptResave();
+        }
+
+        /// <summary>
+        /// Add folder from local
+        /// </summary>
+        /// <param name="obj">Object.</param>
+        private void SettingsFolderInteraction(ArgsSelectedIcon obj)
+        {
+            canvasRef.Elements.Add(App.ImageBuilderInstance.BuildCommunicationFolderLocal(obj));
 
             canvasRef.Controller.PromptResave();
         }

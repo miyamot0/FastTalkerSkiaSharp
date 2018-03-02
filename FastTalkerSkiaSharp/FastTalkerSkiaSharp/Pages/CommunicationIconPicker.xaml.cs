@@ -32,21 +32,12 @@ using Acr.UserDialogs;
 using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Constants;
 using System.Threading.Tasks;
+using FastTalkerSkiaSharp.ViewModels;
 
 namespace FastTalkerSkiaSharp.Pages
 {
     public partial class CommunicationIconPicker : ContentPage
     {
-        public event Action<ArgsSelectedIcon> IconConstructed = delegate { };
-
-        public List<string> Categories { get; set; }
-        public List<DisplayImageModel> Images { get; set; }
-
-        private bool inInitialLoading = true;
-        private bool needsImage = true;
-
-        private string selectedIconString = "";
-
         public CommunicationIconPicker()
         {
             InitializeComponent();
@@ -59,153 +50,7 @@ namespace FastTalkerSkiaSharp.Pages
         {
             base.OnAppearing();
 
-            if (inInitialLoading)
-            {
-                LoadingInitialJson();
-            }
-
-            Images = new List<DisplayImageModel>();
-
-            customScrollView.ItemsSource = Images;
-        }
-
-        /// <summary>
-        /// Loading json
-        /// </summary>
-        void LoadingInitialJson()
-        {
-            using (var dlg = UserDialogs.Instance.Progress("Loading icon categories"))
-            {
-                if (App.storedIcons == null || App.storedIcons.StoredIcons.Count == 0)
-                {
-                    using (Stream stream = App.MainAssembly.GetManifestResourceStream(LanguageSettings.ResourcePrefixJson))
-                    {
-                        using (StreamReader reader = new StreamReader(stream))
-                        {
-                            App.storedIcons = JsonConvert.DeserializeObject<StoredIconContainerModel>(reader.ReadToEnd());
-                        }
-                    }
-                }
-
-                Categories = App.storedIcons.StoredIcons
-                                            .SelectMany(m => m.Tags)
-                                            .Distinct()
-                                            .OrderBy(m => m)
-                                            .ToList();
-
-                foreach (var category in Categories)
-                {
-                    if (category.Trim().Length == 0)
-                    {
-                        continue;
-                    }
-
-                    categoryPicker.Items.Add(category);
-                }
-
-                categoryPicker.SelectedItem = Categories.First();
-            }
-        }
-
-        /// <summary>
-        /// Handles the selected index changed.
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        void Handle_SelectedIndexChanged(object sender, System.EventArgs e)
-        {
-            LoadIcons();
-        }
-
-        async void LoadIcons()
-        {
-            using (var dlg = UserDialogs.Instance.Progress("Loading..."))
-            {
-                List<string> checkList = new List<string>() { categoryPicker.SelectedItem.ToString() };
-
-                var mIcons = App.storedIcons.StoredIcons.Where(icons => icons.Tags.Intersect(checkList).Any())
-                                                        .Select(icons => icons.Name)
-                                                        .ToList();
-
-                customScrollView.ItemsSource = null;
-
-                Images.Clear();
-
-                double counter = 0d;
-                double total = mIcons.Count;
-
-                int current = 0;
-                int saved = 0;
-
-                foreach (var iconName in mIcons)
-                {
-                    Images.Add(new DisplayImageModel
-                    {
-                        Image = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng +
-                                                                            "{0}" +
-                                                                            LanguageSettings.ResourceSuffixPng, iconName)),
-                        Name = iconName
-                    });
-
-                    await Task.Delay(50);
-
-                    counter += 1d;
-
-                    current = (int) Math.Floor(((counter / total)*100) / 5);
-
-                    if (current != saved)
-                    {
-                        saved = current;
-
-                        dlg.PercentComplete = saved * 20;
-                    }
-
-                }
-
-                dlg.Title = "Drawing...";
-
-                customScrollView.ItemsSource = Images;
-            }
-        }
-
-        /// <summary>
-        /// Handles the item selected.
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        void Handle_ItemSelected(object sender, Xamarin.Forms.ItemTappedEventArgs e)
-        {
-            needsImage = false;
-
-            selectedIconString = (e.Item as DisplayImageModel).Name;
-
-            selectedIconNaming.Text = selectedIconString;
-            previewCurrent.Source = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng + 
-                                                                           "{0}" + 
-                                                                           LanguageSettings.ResourceSuffixPng, (e.Item as DisplayImageModel).Name));
-        }
-
-        /// <summary>
-        /// Handles the clicked.
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        async void Handle_Clicked(object sender, System.EventArgs e)
-        {
-            if (needsImage || string.IsNullOrWhiteSpace(selectedIconNaming.Text) || selectedIconNaming.Text.Trim().Length < 2)
-            {
-                await UserDialogs.Instance.AlertAsync("Please select an image and enter speech to output");
-            }
-            else
-            {
-                IconConstructed(new ArgsSelectedIcon
-                {
-                    Name = selectedIconNaming.Text.Trim(),
-                    ImageSource = selectedIconString
-                });
-
-                await App.Current.MainPage.Navigation.PopAsync();
-            }
+            (BindingContext as CommunicationIconPickerViewModel).InitialLoading();
         }
     }
 }

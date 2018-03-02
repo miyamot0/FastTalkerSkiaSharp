@@ -100,7 +100,6 @@
                 <Entry x:Name="selectedFolderNaming"
                    Placeholder="Name for icon"
                    Text="{Binding FolderNameText}"/>
-
             </StackLayout>
         </Grid>
 
