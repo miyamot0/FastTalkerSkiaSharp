@@ -22,7 +22,6 @@ namespace FastTalkerSkiaSharp.Pages
 {
     public partial class SettingsPage : PopupPage
     {
-        
         public SettingsPage(ElementsController _controllerReference, SettingsPageViewModel _viewModel)
         {
             InitializeComponent();
