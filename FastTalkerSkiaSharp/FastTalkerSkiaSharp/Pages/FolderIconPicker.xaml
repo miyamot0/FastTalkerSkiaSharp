@@ -1,8 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FastTalkerSkiaSharp.Pages.FolderIconPicker"
              x:local="clr-namespace:FastTalkerSkiaSharp;assembly=FastTalkerSkiaSharp"
+             x:Name="FolderIconPickerPage"
              xmlns:controls="clr-namespace:FastTalkerSkiaSharp.Controls;assembly=FastTalkerSkiaSharp" 
              Title="Add New Folder">
 
@@ -40,8 +41,8 @@
 
             <controls:CustomScrollView x:Name="customScrollView"
                                    Orientation="Horizontal" 
-                                   ItemSelected="Handle_ItemSelected"
                                    VerticalOptions="FillAndExpand"
+                                   ItemsSource="{Binding Images}"
                                    Grid.Row="0"
                                    Grid.Column="0"
                                    Grid.ColumnSpan="2">
@@ -52,7 +53,12 @@
                                 <Image Source="{Binding Image}" 
                                    WidthRequest="140"
                                    HeightRequest="140"
-                                   Aspect="AspectFit"/>
+                                   Aspect="AspectFit">
+                                   <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:Reference Name=FolderIconPickerPage}, Path=BindingContext.IconSelectedFromList}"
+                                                              CommandParameter="{Binding Name}"/>
+                                   </Image.GestureRecognizers>
+                                </Image>
                                 <Label FontSize="Default"
                                    Text="{Binding Name}"
                                    HorizontalTextAlignment="Center">
@@ -76,6 +82,7 @@
                Grid.Column="0"
                VerticalOptions="FillAndExpand"
                Aspect="AspectFit"
+               Source="{Binding PreviewCurrentIcon}"
                Margin="10" />
 
             <StackLayout Grid.Row="1"
@@ -91,7 +98,8 @@
                     </Label.TextColor>
                 </Label>
                 <Entry x:Name="selectedFolderNaming"
-                   Placeholder="Name for icon"/>
+                   Placeholder="Name for icon"
+                   Text="{Binding FolderNameText}"/>
 
             </StackLayout>
         </Grid>
@@ -116,7 +124,7 @@
                 Text="Create Folder"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="Fill"
-                Clicked="Handle_Clicked"
+                Command="{Binding CommandSaveClicked}"
                 Grid.Row="2"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"/>

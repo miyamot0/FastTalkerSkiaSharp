@@ -29,6 +29,7 @@ using FastTalkerSkiaSharp.Constants;
 using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Models;
 using Xamarin.Forms;
+using FastTalkerSkiaSharp.ViewModels;
 
 namespace FastTalkerSkiaSharp.Pages
 {
@@ -38,28 +39,9 @@ namespace FastTalkerSkiaSharp.Pages
 
         public List<DisplayImageModel> Images { get; set; }
 
-        private bool needsImage = true;
-
-        private string selectedIconString = "";
-        private IEnumerable<SkiaSharp.Elements.Element> currentFolders;
-
-        private List<string> currentFolderStrings;
-
-        public FolderIconPicker(IEnumerable<SkiaSharp.Elements.Element> currentFolders)
+        public FolderIconPicker()
         {
             InitializeComponent();
-
-            this.currentFolders = currentFolders;
-
-            currentFolderStrings = new List<string>();
-
-            if (currentFolders.Any())
-            {
-                foreach (var folder in currentFolders)
-                {
-                    currentFolderStrings.Add(folder.Text);
-                }
-            }
         }
 
         /// <summary>
@@ -69,70 +51,7 @@ namespace FastTalkerSkiaSharp.Pages
         {
             base.OnAppearing();
 
-            Images = new List<DisplayImageModel>();
-
-            List<string> mFolderIcons = new List<string>() {    "FolderOpenDarkBlue",
-                                                                "FolderOpenDarkPink",
-                                                                "FolderOpenDarkPurple",
-                                                                "FolderOpenGreen",
-                                                                "FolderOpenLightBlue",
-                                                                "FolderOpenRed" };
-
-            foreach (var iconName in mFolderIcons)
-            {
-                Images.Add(new DisplayImageModel
-                {
-                    Image = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng +
-                                                                           "{0}" +
-                                                                           LanguageSettings.ResourceSuffixPng, iconName)),
-                    Name = iconName
-                });
-            }
-
-            customScrollView.ItemsSource = Images;
-        }
-
-        /// <summary>
-        /// Handles the item selected.
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        void Handle_ItemSelected(object sender, Xamarin.Forms.ItemTappedEventArgs e)
-        {
-            needsImage = false;
-
-            selectedIconString = (e.Item as DisplayImageModel).Name;
-
-            previewCurrent.Source = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng +
-                                                                           "{0}" +
-                                                                           LanguageSettings.ResourceSuffixPng, (e.Item as DisplayImageModel).Name));
-        }
-
-        /// <summary>
-        /// Handles the clicked.
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        async void Handle_Clicked(object sender, System.EventArgs e)
-        {
-            if (needsImage || string.IsNullOrWhiteSpace(selectedFolderNaming.Text) || selectedFolderNaming.Text.Trim().Length < 2)
-            {
-                await UserDialogs.Instance.AlertAsync("Please select an imange and enter a folder name with at least three letters.");
-            }
-            else if (currentFolderStrings.Count > 0 && currentFolderStrings.Contains(selectedFolderNaming.Text.Trim()))
-            {
-                await UserDialogs.Instance.AlertAsync("Please pick a folder with a unique name (cannot have two folders with same name).");
-            }
-            else
-            {
-                FolderConstructed(new ArgsSelectedIcon
-                {
-                    Name = selectedFolderNaming.Text.Trim(),
-                    ImageSource = selectedIconString
-                });
-
-                await App.Current.MainPage.Navigation.PopAsync();
-            }
+            (BindingContext as FolderIconPickerViewModel).LoadImagesOnLoad();
         }
     }
 }

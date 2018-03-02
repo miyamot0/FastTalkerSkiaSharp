@@ -311,10 +311,15 @@ namespace FastTalkerSkiaSharp.ViewModels
 
             IEnumerable<SkiaSharp.Elements.Element> foldersInField = controller.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder);
 
-            FolderIconPicker newCommunicationPage = new FolderIconPicker(currentFolders: foldersInField);
-            newCommunicationPage.FolderConstructed += SaveCommunicationIconEvent;
+            FolderIconPickerViewModel viewModel = new FolderIconPickerViewModel(foldersInField);
+            viewModel.FolderConstructed += SaveCommunicationIconEvent;
 
-            await App.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
+            FolderIconPicker folderPicker = new FolderIconPicker()
+            {
+                BindingContext = viewModel
+            };
+
+            await App.Current.MainPage.Navigation.PushAsync(folderPicker);
         }
 
         /// <summary>

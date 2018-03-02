@@ -620,11 +620,6 @@ namespace FastTalkerSkiaSharp.Pages
 
                         viewModel.IconSelected += RestoreIcon;
 
-                        //StoredIconPopup page = new StoredIconPopup(folder: _currentElement.Text, 
-                        //                                           itemsMatching: itemsMatching);
-
-                        //page.IconSelected += RestoreIcon;
-
                         StoredIconPopup page = new StoredIconPopup()
                         {
                             BindingContext = viewModel
@@ -658,18 +653,6 @@ namespace FastTalkerSkiaSharp.Pages
                         };
 
                         viewModel.IconSelected += RestoreIcon;
-
-
-
-
-                        /*
-
-                        StoredIconPopup page = new StoredIconPopup(folder: _currentElement.Text, 
-                                                                   itemsMatching: itemsMatching);
-
-                        page.IconSelected += RestoreIcon;
-
-                        */
 
                         StoredIconPopup page = new StoredIconPopup()
                         {
