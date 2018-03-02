@@ -35,6 +35,7 @@ namespace FastTalkerSkiaSharp.ViewModels
             ButtonDecreaseSize2 = new Command(DecreaseSizeOfIconLarge);
 
             ButtonEditText = new Command(EditIconText);
+            ButtonPinning = new Command(PinIcon);
             ButtonDelete = new Command(DeleteIcon);
         }
 
@@ -155,7 +156,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// <summary>
         /// Confirm deletion
         /// </summary>
-        async void DeleteIcon()
+        void DeleteIcon()
         {
             if (currentElement == null) return;
 
