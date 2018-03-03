@@ -2,13 +2,14 @@
 <pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:constants="clr-namespace:FastTalkerSkiaSharp.Constants;assembly=FastTalkerSkiaSharp"
              HasSystemPadding="{Binding IsSystemPadding}"
              Padding="{Binding Padding}"
              x:Class="FastTalkerSkiaSharp.Pages.ModifyPage">
 
         <StackLayout BackgroundColor="Black"
                      Padding="5,5,5,5"
-                     Opacity="0.95">
+                     Opacity="{x:Static constants:DeviceLayout.DefaultSettingsOpacity}">
             <Grid BackgroundColor="White"
                   HorizontalOptions="FillAndExpand"
                   VerticalOptions="FillAndExpand">
@@ -30,131 +31,125 @@
                        HorizontalTextAlignment="Center"
                        FontSize="Large"
                        FontAttributes="Bold"
+                       Margin="0,5,0,0"
                        Grid.Row="0"
                        Grid.Column="0"
                        Grid.ColumnSpan="3"/>
 
                 <!-- Reset Icon -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="5, 0, 2.5, 5"
                              Grid.Row="1"
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnResetSize"
-                            Text="Reset Size"
+                    <Button Text="Reset Size"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding ButtonResetSize}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
 
                 <!-- Increase Icon Size + 10% -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="2.5, 0, 2.5, 5"
                              Grid.Row="1"
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnGrow"
-                            Text="Increase Size 10%"
+                    <Button Text="Increase Size 10%"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding ButtonIncreaseSize}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
 
                 <!-- Increase Icon Size + 50% -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="2.5, 0, 5, 5"
                              Grid.Row="1"
                              Grid.Column="2"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnGrow2"
-                            Text="Increase Size 50%"
+                    <Button Text="Increase Size 50%"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding ButtonIncreaseSize2}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
 
                 <!-- Edit Icon Text -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="5, 0, 2.5, 5"
                              Grid.Row="2"
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnEditText"
-                            Text="Edit Icon Text"
+                    <Button Text="Edit Icon Text"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding ButtonEditText}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
 
                 <!-- Decrease Icon Size - 10% -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="2.5, 0, 2.5, 5"
                              Grid.Row="2"
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnShrink"
-                            Text="Decrease Size 10%"
+                    <Button Text="Decrease Size 10%"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding ButtonDecreaseSize}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
 
                 <!-- Decrease Icon Size - 50% -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="2.5, 0, 5, 5"
                              Grid.Row="2"
                              Grid.Column="2"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnShrink2"
-                            Text="Decrease Size 50%"
+                    <Button Text="Decrease Size 50%"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding ButtonDecreaseSize2}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
 
                 <!-- Edit Pinning Status -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="5, 0, 2.5, 5"
                              Grid.Row="3"
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnPin"
-                            Text="Pinning Icon"
+                    <Button Text="Pinning Icon"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding ButtonPinning}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
 
                 <!-- Edit Pinning Status -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="2.5, 0, 2.5, 5"
                              Grid.Row="3"
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
@@ -165,8 +160,8 @@
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding ButtonDelete}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
             </Grid>
         </StackLayout>
