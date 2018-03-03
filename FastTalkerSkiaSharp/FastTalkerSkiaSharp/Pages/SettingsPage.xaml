@@ -2,16 +2,18 @@
 <pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:constants="clr-namespace:FastTalkerSkiaSharp.Constants;assembly=FastTalkerSkiaSharp"
              HasSystemPadding="{Binding IsSystemPadding}"
              Padding="{Binding Padding}"
              x:Class="FastTalkerSkiaSharp.Pages.SettingsPage">
 
         <StackLayout BackgroundColor="Black"
                      Padding="5,5,5,5"
-                     Opacity="0.95">
+                     Opacity="{x:Static constants:DeviceLayout.DefaultSettingsOpacity}">
             <Grid BackgroundColor="White"
                   HorizontalOptions="FillAndExpand"
                   VerticalOptions="FillAndExpand">
+            
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -30,168 +32,160 @@
                        HorizontalTextAlignment="Center"
                        FontSize="Large"
                        FontAttributes="Bold"
+                       Margin="0,5,0,0"
                        Grid.Row="0"
                        Grid.Column="0"
                        Grid.ColumnSpan="3"/>
 
                 <!-- Saving board -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="5, 0, 2.5, 5"
                              Grid.Row="1"
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnSave"
-                            Text="Resume User Operation"
+                    <Button Text="Resume User Operation"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding CommandSaveBoard}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
 
                 <!-- Deselecting behavior -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="2.5, 0, 2.5, 5"
                              Grid.Row="1"
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnDeselect"
-                            Text="{Binding DeselectText}"
+                    <Button Text="{Binding DeselectText}"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding CommandDeselecting}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
 
                 <!-- Interaction mode -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="2.5, 0, 5, 5"
                              Grid.Row="1"
                              Grid.Column="2"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnMode"
-                            Text="{Binding ModeText}"
+                    <Button Text="{Binding ModeText}"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding CommandOperatingMode}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
             
                 <!-- Add Local Image -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="5, 0, 2.5, 5"
                              Grid.Row="2"
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnAddLocal"
-                            Text="Add Local Image"
+                    <Button Text="Add Local Image"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding CommandAddIconLocal}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
 
                 <!-- Take Photo -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="2.5, 0, 2.5, 5"
                              Grid.Row="2"
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnTakePhoto"
-                            Text="Take Photo"
+                    <Button Text="Take Photo"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding CommandAddIconPhoto}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
 
                 <!-- Add Stored Image -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="2.5, 0, 5, 5"
                              Grid.Row="2"
                              Grid.Column="2"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnAddSaved"
-                            Text="Add Stored Image"
+                    <Button Text="Add Stored Image"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding CommandAddIconStored}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
 
                 <!-- Add Folder -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="5, 0, 2.5, 0"
                              Grid.Row="3"
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnAddFolder"
-                            Text="Add Folder"
+                    <Button Text="Add Folder"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding CommandAddFolder}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
             
                 <!-- Show Help -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="2.5, 0, 2.5, 0"
                              Grid.Row="3"
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnHelp"
-                            Text="Show Help"
+                    <Button Text="Show Help"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding CommandHelp}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
             
                 <!-- Show Info -->
-                <StackLayout Margin="5"
+                <StackLayout Margin="2.5, 0, 5, 0"
                              Grid.Row="3"
                              Grid.Column="2"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button x:Name="btnAbout"
-                            Text="About"
+                    <Button Text="About"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             BorderColor="{StaticResource GlobalBorderColor}"
                             BackgroundColor="{StaticResource GlobalButtonColor}"
                             Command="{Binding CommandAbout}"
-                            BorderWidth="1"
-                            BorderRadius="2"/>
+                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
+                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
                 </StackLayout>
 
                 <!-- Save button settings -->
-                <Button x:Name="btnSaveSettings"
-                        Grid.Row="4"
+                <Button Grid.Row="4"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
+                        Margin="5, 0, 5, 2.5"
                         Command="{Binding CommandClose}"
                         Text="Save and Close"/>
             </Grid>

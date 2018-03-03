@@ -4,7 +4,7 @@
              x:Class="FastTalkerSkiaSharp.App">
 	<Application.Resources>
 
-        <ResourceDictionary>
+        <ResourceDictionary>            
             <Color x:FactoryMethod="FromHex" 
                    x:Key="GlobalButtonColor">
                 <x:Arguments><x:String>#C7E8EA</x:String></x:Arguments>
