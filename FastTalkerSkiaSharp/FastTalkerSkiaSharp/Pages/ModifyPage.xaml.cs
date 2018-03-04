@@ -15,7 +15,7 @@ namespace FastTalkerSkiaSharp.Pages
             BindingContext = new ModifyIconViewModel(_currentElement, _controller)
             {
                 Padding = new Thickness(125, 125, 125, 125),
-                IsSystemPadding = true
+                IsSystemPadding = false
             };
         }
     }
