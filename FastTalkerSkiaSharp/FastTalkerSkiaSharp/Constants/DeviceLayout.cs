@@ -45,11 +45,6 @@ namespace FastTalkerSkiaSharp.Constants
 
         public const float TextSizeDefault = 18f;
 
-        public const int DefaultBorderRadius = 20;
-        public const double DefaultBorderWidth = 1;
-        public const double DefaultSettingsOpacity = 0.9;
-
-
         public static SKPoint GetCenterPoint(SKSize deviceSize)
         {
             return new SKPoint(deviceSize.Width / 2f, deviceSize.Height / 2f);

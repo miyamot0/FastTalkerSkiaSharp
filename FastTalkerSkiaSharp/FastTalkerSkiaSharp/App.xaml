@@ -4,7 +4,20 @@
              x:Class="FastTalkerSkiaSharp.App">
 	<Application.Resources>
 
-        <ResourceDictionary>            
+        <ResourceDictionary>
+            
+            <!-- Pop up theming -->
+            
+            <Thickness x:Key="PopupMarginLeft">10,0,5,5</Thickness>
+            <Thickness x:Key="PopupMarginRight">5,0,10,5</Thickness>
+            <Thickness x:Key="PopupMarginCenter">5,0,5,5</Thickness>
+
+            <Thickness x:Key="PopupFramePadding">5,5,5,5</Thickness>
+            <Thickness x:Key="PopupInnerMargin">0,0,0,5</Thickness>
+
+            <Color x:Key="PopupFrameBorderColor">Black</Color>
+            <Color x:Key="PopupFrameInnerColor">White</Color>
+
             <Color x:FactoryMethod="FromHex" 
                    x:Key="GlobalButtonColor">
                 <x:Arguments><x:String>#C7E8EA</x:String></x:Arguments>
@@ -13,6 +26,29 @@
                    x:Key="GlobalBorderColor">
                 <x:Arguments><x:String>#000000</x:String></x:Arguments>
             </Color>
+            
+            <!-- Pop up button theming -->
+            <Style x:Key="popUpButtonStyle" TargetType="Button">
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="BorderColor" Value="Transparent" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+            </Style>
+            
+            <!-- Pop up frame theming -->
+            <Style x:Key="popUpFrameStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource GlobalButtonColor}" />
+                <Setter Property="CornerRadius" Value="20" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            </Style>
+            
+            <!-- Pop up layout theming -->
+            <Style x:Key="popUpStackLayoutStyle" TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="{StaticResource PopupFrameBorderColor}" />
+                <Setter Property="Padding" Value="{StaticResource PopupFramePadding}" />
+                <Setter Property="Opacity" Value="0.9" />
+            </Style>
         </ResourceDictionary>
 
 	</Application.Resources>

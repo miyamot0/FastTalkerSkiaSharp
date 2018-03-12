@@ -2,16 +2,14 @@
 <pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
-             xmlns:constants="clr-namespace:FastTalkerSkiaSharp.Constants;assembly=FastTalkerSkiaSharp"
              HasSystemPadding="{Binding IsSystemPadding}"
              Padding="{Binding Padding}"
              x:Class="FastTalkerSkiaSharp.Pages.ModifyPage">
 
-        <StackLayout BackgroundColor="Black"
-                     Padding="5,5,5,5"
-                     Opacity="{x:Static constants:DeviceLayout.DefaultSettingsOpacity}">
-            <Grid BackgroundColor="White"
+        <StackLayout Style="{StaticResource popUpStackLayoutStyle}">
+            <Grid BackgroundColor="{StaticResource PopupFrameInnerColor}"
                   HorizontalOptions="FillAndExpand"
+                  Padding="{StaticResource PopupInnerMargin}"
                   VerticalOptions="FillAndExpand">
 
                 <Grid.RowDefinitions>
@@ -37,131 +35,107 @@
                        Grid.ColumnSpan="3"/>
 
                 <!-- Reset Icon -->
-                <StackLayout Margin="5, 0, 2.5, 5"
+                <StackLayout Margin="{StaticResource PopupMarginLeft}"
                              Grid.Row="1"
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button Text="Reset Size"
-                            VerticalOptions="FillAndExpand"
-                            HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource GlobalBorderColor}"
-                            BackgroundColor="{StaticResource GlobalButtonColor}"
-                            Command="{Binding ButtonResetSize}"
-                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
-                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
+                    <Frame Style="{StaticResource popUpFrameStyle}">
+                        <Button Text="Reset Size"
+                                Style="{StaticResource popUpButtonStyle}"
+                                Command="{Binding ButtonResetSize}"/>
+                    </Frame>
                 </StackLayout>
-
+                
                 <!-- Increase Icon Size + 10% -->
-                <StackLayout Margin="2.5, 0, 2.5, 5"
+                <StackLayout Margin="{StaticResource PopupMarginCenter}"
                              Grid.Row="1"
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button Text="Increase Size 10%"
-                            VerticalOptions="FillAndExpand"
-                            HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource GlobalBorderColor}"
-                            BackgroundColor="{StaticResource GlobalButtonColor}"
-                            Command="{Binding ButtonIncreaseSize}"
-                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
-                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
+                    <Frame Style="{StaticResource popUpFrameStyle}">
+                        <Button Text="Increase Size 10%"
+                                Style="{StaticResource popUpButtonStyle}"
+                                Command="{Binding ButtonIncreaseSize}"/>
+                    </Frame>
                 </StackLayout>
 
                 <!-- Increase Icon Size + 50% -->
-                <StackLayout Margin="2.5, 0, 5, 5"
+                <StackLayout Margin="{StaticResource PopupMarginRight}"
                              Grid.Row="1"
                              Grid.Column="2"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button Text="Increase Size 50%"
-                            VerticalOptions="FillAndExpand"
-                            HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource GlobalBorderColor}"
-                            BackgroundColor="{StaticResource GlobalButtonColor}"
-                            Command="{Binding ButtonIncreaseSize2}"
-                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
-                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
+                    <Frame Style="{StaticResource popUpFrameStyle}">
+                        <Button Text="Increase Size 50%"
+                                Style="{StaticResource popUpButtonStyle}"
+                                Command="{Binding ButtonIncreaseSize2}"/>
+                    </Frame>
                 </StackLayout>
 
                 <!-- Edit Icon Text -->
-                <StackLayout Margin="5, 0, 2.5, 5"
+                <StackLayout Margin="{StaticResource PopupMarginLeft}"
                              Grid.Row="2"
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button Text="Edit Icon Text"
-                            VerticalOptions="FillAndExpand"
-                            HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource GlobalBorderColor}"
-                            BackgroundColor="{StaticResource GlobalButtonColor}"
-                            Command="{Binding ButtonEditText}"
-                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
-                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
+                    <Frame Style="{StaticResource popUpFrameStyle}">
+                        <Button Text="Edit Icon Text"
+                                Style="{StaticResource popUpButtonStyle}"
+                                Command="{Binding ButtonEditText}"/>
+                    </Frame>
                 </StackLayout>
 
                 <!-- Decrease Icon Size - 10% -->
-                <StackLayout Margin="2.5, 0, 2.5, 5"
+                <StackLayout Margin="{StaticResource PopupMarginCenter}"
                              Grid.Row="2"
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button Text="Decrease Size 10%"
-                            VerticalOptions="FillAndExpand"
-                            HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource GlobalBorderColor}"
-                            BackgroundColor="{StaticResource GlobalButtonColor}"
-                            Command="{Binding ButtonDecreaseSize}"
-                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
-                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
+                    <Frame Style="{StaticResource popUpFrameStyle}">
+                        <Button Text="Decrease Size 10%"
+                                Style="{StaticResource popUpButtonStyle}"
+                                Command="{Binding ButtonDecreaseSize}"/>
+                    </Frame>                    
                 </StackLayout>
 
                 <!-- Decrease Icon Size - 50% -->
-                <StackLayout Margin="2.5, 0, 5, 5"
+                <StackLayout Margin="{StaticResource PopupMarginRight}"
                              Grid.Row="2"
                              Grid.Column="2"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button Text="Decrease Size 50%"
-                            VerticalOptions="FillAndExpand"
-                            HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource GlobalBorderColor}"
-                            BackgroundColor="{StaticResource GlobalButtonColor}"
-                            Command="{Binding ButtonDecreaseSize2}"
-                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
-                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
+                    <Frame Style="{StaticResource popUpFrameStyle}">
+                        <Button Text="Decrease Size 50%"
+                                Style="{StaticResource popUpButtonStyle}"
+                                Command="{Binding ButtonDecreaseSize2}"/>
+                    </Frame>
                 </StackLayout>
 
                 <!-- Edit Pinning Status -->
-                <StackLayout Margin="5, 0, 2.5, 5"
+                <StackLayout Margin="{StaticResource PopupMarginLeft}"
                              Grid.Row="3"
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button Text="Pinning Icon"
-                            VerticalOptions="FillAndExpand"
-                            HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource GlobalBorderColor}"
-                            BackgroundColor="{StaticResource GlobalButtonColor}"
-                            Command="{Binding ButtonPinning}"
-                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
-                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
+                    <Frame Style="{StaticResource popUpFrameStyle}">
+                        <Button Text="Pinning Icon"
+                                Style="{StaticResource popUpButtonStyle}"
+                                Command="{Binding ButtonPinning}"/>
+                    </Frame>
                 </StackLayout>
 
                 <!-- Edit Pinning Status -->
-                <StackLayout Margin="2.5, 0, 2.5, 5"
+                <StackLayout Margin="{StaticResource PopupMarginCenter}"
                              Grid.Row="3"
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Button Text="Delete Icon"
-                            VerticalOptions="FillAndExpand"
-                            HorizontalOptions="FillAndExpand"
-                            BorderColor="{StaticResource GlobalBorderColor}"
-                            BackgroundColor="{StaticResource GlobalButtonColor}"
-                            Command="{Binding ButtonDelete}"
-                            BorderWidth="{x:Static constants:DeviceLayout.DefaultBorderWidth}"
-                            BorderRadius="{x:Static constants:DeviceLayout.DefaultBorderRadius}"/>
+                    <Frame Style="{StaticResource popUpFrameStyle}">
+                        <Button Text="Delete Icon"
+                                Style="{StaticResource popUpButtonStyle}"
+                                Command="{Binding ButtonDelete}"/>
+                    </Frame>
                 </StackLayout>
             </Grid>
         </StackLayout>
