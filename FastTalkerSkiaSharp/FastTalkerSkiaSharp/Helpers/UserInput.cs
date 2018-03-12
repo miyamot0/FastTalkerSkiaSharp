@@ -61,6 +61,8 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="saveSettingsAsync">Save settings async.</param>
         public async void QueryUserMainSettingsAsync()
         {
+            if (AreModalsOpen()) return;
+
             SettingsPageViewModel viewModel = new SettingsPageViewModel(canvasRef.Controller)
             {
                 Padding = new Thickness(100, 100, 100, 100),
@@ -116,6 +118,11 @@ namespace FastTalkerSkiaSharp.Helpers
             canvasRef.Elements.Add(App.ImageBuilderInstance.BuildCommunicationFolderLocal(obj));
 
             canvasRef.Controller.PromptResave();
+        }
+
+        public bool AreModalsOpen()
+        {
+            return PopupNavigation.Instance.PopupStack.Count > 0;
         }
 
         /// <summary>

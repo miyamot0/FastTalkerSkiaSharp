@@ -506,6 +506,8 @@ namespace FastTalkerSkiaSharp.Pages
                 case (int)SkiaSharp.Elements.CanvasView.Role.Communication:
                     if (canvas.Controller.InEditMode && !hasMoved)
                     {
+                        if (App.UserInputInstance.AreModalsOpen()) return;
+
                         Debug.WriteLineIf(outputVerbose, "Completed icon tap");
 
                         ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
@@ -516,6 +518,8 @@ namespace FastTalkerSkiaSharp.Pages
                              !_currentElement.IsInsertableIntoFolder && 
                              DateTime.Now.Subtract(itemPressTime).Seconds > 3)
                     {
+                        if (App.UserInputInstance.AreModalsOpen()) return;
+
                         Debug.WriteLineIf(outputVerbose, "Completed icon held > 3s");
 
                         ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
@@ -541,6 +545,8 @@ namespace FastTalkerSkiaSharp.Pages
                 case (int)SkiaSharp.Elements.CanvasView.Role.Folder:
                     if (canvas.Controller.InEditMode && !hasMoved)
                     {
+                        if (App.UserInputInstance.AreModalsOpen()) return;
+
                         Debug.WriteLineIf(outputVerbose, "Completed folder tap");
 
                         ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
@@ -551,6 +557,8 @@ namespace FastTalkerSkiaSharp.Pages
                     }
                     else if (canvas.Controller.InEditMode && DateTime.Now.Subtract(itemPressTime).Seconds > 3)
                     {
+                        if (App.UserInputInstance.AreModalsOpen()) return;
+
                         Debug.WriteLineIf(outputVerbose, "Completed folder hold");
 
                         ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
@@ -562,6 +570,8 @@ namespace FastTalkerSkiaSharp.Pages
 
                     if (!canvas.Controller.InEditMode && !hasMoved)
                     {
+                        if (App.UserInputInstance.AreModalsOpen()) return;
+
                         Debug.WriteLineIf(outputVerbose, "Hit a folder, in user mode: " + _currentElement.Text);
 
                         // This is where the current item is the folder in question
@@ -596,6 +606,8 @@ namespace FastTalkerSkiaSharp.Pages
                     }
                     else if (!canvas.Controller.InEditMode && DateTime.Now.Subtract(itemPressTime).Seconds > 3)
                     {
+                        if (App.UserInputInstance.AreModalsOpen()) return;
+
                         Debug.WriteLineIf(outputVerbose, "Held a folder, in user mode: " + _currentElement.Text);
 
                         // This is where the current item is the folder in question
