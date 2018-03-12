@@ -33,7 +33,9 @@ using Xamarin.Forms;
 [assembly: Dependency(typeof(FastTalkerSkiaSharp.Droid.Implementations.ImplementationSpeechOutput))]
 namespace FastTalkerSkiaSharp.Droid.Implementations
 {
+#pragma warning disable CS0618
     public class ImplementationSpeechOutput : Java.Lang.Object, InterfaceSpeechOutput, TextToSpeech.IOnInitListener, TextToSpeech.IOnUtteranceCompletedListener
+#pragma warning restore CS0618 
     {
         private TextToSpeech speaker;
         private string toSpeak;
@@ -41,18 +43,18 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
 
         public ImplementationSpeechOutput() { }
 
-        [Obsolete("Message")]
         public void SpeakText(string text)
         {
-            var ctx = Forms.Context;
             toSpeak = text;
             if (speaker == null)
             {
-                AudioManager am = (AudioManager)ctx.GetSystemService(Context.AudioService);
+                AudioManager am = (AudioManager)Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.GetSystemService(Context.AudioService);
                 int amStreamMusicMaxVol = am.GetStreamMaxVolume(Android.Media.Stream.Music);
                 am.SetStreamVolume(Stream.Music, amStreamMusicMaxVol, 0);
-                speaker = new TextToSpeech(ctx, this);
+                speaker = new TextToSpeech(Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity, this);
+#pragma warning disable CS0618 // Legacy support
                 speaker.SetOnUtteranceCompletedListener(this);
+#pragma warning restore  CS0618
             }
             else
             {
@@ -64,7 +66,6 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         /// Finished listener
         /// </summary>
         /// <param name="utteranceId"></param>
-        [Obsolete("Message")]
         public void OnUtteranceCompleted(string utteranceId)
         {
             isSpeaking = false;
@@ -76,7 +77,6 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         /// After init, echo out speech
         /// </summary>
         /// <param name="status"></param>
-        [Obsolete("Message")]
         public void OnInit(OperationResult status)
         {
             if (status.Equals(OperationResult.Success))
@@ -91,7 +91,6 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         /// Route speech to suitable Api 
         /// </summary>
         /// <param name="text"></param>
-        [Obsolete("Message")]
         private void SpeakRoute(string text)
         {
             if (isSpeaking) return;
@@ -110,14 +109,15 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         /// Obsolete method call for TTS, necessary for legacy devices
         /// </summary>
         /// <param name="text"></param>
-        [Obsolete("Message")]
         private void ApiUnder20(string text)
         {
             isSpeaking = true;
 
             Dictionary<string, string> map = new Dictionary<string, string>();
             map.Add(TextToSpeech.Engine.KeyParamUtteranceId, "MessageId");
+#pragma warning disable CS0618 // Legacy support
             speaker.Speak(text, QueueMode.Flush, map);
+#pragma warning restore  CS0618
         }
 
         /// <summary>
