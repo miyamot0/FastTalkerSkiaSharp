@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Models;
 using Rg.Plugins.Popup.Services;
@@ -33,14 +32,8 @@ namespace FastTalkerSkiaSharp.ViewModels
 
         public StoredIconPopupViewModel() { }
 
-        async public void LoadInformationAsync(StackLayout coreLayout)
+        public void LoadInformationAsync(StackLayout coreLayout)
         {
-            while (coreLayout.Width == 0 || coreLayout.Width == -1)
-            {
-                await Task.Delay(50);
-                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "waiting...");
-            }
-
             if (Rows == null)
             {
                 Rows = new ObservableCollection<DisplayImageRowModel>();

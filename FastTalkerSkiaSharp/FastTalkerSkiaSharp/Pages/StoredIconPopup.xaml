@@ -6,11 +6,8 @@
              xmlns:ctrl="clr-namespace:FastTalkerSkiaSharp.Controls;assembly=FastTalkerSkiaSharp"
              HasSystemPadding="{Binding IsSystemPadding}"
              Padding="{Binding Padding}">
-    
-    <StackLayout VerticalOptions="FillAndExpand" 
-               HorizontalOptions="FillAndExpand" 
-               Padding="5,5,5,5" 
-               BackgroundColor="Black">
+
+    <StackLayout Style="{StaticResource popUpStoredIconLayoutStyle}">
 
         <StackLayout x:Name="coreLayout"
                      BackgroundColor="White" 

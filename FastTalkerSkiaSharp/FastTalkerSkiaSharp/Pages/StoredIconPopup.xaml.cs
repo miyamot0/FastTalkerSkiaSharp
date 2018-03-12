@@ -21,16 +21,7 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using Rg.Plugins.Popup.Pages;
-using Rg.Plugins.Popup.Services;
-using Xamarin.Forms;
-using FastTalkerSkiaSharp.Models;
-using System.Diagnostics;
-using FastTalkerSkiaSharp.Helpers;
-using System.Threading.Tasks;
 using FastTalkerSkiaSharp.ViewModels;
 
 namespace FastTalkerSkiaSharp.Pages
@@ -42,12 +33,9 @@ namespace FastTalkerSkiaSharp.Pages
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Ons the appearing.
-        /// </summary>
-        protected override void OnAppearing()
+        protected override void OnAppearingAnimationEnd()
         {
-            base.OnAppearing();
+            base.OnAppearingAnimationEnd();
 
             (BindingContext as StoredIconPopupViewModel).LoadInformationAsync(coreLayout);
         }

@@ -49,6 +49,13 @@
                 <Setter Property="Padding" Value="{StaticResource PopupFramePadding}" />
                 <Setter Property="Opacity" Value="0.9" />
             </Style>
+
+            <!-- Stored icon pop up layout theming -->
+            <Style x:Key="popUpStoredIconLayoutStyle" TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="{StaticResource PopupFrameBorderColor}" />
+                <Setter Property="Padding" Value="{StaticResource PopupFramePadding}" />
+                <Setter Property="Opacity" Value="1" />
+            </Style>
         </ResourceDictionary>
 
 	</Application.Resources>
