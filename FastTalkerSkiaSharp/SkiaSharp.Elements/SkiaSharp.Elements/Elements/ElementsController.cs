@@ -187,14 +187,6 @@ namespace SkiaSharp.Elements
 
                     continue;
                 }
-                /*
-                else if (element.Tag == (int)CanvasView.Role.Delete && !InEditMode)
-                {
-                    // Pass if not needed
-
-                    continue;
-                }
-                */
                 else if (element.Tag == (int)CanvasView.Role.SentenceFrame && !InFramedMode)
                 {
                     // Pass if not needed

@@ -286,6 +286,10 @@ namespace SkiaSharp.Elements
         {
             if (this.IsStoredInAFolder) return;
 
+            if (Tag == (int)CanvasView.Role.Settings && !ParentController.InEditMode) return;
+
+            if (Tag == (int)CanvasView.Role.SentenceFrame && !ParentController.InFramedMode) return;
+
             if (_suspendDrawBeforeAfter == 0)
             {
                 if (Transformation != null)
