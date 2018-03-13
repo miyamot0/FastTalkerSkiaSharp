@@ -1,5 +1,4 @@
-﻿using SkiaSharp.Elements.Events;
-using SkiaSharp.Elements.Extensions;
+﻿using SkiaSharp.Elements.Extensions;
 using SkiaSharp.Elements.Interfaces;
 
 namespace SkiaSharp.Elements
@@ -438,10 +437,5 @@ namespace SkiaSharp.Elements
         }
 
         #endregion Private methods
-
-        //#region Events        
-        //public event ElementDrawEventHandler OnDrawBefore;
-        //public event ElementDrawEventHandler OnDrawAfter;
-        //#endregion Events
     }
 }
