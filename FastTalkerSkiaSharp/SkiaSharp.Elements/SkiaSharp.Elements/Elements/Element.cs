@@ -91,6 +91,20 @@ namespace SkiaSharp.Elements
 
         public float CurrentScale { get; set; }
 
+        ElementsController _parentController = null;
+        ElementsController ParentController
+        {
+            get
+            {
+                if (_parentController == null)
+                {
+                    _parentController = GetController();
+                }
+
+                return _parentController;
+            }
+        }
+
         private int _tag;
         public int Tag
         {
@@ -287,9 +301,9 @@ namespace SkiaSharp.Elements
                 {
                     using (var paint = new SKPaint())
                     {
-                        var controller = GetController();
+                        //var controller = GetController();
 
-                        if (controller.InFramedMode)
+                        if (ParentController.InFramedMode)
                         {
                             if (IsSpeakable)
                             {
@@ -310,7 +324,7 @@ namespace SkiaSharp.Elements
                             {
                                 paint.Color = SKColors.Orange;
                             }
-                            else if (IsMainIconInPlay && !controller.IconModeAuto)
+                            else if (IsMainIconInPlay && !ParentController.IconModeAuto)
                             {
                                 paint.Color = SKColors.GreenYellow;
                             }
@@ -354,12 +368,7 @@ namespace SkiaSharp.Elements
                 }
                 else if (this.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
                 {
-                    using (var paint = new SKPaint())
-                    {
-                        paint.Color = SKColors.White;
-
-                        canvas.DrawRect(_bounds, paint);
-                    }
+                    canvas.DrawRect(_bounds, ParentController.PaintWhite);
                 }
 
                 OnDrawBefore?.Invoke(this, new ElementDrawEventArgs(canvas));

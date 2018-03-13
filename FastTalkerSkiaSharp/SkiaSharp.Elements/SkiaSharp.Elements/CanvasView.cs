@@ -12,10 +12,9 @@ namespace SkiaSharp.Elements
             Communication,  // Dynamic, based on settings
             Display,        // Aesthetic, for decoration
             Emitter,        // For speech
-            SentenceFrame,
-            Settings,
-            //Delete,
-            Folder
+            SentenceFrame,  // For framed speech
+            Settings,       // Access settings
+            Folder          // Folder icon
         }
 
         #region Constructors

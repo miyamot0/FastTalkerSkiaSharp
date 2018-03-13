@@ -94,8 +94,30 @@ namespace SkiaSharp.Elements
         }
 
         public ElementsCollection Elements { get; }
-        
+
         #endregion Properties
+
+        #region Coloring
+
+        SKPaint _paintWhite;
+        public SKPaint PaintWhite
+        {
+            get
+            {
+                if (_paintWhite == null)
+                {
+                    _paintWhite = new SKPaint()
+                    {
+                        Color = SKColors.White
+                    };
+                }
+
+                return _paintWhite;
+            }
+        }
+
+        #endregion 
+
 
         #region Public methods
 
