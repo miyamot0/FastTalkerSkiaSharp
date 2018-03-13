@@ -28,6 +28,7 @@
 
 */
 
+using FastTalkerSkiaSharp.Elements;
 using SkiaSharp.Elements.Extensions;
 using SkiaSharp.Elements.Interfaces;
 
@@ -313,9 +314,9 @@ namespace SkiaSharp.Elements
         {
             if (this.IsStoredInAFolder) return;
 
-            if (Tag == (int)CanvasView.Role.Settings && !ParentController.InEditMode) return;
+            if (Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Settings) && !ParentController.InEditMode) return;
 
-            if (Tag == (int)CanvasView.Role.SentenceFrame && !ParentController.InFramedMode) return;
+            if (Tag == ElementRoles.GetRoleInt(ElementRoles.Role.SentenceFrame) && !ParentController.InFramedMode) return;
 
             if (_suspendDrawBeforeAfter == 0)
             {
@@ -328,7 +329,7 @@ namespace SkiaSharp.Elements
                 }
 
                 // This is the communication tag, w/o access to the other projects
-                if (this.Tag == (int) SkiaSharp.Elements.CanvasView.Role.Communication)
+                if (this.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication))
                 {
                     if (ParentController.InFramedMode)
                     {
@@ -378,7 +379,7 @@ namespace SkiaSharp.Elements
                                             ParentController.PaintBlackStroke);
                     }
                 }
-                else if (this.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
+                else if (this.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder))
                 {
                     canvas.DrawRect(_bounds, ParentController.PaintWhite);
                 }

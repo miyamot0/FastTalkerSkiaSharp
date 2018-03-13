@@ -28,6 +28,7 @@
 
 */
 
+using FastTalkerSkiaSharp.Elements;
 using SkiaSharp.Elements.Collections;
 using SkiaSharp.Elements.Interfaces;
 using System;
@@ -281,19 +282,19 @@ namespace SkiaSharp.Elements
         {
             foreach (var element in Elements)
             {
-                if (element.Tag == (int) CanvasView.Role.Settings && !InEditMode)
+                if (element.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Settings) && !InEditMode)
                 {
                     // Pass if not needed
 
                     continue;
                 }
-                else if (element.Tag == (int)CanvasView.Role.SentenceFrame && !InFramedMode)
+                else if (element.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.SentenceFrame) && !InFramedMode)
                 {
                     // Pass if not needed
 
                     continue;
                 }
-                else if (element.Tag == (int)CanvasView.Role.Communication && element.IsStoredInAFolder)
+                else if (element.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication) && element.IsStoredInAFolder)
                 {
                     // Pass if not needed
 

@@ -10,17 +10,6 @@ namespace SkiaSharp.Elements
 {
     public class CanvasView : SKCanvasView
     {
-        public enum Role
-        {
-            Control,        // Fixed, user behavior
-            Communication,  // Dynamic, based on settings
-            Display,        // Aesthetic, for decoration
-            Emitter,        // For speech
-            SentenceFrame,  // For framed speech
-            Settings,       // Access settings
-            Folder          // Folder icon
-        }
-
         public CanvasView()
 		{
             _controller = new ElementsController();
