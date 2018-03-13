@@ -101,7 +101,7 @@ namespace SkiaSharp.Elements
                     element.Draw(canvas);
                 }
 
-                DrawAfter(canvas);
+                //DrawAfter(canvas);
             }
         }
 

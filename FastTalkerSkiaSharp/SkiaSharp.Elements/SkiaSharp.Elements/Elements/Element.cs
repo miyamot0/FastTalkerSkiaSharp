@@ -301,8 +301,6 @@ namespace SkiaSharp.Elements
                 {
                     using (var paint = new SKPaint())
                     {
-                        //var controller = GetController();
-
                         if (ParentController.InFramedMode)
                         {
                             if (IsSpeakable)
@@ -375,6 +373,7 @@ namespace SkiaSharp.Elements
             }
         }
 
+        /*
         protected void DrawAfter(SKCanvas canvas)
         {
             if (this.IsStoredInAFolder) return;
@@ -393,6 +392,7 @@ namespace SkiaSharp.Elements
                 OnDrawAfter?.Invoke(this, new ElementDrawEventArgs(canvas));
             }
         }
+        */
 
         protected void SuspendDrawBeforeAfter()
         {
@@ -479,7 +479,7 @@ namespace SkiaSharp.Elements
         
         public event ElementDrawEventHandler OnDrawBefore;
 
-        public event ElementDrawEventHandler OnDrawAfter;
+        //public event ElementDrawEventHandler OnDrawAfter;
 
         #endregion Events
     }

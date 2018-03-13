@@ -152,7 +152,7 @@ namespace SkiaSharp.Elements
                 }
             }
                 
-            DrawAfter(canvas);
+            //DrawAfter(canvas);
         }
 
         public void Dispose()

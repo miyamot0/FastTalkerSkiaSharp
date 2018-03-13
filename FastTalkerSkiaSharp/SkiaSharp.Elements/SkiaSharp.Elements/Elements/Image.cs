@@ -108,7 +108,7 @@
                         }
                     }
                 }
-                DrawAfter(canvas);
+                //DrawAfter(canvas);
             }
         }
 

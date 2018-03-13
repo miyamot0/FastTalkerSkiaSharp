@@ -122,7 +122,7 @@
                     }
                 }
                 
-                DrawAfter(canvas);
+                //DrawAfter(canvas);
             }
         }
 

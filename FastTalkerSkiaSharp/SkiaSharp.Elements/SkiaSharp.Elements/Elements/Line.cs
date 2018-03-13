@@ -95,7 +95,7 @@
                 canvas.DrawLine(Point1.X, Point1.Y, Point2.X, Point2.Y, paint);
             }
                 
-            DrawAfter(canvas);
+            //DrawAfter(canvas);
         }
 
         #endregion Public methods
