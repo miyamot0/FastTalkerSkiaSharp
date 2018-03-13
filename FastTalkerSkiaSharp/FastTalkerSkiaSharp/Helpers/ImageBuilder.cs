@@ -29,6 +29,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Linq;
 using Acr.UserDialogs;
+using FastTalkerSkiaSharp.Elements;
 
 namespace FastTalkerSkiaSharp.Helpers
 {
@@ -66,7 +67,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 BorderColor = new SkiaSharp.SKColor(SkiaSharp.SKColors.Black.Red,
                                                     SkiaSharp.SKColors.Black.Green,
                                                     SkiaSharp.SKColors.Black.Blue, 200),
-                Tag = (int)SkiaSharp.Elements.CanvasView.Role.SentenceFrame,
+                Tag = ElementRoles.GetRoleInt(ElementRoles.Role.SentenceFrame),
                 IsStoredInAFolder = false,
             };
         }
@@ -390,7 +391,7 @@ namespace FastTalkerSkiaSharp.Helpers
         {
             var item = new FastTalkerSkiaSharp.Storage.CommunicationIcon()
             {
-                Tag = (int)SkiaSharp.Elements.CanvasView.Role.Communication,
+                Tag = ElementRoles.GetRoleInt(ElementRoles.Role.Communication),
                 Text = selectedIconArgs.Name,
                 Local = true,
                 IsStoredInFolder = false,
@@ -496,7 +497,7 @@ namespace FastTalkerSkiaSharp.Helpers
         {
             var item = new FastTalkerSkiaSharp.Storage.CommunicationIcon()
             {
-                Tag = (int)SkiaSharp.Elements.CanvasView.Role.Folder,
+                Tag = ElementRoles.GetRoleInt(ElementRoles.Role.Folder),
                 Text = selectedIconArgs.Name,
                 Local = true,
                 IsStoredInFolder = false,
@@ -548,7 +549,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 case LanguageSettings.EditText:
                     newText = await App.UserInputInstance.ModifyIconTextAsync(newText);
 
-                    if (element.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder &&  canvasReference.Elements.Where(elem => elem.Text == newText).Any())
+                    if (element.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder) &&  canvasReference.Elements.Where(elem => elem.Text == newText).Any())
                     {
                         await UserDialogs.Instance.AlertAsync("Please select a different name for the folder.", title: "Cannot rename folder.");
 
@@ -588,19 +589,19 @@ namespace FastTalkerSkiaSharp.Helpers
                 HashCode = element.GetHashCode()
             };
 
-            if (element.Tag == (int) SkiaSharp.Elements.CanvasView.Role.Communication && icon.Local)
+            if (element.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication) && icon.Local)
             {
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "CanvasView.Role.Communication && icon.Local");
 
                 return BuildCommunicationIconLocal(icon);
             }
-            else if (element.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication && !icon.Local)
+            else if (element.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication) && !icon.Local)
             {
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "CanvasView.Role.Communication && !icon.Local");
 
                 return BuildCommunicationIconDynamic(icon);
             }
-            else if (element.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
+            else if (element.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder))
             {
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "CanvasView.Role.Folder");
 

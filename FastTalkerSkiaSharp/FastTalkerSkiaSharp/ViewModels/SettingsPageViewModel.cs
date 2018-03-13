@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using Acr.UserDialogs;
+using FastTalkerSkiaSharp.Elements;
 using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Pages;
 using FastTalkerSkiaSharp.Storage;
@@ -192,7 +193,7 @@ namespace FastTalkerSkiaSharp.ViewModels
 
             CommunicationIcon dynamicIcon = new CommunicationIcon()
             {
-                Tag = (int)SkiaSharp.Elements.CanvasView.Role.Communication,
+                Tag = ElementRoles.GetRoleInt(ElementRoles.Role.Communication),
                 Text = base64[0],
                 Local = false,
                 IsStoredInFolder = false,
@@ -277,7 +278,7 @@ namespace FastTalkerSkiaSharp.ViewModels
 
                     CommunicationIcon dynamicIcon = new CommunicationIcon()
                     {
-                        Tag = (int)SkiaSharp.Elements.CanvasView.Role.Communication,
+                        Tag = ElementRoles.GetRoleInt(ElementRoles.Role.Communication),
                         Text = userInput.Text,
                         Local = false,
                         IsStoredInFolder = false,
@@ -315,7 +316,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             await App.Current.MainPage.Navigation.PopAllPopupAsync();
 
-            IEnumerable<SkiaSharp.Elements.Element> foldersInField = controller.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder);
+            IEnumerable<SkiaSharp.Elements.Element> foldersInField = controller.Elements.Where(elem => elem.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder));
 
             FolderIconPickerViewModel viewModel = new FolderIconPickerViewModel(foldersInField);
             viewModel.FolderConstructed += SaveFolderEvent;

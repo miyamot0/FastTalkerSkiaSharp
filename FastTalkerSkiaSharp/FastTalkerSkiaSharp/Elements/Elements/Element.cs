@@ -286,7 +286,7 @@ namespace SkiaSharp.Elements
             if (collector != null || parentElement != null)
             {
                 var controller = GetController();
-                controller?.SuspendLayout();
+                //controller?.SuspendLayout();
 
                 if (collector != null)
                 {
@@ -298,7 +298,7 @@ namespace SkiaSharp.Elements
                     parentElement.BringToFront();
                 }
 
-                controller?.ResumeLayout(true);
+                //controller?.ResumeLayout(true);
             }
         }
 

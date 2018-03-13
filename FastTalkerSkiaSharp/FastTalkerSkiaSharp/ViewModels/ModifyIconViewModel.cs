@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using FastTalkerSkiaSharp.Constants;
 using System.Linq;
 using Rg.Plugins.Popup.Services;
+using FastTalkerSkiaSharp.Elements;
 
 namespace FastTalkerSkiaSharp.ViewModels
 {
@@ -57,7 +58,7 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
             else
             {
-                if (currentElement.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
+                if (currentElement.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder))
                 {
                     string oldFolderTitle = currentElement.Text;
 
@@ -67,7 +68,7 @@ namespace FastTalkerSkiaSharp.ViewModels
                         for (int i = 0; i < controller.Elements.Count; i++)
                         {
                             controller.Elements[i].StoredFolderTag = (controller.Elements[i].IsStoredInAFolder &&
-                                                                      controller.Elements[i].Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication &&
+                                                                      controller.Elements[i].Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication) &&
                                                                       controller.Elements[i].StoredFolderTag == oldFolderTitle) ? item.Text : controller.Elements[i].StoredFolderTag;
                         }
                     }
@@ -162,12 +163,12 @@ namespace FastTalkerSkiaSharp.ViewModels
 
             switch (currentElement.Tag)
             {
-                case (int) SkiaSharp.Elements.CanvasView.Role.Folder:
+                case (int)FastTalkerSkiaSharp.Elements.ElementRoles.Role.Folder:
                     App.UserInputInstance.ConfirmDeleteFolder(currentElement);
 
                     break;
 
-                case (int) SkiaSharp.Elements.CanvasView.Role.Communication:
+                case (int)FastTalkerSkiaSharp.Elements.ElementRoles.Role.Communication:
                     App.UserInputInstance.ConfirmRemoveIcon(currentElement);
 
                     break;

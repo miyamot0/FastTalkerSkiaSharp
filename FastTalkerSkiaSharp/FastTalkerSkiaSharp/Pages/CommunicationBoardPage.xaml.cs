@@ -36,6 +36,7 @@ using Rg.Plugins.Popup.Extensions;
 using SkiaSharp;
 using Xamarin.Forms;
 using FastTalkerSkiaSharp.ViewModels;
+using FastTalkerSkiaSharp.Elements;
 
 namespace FastTalkerSkiaSharp.Pages
 {
@@ -82,8 +83,8 @@ namespace FastTalkerSkiaSharp.Pages
 
             List<Storage.CommunicationIcon> toInsert = new List<Storage.CommunicationIcon>();
 
-            var currentItems = canvas.Elements?.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication ||
-                                                              elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder);
+            var currentItems = canvas.Elements?.Where(elem => elem.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication) ||
+                                                              elem.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder));
 
             if (currentItems != null)
             {
@@ -236,15 +237,15 @@ namespace FastTalkerSkiaSharp.Pages
                                     " Base64: " + icon.Base64 +
                                     " FolderTag: " + icon.FolderContainingIcon);
 
-                    if (icon.Local && icon.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication)
+                    if (icon.Local && icon.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication))
                     {
                         canvas.Elements.Add(App.ImageBuilderInstance.BuildCommunicationIconLocal(icon));
                     }
-                    else if (!icon.Local && icon.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Communication)
+                    else if (!icon.Local && icon.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication))
                     {
                         canvas.Elements.Add(App.ImageBuilderInstance.BuildCommunicationIconDynamic(icon));
                     }
-                    else if (icon.Local && icon.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
+                    else if (icon.Local && icon.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder))
                     {
                         canvas.Elements.Add(App.ImageBuilderInstance.BuildCommunicationFolderLocal(icon));
                     }
@@ -364,19 +365,19 @@ namespace FastTalkerSkiaSharp.Pages
 
             switch (_currentElement.Tag)
             {
-                case (int)SkiaSharp.Elements.CanvasView.Role.SentenceFrame:
+                case (int)FastTalkerSkiaSharp.Elements.ElementRoles.Role.SentenceFrame:
                     Debug.WriteLineIf(outputVerbose, "Hit sentence frame");
 
                     return;
 
-                case (int)SkiaSharp.Elements.CanvasView.Role.Emitter:
+                case (int)FastTalkerSkiaSharp.Elements.ElementRoles.Role.Emitter:
                     Debug.WriteLineIf(outputVerbose, "Hit speech emitter");
                     holdingEmitter = true;
                     emitterPressTime = DateTime.Now;
 
                     return;
 
-                case (int)SkiaSharp.Elements.CanvasView.Role.Settings:
+                case (int)FastTalkerSkiaSharp.Elements.ElementRoles.Role.Settings:
                     Debug.WriteLineIf(outputVerbose, "Hit settings");
 
                     if (canvas.Controller.InEditMode) 
@@ -386,7 +387,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                     return;
 
-                case (int)SkiaSharp.Elements.CanvasView.Role.Folder:
+                case (int)FastTalkerSkiaSharp.Elements.ElementRoles.Role.Folder:
                     Debug.WriteLineIf(outputVerbose, "Hit Folder");
                     ClearIconsInPlay();
                     canvas.Elements.BringToFront(_currentElement);
@@ -404,7 +405,7 @@ namespace FastTalkerSkiaSharp.Pages
                     }
                     else if (!canvas.Controller.InFramedMode && 
                              _currentElement != null &&
-                             _currentElement.Tag == (int) SkiaSharp.Elements.CanvasView.Role.Communication &&
+                             _currentElement.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication) &&
                              !canvas.Controller.InEditMode &&
                              canvas.Controller.IconModeAuto)
                     {
@@ -429,15 +430,15 @@ namespace FastTalkerSkiaSharp.Pages
             
             switch (_currentElement.Tag)
             {
-                case (int)SkiaSharp.Elements.CanvasView.Role.Control:
+                case (int)FastTalkerSkiaSharp.Elements.ElementRoles.Role.Control:
 
                     return;
 
-                case (int)SkiaSharp.Elements.CanvasView.Role.Emitter:
+                case (int)FastTalkerSkiaSharp.Elements.ElementRoles.Role.Emitter:
 
                     return;
 
-                case (int)SkiaSharp.Elements.CanvasView.Role.Communication:
+                case (int)FastTalkerSkiaSharp.Elements.ElementRoles.Role.Communication:
                     hasMoved = true;
 
                     // If pinned, prevent move
@@ -462,7 +463,7 @@ namespace FastTalkerSkiaSharp.Pages
                         _currentElement.IsMainIconInPlay = true;
                     }
 
-                    _currentElement.IsInsertableIntoFolder = canvas.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
+                    _currentElement.IsInsertableIntoFolder = canvas.Elements.Where(elem => elem.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder))
                                         .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds))
                                         .Any();
 
@@ -470,7 +471,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                     return;
 
-                case (int)SkiaSharp.Elements.CanvasView.Role.Folder:
+                case (int)FastTalkerSkiaSharp.Elements.ElementRoles.Role.Folder:
                     hasMoved = true;
 
                     if (!canvas.Controller.InEditMode) return;
@@ -503,7 +504,7 @@ namespace FastTalkerSkiaSharp.Pages
 
             switch (_currentElement.Tag)
             {
-                case (int)SkiaSharp.Elements.CanvasView.Role.Communication:
+                case (int)FastTalkerSkiaSharp.Elements.ElementRoles.Role.Communication:
                     if (canvas.Controller.InEditMode && !hasMoved)
                     {
                         if (App.UserInputInstance.AreModalsOpen()) return;
@@ -530,7 +531,7 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         Debug.WriteLineIf(outputVerbose, "Icon completed, has moved");
 
-                        IEnumerable<SkiaSharp.Elements.Element> folderOfInterest = canvas.Elements.Where(elem => elem.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder && 
+                        IEnumerable<SkiaSharp.Elements.Element> folderOfInterest = canvas.Elements.Where(elem => elem.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder) && 
                                                                                                          !elem.IsStoredInAFolder)
                                       .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds));
 
@@ -542,7 +543,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                     return;
 
-                case (int)SkiaSharp.Elements.CanvasView.Role.Folder:
+                case (int)FastTalkerSkiaSharp.Elements.ElementRoles.Role.Folder:
                     if (canvas.Controller.InEditMode && !hasMoved)
                     {
                         if (App.UserInputInstance.AreModalsOpen()) return;
@@ -670,7 +671,7 @@ namespace FastTalkerSkiaSharp.Pages
                             if (canvas.Controller.InFramedMode)
                             {
                                 var mIntersectingElements = canvas?.Elements
-                                                                   .Where(elem => elem.IsSpeakable && elem.Tag != (int)SkiaSharp.Elements.CanvasView.Role.Folder)
+                                                                   .Where(elem => elem.IsSpeakable && elem.Tag != ElementRoles.GetRoleInt(ElementRoles.Role.Folder))
                                                                    .OrderBy(elem => elem.Left)
                                                                    .Select(elem => elem.Text);
 
@@ -686,7 +687,7 @@ namespace FastTalkerSkiaSharp.Pages
                             else if (!canvas.Controller.IconModeAuto)
                             {
                                 var selectedElements = canvas?.Elements
-                                                              .Where(elem => elem.IsMainIconInPlay && elem.Tag != (int)SkiaSharp.Elements.CanvasView.Role.Folder)
+                                                              .Where(elem => elem.IsMainIconInPlay && elem.Tag != ElementRoles.GetRoleInt(ElementRoles.Role.Folder))
                                                               .Select(elem => elem.Text)
                                                               .FirstOrDefault();
 
@@ -790,7 +791,7 @@ namespace FastTalkerSkiaSharp.Pages
             emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: "FastTalkerSkiaSharp.Images.Speaker.png",
                                                                            xPercent: 2f,
                                                                            yPercent: 1.5f,
-                                                                           tag: (int)SkiaSharp.Elements.CanvasView.Role.Emitter);
+                                                                           tag: ElementRoles.GetRoleInt(ElementRoles.Role.Emitter));
             canvas.Elements.Add(emitterReference);
 
             // Settings
@@ -798,7 +799,7 @@ namespace FastTalkerSkiaSharp.Pages
                                                                                                  text: "Settings",
                                                                                                  x: canvas.CanvasSize.Width - Constants.DeviceLayout.Bezel,
                                                                                                  y: canvas.CanvasSize.Height - Constants.DeviceLayout.Bezel,
-                                                                                                 tagCode: (int)SkiaSharp.Elements.CanvasView.Role.Settings,
+                                                                                                 tagCode: ElementRoles.GetRoleInt(ElementRoles.Role.Settings),
                                                                                                  alignRight: true,
                                                                                                  alignBottom: true,
                                                                                                  opaqueBackground: true);
