@@ -261,8 +261,6 @@ namespace FastTalkerSkiaSharp.Pages
             }
 
             ClearIconsInPlay();
-
-            canvas.InvalidateSurface();
         }
 
         /// <summary>
@@ -663,8 +661,6 @@ namespace FastTalkerSkiaSharp.Pages
                             canvas.Controller.BackgroundColor = canvas.Controller.InEditMode ? SKColors.DarkOrange : SKColors.DimGray;
 
                             ClearIconsInPlay();
-
-                            canvas.InvalidateSurface();
                         }
                         else
                         {
@@ -701,8 +697,6 @@ namespace FastTalkerSkiaSharp.Pages
                                 if (canvas.Controller.RequireDeselect)
                                 {
                                     ClearIconsInPlay();
-
-                                    canvas.InvalidateSurface();
                                 }
                             }
 
@@ -739,7 +733,6 @@ namespace FastTalkerSkiaSharp.Pages
                                                                       iconReference: item.Size);
 
                 canvas.Elements.BringToFront(item);
-                canvas.InvalidateSurface();
 
                 canvas.Controller.PromptResave();
             }
@@ -768,6 +761,8 @@ namespace FastTalkerSkiaSharp.Pages
                     canvas.Elements[i].IsSpeakable = isGreenHighlighted;
                 }
             }
+
+            canvas.InvalidateSurface();
         }
 
         /// <summary>

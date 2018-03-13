@@ -225,10 +225,7 @@ namespace SkiaSharp.Elements
         /// </summary>
         public void Invalidate()
         {
-            //if (_suspendLayout == 0)
-            //{
-                OnInvalidate?.Invoke(this, EventArgs.Empty);
-            //}
+            OnInvalidate?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -304,27 +301,6 @@ namespace SkiaSharp.Elements
                 }
             }
         }
-        
-        /*
-        public void SuspendLayout()
-        {
-            _suspendLayout++;
-        }
-        */
-
-        /*
-        public void ResumeLayout(bool invalidate = false)
-        {
-            if (_suspendLayout > 0)
-            {
-                _suspendLayout--;
-            }
-            if (invalidate)
-            {
-                Invalidate();
-            }
-        }
-        */
         
         #endregion Public methods
     }

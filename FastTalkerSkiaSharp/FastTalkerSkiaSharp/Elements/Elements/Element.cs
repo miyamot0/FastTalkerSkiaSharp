@@ -49,8 +49,6 @@ namespace SkiaSharp.Elements
 
         #region Properties
 
-        private int _suspendLayout;
-        private int _suspendDrawBeforeAfter;
         private SKMatrix? _appliedTransformation;
 
         internal IElementContainer Parent { get; set; }
@@ -232,36 +230,9 @@ namespace SkiaSharp.Elements
 
         }
 
-        /// <summary>
-        /// Manage drawing state
-        /// </summary>
-        public void SuspendLayout()
-        {
-            _suspendLayout++;
-        }
-
-        /// <summary>
-        /// Restore drawing state
-        /// </summary>
-        /// <param name="invalidate"></param>
-        public void ResumeLayout(bool invalidate = false)
-        {
-            if (_suspendLayout > 0)
-            {
-                _suspendLayout--;
-            }
-            if (invalidate)
-            {
-                Invalidate();
-            }
-        }
-
         public void Invalidate()
         {
-            if (_suspendLayout == 0)
-            {
-                Parent?.Invalidate();
-            }
+            Parent?.Invalidate();
         }
 
         public virtual bool IsPointInside(SKPoint point)
@@ -280,25 +251,20 @@ namespace SkiaSharp.Elements
         /// </summary>
         public void BringToFront()
         {
-            var collector = Parent as IElementsCollector;
+            //var collector = Parent as IElementsCollector;
             var parentElement = Parent as Element;
 
-            if (collector != null || parentElement != null)
+            if (ParentController != null || parentElement != null)
             {
-                var controller = GetController();
-                //controller?.SuspendLayout();
-
-                if (collector != null)
+                if (ParentController != null)
                 {
-                    collector.Elements.BringToFront(this);
+                    ParentController.Elements.BringToFront(this);
                 }
 
                 if (parentElement != null)
                 {
                     parentElement.BringToFront();
                 }
-
-                //controller?.ResumeLayout(true);
             }
         }
 
@@ -318,84 +284,68 @@ namespace SkiaSharp.Elements
 
             if (Tag == ElementRoles.GetRoleInt(ElementRoles.Role.SentenceFrame) && !ParentController.InFramedMode) return;
 
-            if (_suspendDrawBeforeAfter == 0)
+            if (Transformation != null)
             {
-                if (Transformation != null)
-                {
-                    var transformation = GetTransformation(false).Value;
+                var transformation = GetTransformation(false).Value;
 
-                    canvas.Concat(ref transformation);
-                    _appliedTransformation = transformation;
-                }
+                canvas.Concat(ref transformation);
+                _appliedTransformation = transformation;
+            }
 
-                // This is the communication tag, w/o access to the other projects
-                if (this.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication))
+            // This is the communication tag, w/o access to the other projects
+            if (this.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication))
+            {
+                if (ParentController.InFramedMode)
                 {
-                    if (ParentController.InFramedMode)
+                    if (IsSpeakable)
                     {
-                        if (IsSpeakable)
-                        {
-                            canvas.DrawRect(_bounds, ParentController.PaintGreen);
-                        }
-                        else if (IsInsertableIntoFolder)
-                        {
-                            canvas.DrawRect(_bounds, ParentController.PaintOrange);                                
-                        }
-                        else
-                        {
-                            canvas.DrawRect(_bounds, ParentController.PaintWhite);
-                        }
+                        canvas.DrawRect(_bounds, ParentController.PaintGreen);
+                    }
+                    else if (IsInsertableIntoFolder)
+                    {
+                        canvas.DrawRect(_bounds, ParentController.PaintOrange);                                
                     }
                     else
                     {
-                        if (IsInsertableIntoFolder)
-                        {
-                            canvas.DrawRect(_bounds, ParentController.PaintOrange);
-                        }
-                        else if (IsMainIconInPlay && !ParentController.IconModeAuto)
-                        {
-                            canvas.DrawRect(_bounds, ParentController.PaintGreen);
-                        }
-                        else
-                        {
-                            canvas.DrawRect(_bounds, ParentController.PaintWhite);
-                        }
-                    }
-
-                    if (IsPinnedToSpot)
-                    {
-                        var cirleWidth = _bounds.Width * 0.1f;
-                        var circleOffset = cirleWidth / 2f;
-                        var circleRadius = cirleWidth / 3f;
-
-                        canvas.DrawCircle(_bounds.Right - circleOffset,
-                                            _bounds.Top + circleOffset,
-                                            circleRadius,
-                                            ParentController.PaintGray);
-
-                        canvas.DrawCircle(_bounds.Right - circleOffset,
-                                            _bounds.Top + circleOffset,
-                                            circleRadius,
-                                            ParentController.PaintBlackStroke);
+                        canvas.DrawRect(_bounds, ParentController.PaintWhite);
                     }
                 }
-                else if (this.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder))
+                else
                 {
-                    canvas.DrawRect(_bounds, ParentController.PaintWhite);
+                    if (IsInsertableIntoFolder)
+                    {
+                        canvas.DrawRect(_bounds, ParentController.PaintOrange);
+                    }
+                    else if (IsMainIconInPlay && !ParentController.IconModeAuto)
+                    {
+                        canvas.DrawRect(_bounds, ParentController.PaintGreen);
+                    }
+                    else
+                    {
+                        canvas.DrawRect(_bounds, ParentController.PaintWhite);
+                    }
+                }
+
+                if (IsPinnedToSpot)
+                {
+                    var cirleWidth = _bounds.Width * 0.1f;
+                    var circleOffset = cirleWidth / 2f;
+                    var circleRadius = cirleWidth / 3f;
+
+                    canvas.DrawCircle(_bounds.Right - circleOffset,
+                                        _bounds.Top + circleOffset,
+                                        circleRadius,
+                                        ParentController.PaintGray);
+
+                    canvas.DrawCircle(_bounds.Right - circleOffset,
+                                        _bounds.Top + circleOffset,
+                                        circleRadius,
+                                        ParentController.PaintBlackStroke);
                 }
             }
-        }
-
-        protected void SuspendDrawBeforeAfter()
-        {
-            _suspendDrawBeforeAfter++;
-        }
-
-        protected void ResumeDrawBeforeAfter()
-        {
-            if (_suspendDrawBeforeAfter > 0)
+            else if (this.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder))
             {
-                _suspendDrawBeforeAfter--;
+                canvas.DrawRect(_bounds, ParentController.PaintWhite);
             }
         }
 
