@@ -116,8 +116,78 @@ namespace SkiaSharp.Elements
             }
         }
 
-        #endregion 
+        SKPaint _paintOrange;
+        public SKPaint PaintOrange
+        {
+            get
+            {
+                if (_paintOrange == null)
+                {
+                    _paintOrange = new SKPaint()
+                    {
+                        Color = SKColors.Orange
+                    };
+                }
 
+                return _paintOrange;
+            }
+        }
+
+        SKPaint _paintGreen;
+        public SKPaint PaintGreen
+        {
+            get
+            {
+                if (_paintGreen == null)
+                {
+                    _paintGreen = new SKPaint()
+                    {
+                        Color = SKColors.GreenYellow
+                    };
+                }
+
+                return _paintGreen;
+            }
+        }
+
+        SKPaint _paintGray;
+        public SKPaint PaintGray
+        {
+            get
+            {
+                if (_paintGray == null)
+                {
+                    _paintGray = new SKPaint()
+                    {
+                        Color = SKColors.LightGray
+                    };
+                }
+
+                return _paintGray;
+            }
+        }
+
+        SKPaint _paintBlackStroke;
+        public SKPaint PaintBlackStroke
+        {
+            get
+            {
+                if (_paintBlackStroke == null)
+                {
+                    _paintBlackStroke = new SKPaint()
+                    {
+                        Color = SKColors.Black,
+                        IsStroke = true,
+                        StrokeWidth = 2f,
+                        IsAntialias = true
+                    };
+                }
+
+                return _paintBlackStroke;
+            }
+        }
+
+        #endregion 
 
         #region Public methods
 

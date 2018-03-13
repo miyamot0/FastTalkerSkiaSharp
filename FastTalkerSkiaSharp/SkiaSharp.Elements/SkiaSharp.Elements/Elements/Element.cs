@@ -189,8 +189,6 @@ namespace SkiaSharp.Elements
         
         public virtual bool EnableDrag { get; set; }
 
-        public virtual bool PreventTouch { get; set; }
-
         #endregion Properties
 
         #region Public methods
@@ -303,69 +301,52 @@ namespace SkiaSharp.Elements
                 // This is the communication tag, w/o access to the other projects
                 if (this.Tag == (int) SkiaSharp.Elements.CanvasView.Role.Communication)
                 {
-                    using (var paint = new SKPaint())
+                    if (ParentController.InFramedMode)
                     {
-                        if (ParentController.InFramedMode)
+                        if (IsSpeakable)
                         {
-                            if (IsSpeakable)
-                            {
-                                paint.Color = SKColors.GreenYellow;
-                            }
-                            else if (IsInsertableIntoFolder)
-                            {
-                                paint.Color = SKColors.Orange;
-                            }
-                            else
-                            {
-                                paint.Color = SKColors.White;
-                            }
+                            canvas.DrawRect(_bounds, ParentController.PaintGreen);
+                        }
+                        else if (IsInsertableIntoFolder)
+                        {
+                            canvas.DrawRect(_bounds, ParentController.PaintOrange);                                
                         }
                         else
                         {
-                            if (IsInsertableIntoFolder)
-                            {
-                                paint.Color = SKColors.Orange;
-                            }
-                            else if (IsMainIconInPlay && !ParentController.IconModeAuto)
-                            {
-                                paint.Color = SKColors.GreenYellow;
-                            }
-                            else
-                            {
-                                paint.Color = SKColors.White;                                
-                            }
+                            canvas.DrawRect(_bounds, ParentController.PaintWhite);
                         }
-
-                        canvas.DrawRect(_bounds, paint);
+                    }
+                    else
+                    {
+                        if (IsInsertableIntoFolder)
+                        {
+                            canvas.DrawRect(_bounds, ParentController.PaintOrange);
+                        }
+                        else if (IsMainIconInPlay && !ParentController.IconModeAuto)
+                        {
+                            canvas.DrawRect(_bounds, ParentController.PaintGreen);
+                        }
+                        else
+                        {
+                            canvas.DrawRect(_bounds, ParentController.PaintWhite);
+                        }
                     }
 
                     if (IsPinnedToSpot)
                     {
                         var cirleWidth = _bounds.Width * 0.1f;
+                        var circleOffset = cirleWidth / 2f;
+                        var circleRadius = cirleWidth / 3f;
 
-                        using (var pinFill = new SKPaint())
-                        {
-                            pinFill.Color = SKColors.LightGray;
-                            pinFill.IsAntialias = true;
+                        canvas.DrawCircle(_bounds.Right - circleOffset,
+                                            _bounds.Top + circleOffset,
+                                            circleRadius,
+                                            ParentController.PaintGray);
 
-                            canvas.DrawCircle(_bounds.Right - cirleWidth / 2f,
-                                              _bounds.Top + cirleWidth / 2f,
-                                              cirleWidth / 3f,
-                                              pinFill);
-
-                            using (var pinOutline = new SKPaint())
-                            {
-                                pinOutline.Color = SKColors.Black;
-                                pinOutline.IsStroke = true;
-                                pinOutline.StrokeWidth = 2f;
-                                pinOutline.IsAntialias = true;
-
-                                canvas.DrawCircle(_bounds.Right - cirleWidth / 2f,
-                                                  _bounds.Top + cirleWidth / 2f,
-                                                  cirleWidth / 3f,
-                                                  pinOutline);
-                            }
-                        }
+                        canvas.DrawCircle(_bounds.Right - circleOffset,
+                                            _bounds.Top + circleOffset,
+                                            circleRadius,
+                                            ParentController.PaintBlackStroke);
                     }
                 }
                 else if (this.Tag == (int)SkiaSharp.Elements.CanvasView.Role.Folder)
@@ -373,30 +354,9 @@ namespace SkiaSharp.Elements
                     canvas.DrawRect(_bounds, ParentController.PaintWhite);
                 }
 
-                OnDrawBefore?.Invoke(this, new ElementDrawEventArgs(canvas));
+                //OnDrawBefore?.Invoke(this, new ElementDrawEventArgs(canvas));
             }
         }
-
-        /*
-        protected void DrawAfter(SKCanvas canvas)
-        {
-            if (this.IsStoredInAFolder) return;
-
-            if (_suspendDrawBeforeAfter == 0)
-            {
-                if (Transformation != null && _appliedTransformation.HasValue)
-                {
-                    if (_appliedTransformation.Value.TryInvert(out var m))
-                    {
-                        canvas.Concat(ref m);
-                    }
-                    _appliedTransformation = null;
-                }
-
-                OnDrawAfter?.Invoke(this, new ElementDrawEventArgs(canvas));
-            }
-        }
-        */
 
         protected void SuspendDrawBeforeAfter()
         {
@@ -479,12 +439,9 @@ namespace SkiaSharp.Elements
 
         #endregion Private methods
 
-        #region Events
-        
-        public event ElementDrawEventHandler OnDrawBefore;
-
+        //#region Events        
+        //public event ElementDrawEventHandler OnDrawBefore;
         //public event ElementDrawEventHandler OnDrawAfter;
-
-        #endregion Events
+        //#endregion Events
     }
 }
