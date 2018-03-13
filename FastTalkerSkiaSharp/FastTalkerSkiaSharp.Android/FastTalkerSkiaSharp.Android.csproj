@@ -113,10 +113,6 @@
       <Project>{fd1a2dc8-3298-43fe-a592-2bf3f02a3908}</Project>
       <Name>FastTalkerSkiaSharp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SkiaSharp.Elements\SkiaSharp.Elements\SkiaSharp.Elements.csproj">
-      <Project>{5e03b166-c293-49d1-99c6-a972b126591d}</Project>
-      <Name>SkiaSharp.Elements</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\NewFolder1\" />
