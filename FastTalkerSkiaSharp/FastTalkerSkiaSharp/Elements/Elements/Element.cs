@@ -382,8 +382,6 @@ namespace SkiaSharp.Elements
                 {
                     canvas.DrawRect(_bounds, ParentController.PaintWhite);
                 }
-
-                //OnDrawBefore?.Invoke(this, new ElementDrawEventArgs(canvas));
             }
         }
 

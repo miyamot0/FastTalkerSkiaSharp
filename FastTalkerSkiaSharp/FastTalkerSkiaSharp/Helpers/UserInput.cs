@@ -138,9 +138,7 @@ namespace FastTalkerSkiaSharp.Helpers
             {
                 new Xamarin.Forms.Animation((value) =>
                 {
-                    canvasRef.SuspendLayout();
                     currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
-                    canvasRef.ResumeLayout(true);
 
                 }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationShrinkMillis, finished: async (v2, c2) =>
                 {
@@ -172,9 +170,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     {
                         if (currentElement != null)
                         {
-                            canvasRef.SuspendLayout();
                             currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
-                            canvasRef.ResumeLayout(true);
                         }
                     } catch { }
 
@@ -245,10 +241,8 @@ namespace FastTalkerSkiaSharp.Helpers
                     {
                         try
                         {
-                            canvasRef.SuspendLayout();
                             _currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
                                                                   (startPoint.Y) + (yDiff * (float)value));
-                            canvasRef.ResumeLayout(true);
                         }
                         catch { }
                     }
@@ -261,11 +255,7 @@ namespace FastTalkerSkiaSharp.Helpers
                         {
                             if (_currentElement != null)
                             {
-                                canvasRef.SuspendLayout();
-
                                 _currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
-
-                                canvasRef.ResumeLayout(true);
                             }
                         }
                         catch { }
