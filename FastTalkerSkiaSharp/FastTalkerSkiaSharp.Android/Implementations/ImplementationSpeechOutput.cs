@@ -34,41 +34,31 @@ using Xamarin.Forms;
 namespace FastTalkerSkiaSharp.Droid.Implementations
 {
 #pragma warning disable CS0618
-    public class ImplementationSpeechOutput : Java.Lang.Object, InterfaceSpeechOutput, TextToSpeech.IOnInitListener, TextToSpeech.IOnUtteranceCompletedListener
+    public class ImplementationSpeechOutput : Java.Lang.Object, InterfaceSpeechOutput, TextToSpeech.IOnInitListener
 #pragma warning restore CS0618 
     {
+        private UtteranceProgressListener listener;
+
         private TextToSpeech speaker;
         private string toSpeak;
-        private bool isSpeaking = false;
 
         public ImplementationSpeechOutput() { }
 
         public void SpeakText(string text)
         {
             toSpeak = text;
+
             if (speaker == null)
             {
                 AudioManager am = (AudioManager)Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.GetSystemService(Context.AudioService);
                 int amStreamMusicMaxVol = am.GetStreamMaxVolume(Android.Media.Stream.Music);
                 am.SetStreamVolume(Stream.Music, amStreamMusicMaxVol, 0);
                 speaker = new TextToSpeech(Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity, this);
-#pragma warning disable CS0618 // Legacy support
-                speaker.SetOnUtteranceCompletedListener(this);
-#pragma warning restore  CS0618
             }
             else
             {
                 SpeakRoute(toSpeak);
             }
-        }
-
-        /// <summary>
-        /// Finished listener
-        /// </summary>
-        /// <param name="utteranceId"></param>
-        public void OnUtteranceCompleted(string utteranceId)
-        {
-            isSpeaking = false;
         }
 
         #region IOnInitListener implementation
@@ -93,7 +83,7 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         /// <param name="text"></param>
         private void SpeakRoute(string text)
         {
-            if (isSpeaking) return;
+            if (speaker.IsSpeaking) return;
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
             {
@@ -111,8 +101,6 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         /// <param name="text"></param>
         private void ApiUnder20(string text)
         {
-            isSpeaking = true;
-
             Dictionary<string, string> map = new Dictionary<string, string>();
             map.Add(TextToSpeech.Engine.KeyParamUtteranceId, "MessageId");
 #pragma warning disable CS0618 // Legacy support
@@ -126,8 +114,6 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         /// <param name="text"></param>
         private void ApiOver21(string text)
         {
-            isSpeaking = true;
-
             string utteranceId = this.GetHashCode() + "";
             speaker.Speak(text, QueueMode.Flush, null, utteranceId);
         }
