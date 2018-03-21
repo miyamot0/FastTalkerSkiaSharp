@@ -65,8 +65,8 @@ namespace FastTalkerSkiaSharp.Helpers
 
             SettingsPageViewModel viewModel = new SettingsPageViewModel(canvasRef.Controller)
             {
-                Padding = new Thickness(100, 100, 100, 100),
-                IsSystemPadding = true
+                Padding = new Thickness(50, 50, 50, 50),
+                IsSystemPadding = false
             };
 
             viewModel.SaveCommunicationIconEvent += SettingsIconInteraction;
