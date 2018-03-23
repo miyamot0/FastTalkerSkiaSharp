@@ -25,7 +25,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Text="Modify"
+                <Label Text="Modify Selected Icon"
                        HorizontalTextAlignment="Center"
                        FontSize="Large"
                        FontAttributes="Bold"

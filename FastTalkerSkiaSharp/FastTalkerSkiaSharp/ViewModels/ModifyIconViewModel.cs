@@ -174,5 +174,14 @@ namespace FastTalkerSkiaSharp.ViewModels
                     break;
             }
         }
-    }
+    
+        /// <summary>
+        /// Update current icon
+        /// </summary>
+        /// <param name="_currentElement">Current element.</param>
+		public void UpdateIcon(SkiaSharp.Elements.Element _currentElement)
+		{
+			currentElement = _currentElement;
+		}
+	}
 }

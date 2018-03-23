@@ -27,12 +27,13 @@ using FastTalkerSkiaSharp.Storage;
 using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Models;
 using FastTalkerSkiaSharp.Interfaces;
+using FastTalkerSkiaSharp.Pages;
 
 namespace FastTalkerSkiaSharp
 {
     public partial class App : Application
 	{
-        public static bool OutputVerbose = false;
+        public static bool OutputVerbose = true;
 
         public static bool HasAdmin = false;
 
@@ -79,6 +80,8 @@ namespace FastTalkerSkiaSharp
         public static ImageBuilder ImageBuilderInstance;
 
         public static StoredIconContainerModel storedIcons { get; set; }
+
+		public static ModifyPage ModificationPage = null;
 
         public App()
         {

@@ -509,9 +509,16 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "Completed icon tap");
 
-                        ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
+						if (App.ModificationPage == null)
+                        {
+                            App.ModificationPage = new ModifyPage(_currentElement, canvas.Controller);
+                        }
+                        else
+                        {
+                            App.ModificationPage.UpdateCurrentIcon(_currentElement);
+                        }
 
-                        await Navigation.PushPopupAsync(iconModificationPopup);
+						await Navigation.PushPopupAsync(App.ModificationPage);
                     }
                     else if (canvas.Controller.InEditMode && 
                              !_currentElement.IsInsertableIntoFolder && 
@@ -521,9 +528,16 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "Completed icon held > 3s");
 
-                        ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
+						if (App.ModificationPage == null)
+                        {
+                            App.ModificationPage = new ModifyPage(_currentElement, canvas.Controller);
+                        }
+                        else
+                        {
+                            App.ModificationPage.UpdateCurrentIcon(_currentElement);
+                        }
 
-                        await Navigation.PushPopupAsync(iconModificationPopup);
+						await Navigation.PushPopupAsync(App.ModificationPage);
                     }
                     else if (hasMoved && _currentElement.IsInsertableIntoFolder)
                     {
@@ -548,9 +562,16 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "Completed folder tap");
 
-                        ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
+						if (App.ModificationPage == null)
+						{
+							App.ModificationPage = new ModifyPage(_currentElement, canvas.Controller);
+						}
+						else
+						{
+							App.ModificationPage.UpdateCurrentIcon(_currentElement);
+						}
 
-                        await Navigation.PushPopupAsync(iconModificationPopup);
+						await Navigation.PushPopupAsync(App.ModificationPage);
 
                         e.Handled = true;
                     }
@@ -560,9 +581,16 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "Completed folder hold");
 
-                        ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
+						if (App.ModificationPage == null)
+                        {
+                            App.ModificationPage = new ModifyPage(_currentElement, canvas.Controller);
+                        }
+                        else
+                        {
+                            App.ModificationPage.UpdateCurrentIcon(_currentElement);
+                        }
 
-                        await Navigation.PushPopupAsync(iconModificationPopup);
+						await Navigation.PushPopupAsync(App.ModificationPage);
 
                         e.Handled = true;
                     }
