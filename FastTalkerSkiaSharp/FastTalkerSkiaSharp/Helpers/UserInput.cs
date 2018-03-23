@@ -63,19 +63,25 @@ namespace FastTalkerSkiaSharp.Helpers
         {
             if (AreModalsOpen()) return;
 
-            SettingsPageViewModel viewModel = new SettingsPageViewModel(canvasRef.Controller)
-            {
-                Padding = new Thickness(50, 50, 50, 50),
-                IsSystemPadding = false
-            };
+			if (App.InstanceSettingsPageViewModel == null)
+			{
+				App.InstanceSettingsPageViewModel = new SettingsPageViewModel(canvasRef.Controller)
+                {
+                    Padding = new Thickness(50, 50, 50, 50),
+                    IsSystemPadding = false
+                };
 
-            viewModel.SaveCommunicationIconEvent += SettingsIconInteraction;
-            viewModel.SaveCommunicationElementEvent += SettingsElementInteraction;
-            viewModel.SaveFolderEvent += SettingsFolderInteraction;
+				App.InstanceSettingsPageViewModel.SaveCommunicationIconEvent += SettingsIconInteraction;
+                App.InstanceSettingsPageViewModel.SaveCommunicationElementEvent += SettingsElementInteraction;
+                App.InstanceSettingsPageViewModel.SaveFolderEvent += SettingsFolderInteraction;
+			}
 
-            SettingsPage settingsPopupPage = new SettingsPage(canvasRef.Controller, viewModel);
+			if (App.InstanceSettingsPage == null)
+			{
+				App.InstanceSettingsPage = new SettingsPage(canvasRef.Controller, App.InstanceSettingsPageViewModel);
+			}
 
-            await App.Current.MainPage.Navigation.PushPopupAsync(settingsPopupPage);
+			await App.Current.MainPage.Navigation.PushPopupAsync(App.InstanceSettingsPage);
         }
 
         /// <summary>
@@ -120,6 +126,10 @@ namespace FastTalkerSkiaSharp.Helpers
             canvasRef.Controller.PromptResave();
         }
 
+        /// <summary>
+        /// There there any modals popped
+        /// </summary>
+        /// <returns><c>true</c>, if modals open was ared, <c>false</c> otherwise.</returns>
         public bool AreModalsOpen()
         {
             return PopupNavigation.Instance.PopupStack.Count > 0;

@@ -28,6 +28,7 @@ using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Models;
 using FastTalkerSkiaSharp.Interfaces;
 using FastTalkerSkiaSharp.Pages;
+using FastTalkerSkiaSharp.ViewModels;
 
 namespace FastTalkerSkiaSharp
 {
@@ -82,6 +83,10 @@ namespace FastTalkerSkiaSharp
         public static StoredIconContainerModel storedIcons { get; set; }
 
 		public static ModifyPage ModificationPage = null;
+
+		public static SettingsPageViewModel InstanceSettingsPageViewModel;
+
+		public static SettingsPage InstanceSettingsPage;
 
         public App()
         {
