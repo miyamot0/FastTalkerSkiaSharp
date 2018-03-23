@@ -509,16 +509,16 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "Completed icon tap");
 
-						if (App.ModificationPage == null)
+						if (App.InstanceModificationPage == null)
                         {
-                            App.ModificationPage = new ModifyPage(_currentElement, canvas.Controller);
+							App.InstanceModificationPage = new ModifyPage(_currentElement, canvas.Controller);
                         }
                         else
                         {
-                            App.ModificationPage.UpdateCurrentIcon(_currentElement);
+							App.InstanceModificationPage.UpdateCurrentIcon(_currentElement);
                         }
 
-						await Navigation.PushPopupAsync(App.ModificationPage);
+						await Navigation.PushPopupAsync(App.InstanceModificationPage);
                     }
                     else if (canvas.Controller.InEditMode && 
                              !_currentElement.IsInsertableIntoFolder && 
@@ -528,16 +528,16 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "Completed icon held > 3s");
 
-						if (App.ModificationPage == null)
+						if (App.InstanceModificationPage == null)
                         {
-                            App.ModificationPage = new ModifyPage(_currentElement, canvas.Controller);
+							App.InstanceModificationPage = new ModifyPage(_currentElement, canvas.Controller);
                         }
                         else
                         {
-                            App.ModificationPage.UpdateCurrentIcon(_currentElement);
+							App.InstanceModificationPage.UpdateCurrentIcon(_currentElement);
                         }
 
-						await Navigation.PushPopupAsync(App.ModificationPage);
+						await Navigation.PushPopupAsync(App.InstanceModificationPage);
                     }
                     else if (hasMoved && _currentElement.IsInsertableIntoFolder)
                     {
@@ -562,16 +562,16 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "Completed folder tap");
 
-						if (App.ModificationPage == null)
+						if (App.InstanceModificationPage == null)
 						{
-							App.ModificationPage = new ModifyPage(_currentElement, canvas.Controller);
+							App.InstanceModificationPage = new ModifyPage(_currentElement, canvas.Controller);
 						}
 						else
 						{
-							App.ModificationPage.UpdateCurrentIcon(_currentElement);
+							App.InstanceModificationPage.UpdateCurrentIcon(_currentElement);
 						}
 
-						await Navigation.PushPopupAsync(App.ModificationPage);
+						await Navigation.PushPopupAsync(App.InstanceModificationPage);
 
                         e.Handled = true;
                     }
@@ -581,16 +581,16 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "Completed folder hold");
 
-						if (App.ModificationPage == null)
+						if (App.InstanceModificationPage == null)
                         {
-                            App.ModificationPage = new ModifyPage(_currentElement, canvas.Controller);
+							App.InstanceModificationPage = new ModifyPage(_currentElement, canvas.Controller);
                         }
                         else
                         {
-                            App.ModificationPage.UpdateCurrentIcon(_currentElement);
+							App.InstanceModificationPage.UpdateCurrentIcon(_currentElement);
                         }
 
-						await Navigation.PushPopupAsync(App.ModificationPage);
+						await Navigation.PushPopupAsync(App.InstanceModificationPage);
 
                         e.Handled = true;
                     }
@@ -612,22 +612,30 @@ namespace FastTalkerSkiaSharp.Pages
                             return;
                         }
 
-                        StoredIconPopupViewModel viewModel = new StoredIconPopupViewModel
-                        {
-                            Padding = new Thickness(100, 100, 100, 100),
-                            IsSystemPadding = true,
-                            FolderWithIcons = _currentElement.Text,
-                            ItemsMatching = itemsMatching,
-                        };
+						if (App.InstanceStoredIconsViewModel == null)
+						{
+							App.InstanceStoredIconsViewModel = new StoredIconPopupViewModel
+                            {
+                                Padding = new Thickness(100, 100, 100, 100),
+                                IsSystemPadding = true,
+                                FolderWithIcons = _currentElement.Text,
+                                ItemsMatching = itemsMatching,
+                            };
 
-                        viewModel.IconSelected += RestoreIcon;
+							App.InstanceStoredIconsViewModel.IconSelected += RestoreIcon;
 
-                        StoredIconPopup page = new StoredIconPopup()
-                        {
-                            BindingContext = viewModel
-                        };
+							App.InstanceStoredIconPage = new StoredIconPopup()
+                            {
+                                BindingContext = App.InstanceStoredIconsViewModel
+                            };
+						}
+						else
+						{
+							App.InstanceStoredIconsViewModel.FolderWithIcons = _currentElement.Text;
+							App.InstanceStoredIconsViewModel.ItemsMatching = itemsMatching;
+						}
 
-                        await App.Current.MainPage.Navigation.PushPopupAsync(page);
+						await App.Current.MainPage.Navigation.PushPopupAsync(App.InstanceStoredIconPage);
 
                         e.Handled = true;
                     }
@@ -648,22 +656,30 @@ namespace FastTalkerSkiaSharp.Pages
                             return;
                         }
 
-                        StoredIconPopupViewModel viewModel = new StoredIconPopupViewModel
+						if (App.InstanceStoredIconsViewModel == null)
                         {
-                            Padding = new Thickness(100, 100, 100, 100),
-                            IsSystemPadding = true,
-                            FolderWithIcons = _currentElement.Text,
-                            ItemsMatching = itemsMatching,
-                        };
+                            App.InstanceStoredIconsViewModel = new StoredIconPopupViewModel
+                            {
+                                Padding = new Thickness(100, 100, 100, 100),
+                                IsSystemPadding = true,
+                                FolderWithIcons = _currentElement.Text,
+                                ItemsMatching = itemsMatching,
+                            };
 
-                        viewModel.IconSelected += RestoreIcon;
+                            App.InstanceStoredIconsViewModel.IconSelected += RestoreIcon;
 
-                        StoredIconPopup page = new StoredIconPopup()
+                            App.InstanceStoredIconPage = new StoredIconPopup()
+                            {
+                                BindingContext = App.InstanceStoredIconsViewModel
+                            };
+                        }
+                        else
                         {
-                            BindingContext = viewModel
-                        };
+                            App.InstanceStoredIconsViewModel.FolderWithIcons = _currentElement.Text;
+                            App.InstanceStoredIconsViewModel.ItemsMatching = itemsMatching;
+                        }
 
-                        await App.Current.MainPage.Navigation.PushPopupAsync(page);
+						await App.Current.MainPage.Navigation.PushPopupAsync(App.InstanceStoredIconPage);
 
                         e.Handled = true;
                     }

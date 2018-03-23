@@ -82,11 +82,13 @@ namespace FastTalkerSkiaSharp
 
         public static StoredIconContainerModel storedIcons { get; set; }
 
-		public static ModifyPage ModificationPage = null;
+		public static ModifyPage InstanceModificationPage = null;
 
 		public static SettingsPageViewModel InstanceSettingsPageViewModel;
-
 		public static SettingsPage InstanceSettingsPage;
+
+		public static StoredIconPopupViewModel InstanceStoredIconsViewModel;
+		public static StoredIconPopup InstanceStoredIconPage;
 
         public App()
         {

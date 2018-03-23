@@ -32,8 +32,17 @@ namespace FastTalkerSkiaSharp.ViewModels
 
         public StoredIconPopupViewModel() { }
 
+		public void UnloadInformation()
+		{
+			Rows.Clear();
+
+			ItemsMatching.Clear();
+		}
+        
         public void LoadInformationAsync(StackLayout coreLayout)
         {
+			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "LoadInformationAsync(StackLayout coreLayout)");
+
             if (Rows == null)
             {
                 Rows = new ObservableCollection<DisplayImageRowModel>();
