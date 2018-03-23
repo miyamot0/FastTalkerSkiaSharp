@@ -41,8 +41,6 @@ namespace FastTalkerSkiaSharp.ViewModels
         
         public void LoadInformationAsync(StackLayout coreLayout)
         {
-			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "LoadInformationAsync(StackLayout coreLayout)");
-
             if (Rows == null)
             {
                 Rows = new ObservableCollection<DisplayImageRowModel>();

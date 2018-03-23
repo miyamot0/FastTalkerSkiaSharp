@@ -280,7 +280,7 @@ namespace FastTalkerSkiaSharp.Pages
         }
 
         /// <summary>
-        /// 
+        /// Keep icon within bounds of canvas
         /// </summary>
         private void ClampCurrentIconToCanvasBounds()
         {
@@ -321,22 +321,18 @@ namespace FastTalkerSkiaSharp.Pages
             {
                 case SkiaSharp.Views.Forms.SKTouchAction.Pressed:
                     ProcessInitialTouchEvent(e, outputVerbose: App.OutputVerbose);
-
-                    break;
+					return;
 
                 case SkiaSharp.Views.Forms.SKTouchAction.Moved:
                     ProcessMovedTouchEvent(e, outputVerbose: App.OutputVerbose);
-
                     return;
 
                 case SkiaSharp.Views.Forms.SKTouchAction.Released:
                     ProcessCompletedTouchEvent(e, outputVerbose: App.OutputVerbose);
-
                     return;
                     
                 default:
                     _currentElement = null;
-
                     return;
             }        
         }
@@ -543,8 +539,8 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         Debug.WriteLineIf(outputVerbose, "Icon completed, has moved");
 
-                        IEnumerable<SkiaSharp.Elements.Element> folderOfInterest = canvas.Elements.Where(elem => elem.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder) && 
-                                                                                                         !elem.IsStoredInAFolder)
+                        IEnumerable<SkiaSharp.Elements.Element> folderOfInterest = canvas.Elements
+							          .Where(elem => elem.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder) && !elem.IsStoredInAFolder)
                                       .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds));
 
                         App.UserInputInstance.InsertIntoFolder(_currentElement: _currentElement, 
@@ -696,7 +692,6 @@ namespace FastTalkerSkiaSharp.Pages
 
                         if ((DateTime.Now - emitterPressTime).Seconds >= 3 && !canvas.Controller.InEditMode)
                         {
-
                             canvas.Controller.UpdateSettings(isEditing: !canvas.Controller.InEditMode,
                                                              isInFrame: canvas.Controller.InFramedMode,
                                                              isAutoDeselecting: canvas.Controller.RequireDeselect,
@@ -844,19 +839,6 @@ namespace FastTalkerSkiaSharp.Pages
                                                                                                  opaqueBackground: true);
 
             canvas.Elements.Add(settingsElement);
-
-            /*
-            // Delete zone
-            deleteReference = App.ImageBuilderInstance.BuildNamedIcon(resource: "FastTalkerSkiaSharp.Images.Trash.png",
-                                                                      text: "Delete",
-                                                                      x: Constants.DeviceLayout.Bezel,
-                                                                      y: canvas.CanvasSize.Height - Constants.DeviceLayout.Bezel,
-                                                                      tagCode: (int)SkiaSharp.Elements.CanvasView.Role.Delete,
-                                                                      alignBottom: true,
-                                                                      opaqueBackground: true);
-
-            canvas.Elements.Add(deleteReference);
-            */
         }
     }
 }
