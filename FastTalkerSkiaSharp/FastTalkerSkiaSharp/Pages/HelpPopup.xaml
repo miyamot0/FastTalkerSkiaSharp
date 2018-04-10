@@ -20,16 +20,19 @@
                         <FormattedString>
                           <Span Text="Help and Getting Started" 
                                 FontAttributes="Bold" 
+                                ForegroundColor="Black"
                                 FontSize="Large"/>
                         </FormattedString>
                       </Label.FormattedText>
                     </Label>
 
+                    <!-- Setting up and building a board -->
                     <Label Margin="0, 10, 0, 0">
                       <Label.FormattedText>
                         <FormattedString>
-                          <Span Text="Setting up and building a board" 
+                          <Span Text="Setting up and building a communication board" 
                                 FontAttributes="Bold" 
+                                ForegroundColor="Black"
                                 FontSize="Default"/>
                         </FormattedString>
                       </Label.FormattedText>
@@ -38,22 +41,30 @@
                             <Label>
                               <Label.FormattedText>
                                 <FormattedString>
-                                  <Span Text="To edit your board, you will need to be in 'Edit Mode'. In this mode, you will be able to add, edit, and delete icons on the board."  
+                                  <Span Text="To make any actual changes to your board, you will need to be in the 'Edit Mode'. The 'Edit Mode' is engaged when the background of the app is colored orange. "  
+                                        ForegroundColor="Black"
                                         FontSize="Default"/>
-                                  <Span Text=" To enter 'Edit Mode', you will need to hold the Speaker/Emitter icon for three seconds and then release. This is toggled in this way to prevent accidental operation by young users."  
+                                  <Span Text="In this mode, you will be able to add, edit, or delete icons on the board. You can also manage how individual icons work (e.g., speak right away, affix to one spot, etc.). "  
+                                        ForegroundColor="Black"
+                                        FontSize="Default"/>                                    
+                                  <Span Text=" To enter 'Edit Mode', you will need to hold the Speaker/Emitter icon for three seconds and then release"  
+                                        ForegroundColor="Blue"
+                                        FontAttributes="Bold"
                                         FontSize="Default"/>
-                                  <Span Text=" Once you're finished editing, press the 'Settings' icon in the lower right corner of the screen to 'Resume Operation'."  
+                                  <Span Text=". This is toggled in this way to prevent accidental operation by young users. Once you're finished editing, press the 'Settings' icon in the lower right corner of the screen to 'Resume Operation'."  
+                                        ForegroundColor="Black"
                                         FontSize="Default"/>
                                 </FormattedString>
                               </Label.FormattedText>
                             </Label>
 
-
+                    <!-- Adding a New Icon -->
                     <Label Margin="0, 10, 0, 0">
                       <Label.FormattedText>
                         <FormattedString>
                           <Span Text="Adding a new icon" 
                                 FontAttributes="Bold" 
+                                ForegroundColor="Black"
                                 FontSize="Default"/>
                         </FormattedString>
                       </Label.FormattedText>
@@ -62,12 +73,51 @@
                             <Label>
                               <Label.FormattedText>
                                 <FormattedString>
-                                  <Span Text="In order to add a new icon, you need to choose between a "  
+                                  <Span Text="Whenever you need to add a new icon, you need to choose between a "
+                                        ForegroundColor="Black"
                                         FontSize="Default"/>
-                                  <Span Text="Local (picture that comes with app) " FontAttributes="Bold"/>
-                                  <Span Text="or a "/>
-                                  <Span Text="Downloaded (a photo you've taken or downloaded) " FontAttributes="Bold"/>
-                                  <Span Text="image. "/>
+                                  <Span Text="Local (picture that comes with app) " 
+                                        ForegroundColor="Green"
+                                        FontSize="Default"
+                                        FontAttributes="Bold"/>
+                                  <Span Text=", a "
+                                        FontSize="Default"
+                                        ForegroundColor="Black"/>
+                                  <Span Text="Downloaded (a photo you've already taken or downloaded) " 
+                                        ForegroundColor="OrangeRed"
+                                        FontAttributes="Bold"
+                                        FontSize="Default"/>
+                                  <Span Text=", or a "
+                                        FontSize="Default"
+                                        ForegroundColor="Black"/>
+                                  <Span Text="Photographed (a photo you haven't yet taken) " 
+                                        ForegroundColor="Purple"
+                                        FontAttributes="Bold"
+                                        FontSize="Default"/>
+                                  <Span Text="image. The "
+                                        FontSize="Default"
+                                        ForegroundColor="Black"/>
+                                  <Span Text="Local " 
+                                        ForegroundColor="Green"
+                                        FontSize="Default"
+                                        FontAttributes="Bold"/>
+                                  <Span Text="images are ones that come pre-installed in the app. At present, there are 3,000+ images organized by categories. "
+                                        FontSize="Default"
+                                        ForegroundColor="Black"/>
+                                  <Span Text="Downloaded " 
+                                        ForegroundColor="OrangeRed"
+                                        FontSize="Default"
+                                        FontAttributes="Bold"/>
+                                  <Span Text="images are ones that you download or otherwise put on your device yourself. "
+                                        FontSize="Default"
+                                        ForegroundColor="Black"/>
+                                  <Span Text="Photographed " 
+                                        ForegroundColor="Purple"
+                                        FontSize="Default"
+                                        FontAttributes="Bold"/>
+                                  <Span Text="images are ones that you can take using the camera from your device."
+                                        FontSize="Default"
+                                        ForegroundColor="Black"/>
                                 </FormattedString>
                               </Label.FormattedText>
                             </Label>
@@ -75,9 +125,16 @@
                             <Label>
                               <Label.FormattedText>
                                 <FormattedString>
-                                  <Span Text="&#x2022; The " FontSize="Default"/>
-                                  <Span Text="Local " FontAttributes="Bold"/>
-                                  <Span Text="images come the device and you can add them to the board by hitting the 'Add Local Icon' button in the settings menu."/>
+                                  <Span Text="&#x2022; " 
+                                        FontSize="Default"
+                                        ForegroundColor="Black"/>
+                                  <Span Text="Local " 
+                                        FontSize="Default"
+                                        FontAttributes="Bold"
+                                        ForegroundColor="Green"/>
+                                  <Span Text="images are added to the board by pressing the 'Add Local Icon' button in the 'Settings' menu."
+                                        FontSize="Default"
+                                        ForegroundColor="Black"/>
                                 </FormattedString>
                               </Label.FormattedText>
                             </Label>
@@ -85,55 +142,290 @@
                             <Label>
                               <Label.FormattedText>
                                 <FormattedString>
-                                  <Span Text="&#x2022; The " FontSize="Default"/>
-                                  <Span Text="Downloaded " FontAttributes="Bold"/>
-                                  <Span Text="images are ones that you've either taken with your camera or have downloaded onto your device."/>
+                                  <Span Text="&#x2022; " 
+                                        FontSize="Default"
+                                        ForegroundColor="Black"/>
+                                  <Span Text="Downloaded " 
+                                        FontAttributes="Bold"
+                                        FontSize="Default"
+                                        ForegroundColor="OrangeRed"/>
+                                  <Span Text="images are added by pressing the 'Add Stored Image' button in the 'Settings' menu. Any images that you've taken photos of will be stored in this category."
+                                        FontSize="Default"
+                                        ForegroundColor="Black"/>
+                                </FormattedString>
+                              </Label.FormattedText>
+                            </Label>
+                    
+                            <Label>
+                              <Label.FormattedText>
+                                <FormattedString>
+                                  <Span Text="&#x2022; " 
+                                        FontSize="Default"
+                                        ForegroundColor="Black"/>
+                                  <Span Text="Photographed " 
+                                        FontAttributes="Bold"
+                                        FontSize="Default"
+                                        ForegroundColor="Purple"/>
+                                  <Span Text="photos are added by pressing the 'Take Photo' button in the 'Settings' menu. You will use the camera from your device to take the picture."
+                                        FontSize="Default"
+                                        ForegroundColor="Black"/>
                                 </FormattedString>
                               </Label.FormattedText>
                             </Label>
 
+                    <!-- Adding a New Folder -->
                     <Label Margin="0, 10, 0, 0">
                       <Label.FormattedText>
                         <FormattedString>
-                          <Span Text="Editing an Icon..." 
+                          <Span Text="Adding a Folder" 
                                 FontAttributes="Bold" 
+                                ForegroundColor="Black"
                                 FontSize="Default"/>
                         </FormattedString>
                       </Label.FormattedText>
                     </Label>
-                
+                    
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Aside from icons, individual 'Folders' can be added to the board. Folders work like 'Pages' in a 'Communication Book'. For example, icons be put in and taken out of a Folder. "
+                                          ForegroundColor="Black"
+                                          FontSize="Default"/>
+                                    <Span Text="By default, only a total of 6 colors are provided for folders. This is a conscious decision at this point in order to limit the inclusion of excessive icons on the board."
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    
+                    <!-- Editing an Icon -->
                     <Label Margin="0, 10, 0, 0">
                       <Label.FormattedText>
                         <FormattedString>
-                          <Span Text="Mode of operation..." 
+                          <Span Text="Editing an Icon" 
                                 FontAttributes="Bold" 
-                                FontSize="Default"/>
+                                FontSize="Default"
+                                ForegroundColor="Black"/>
                         </FormattedString>
                       </Label.FormattedText>
                     </Label>
 
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Icons on the board can be edited whenever necessary. The "
+                                          ForegroundColor="Black"
+                                          FontSize="Default"/>
+                                    <Span Text="Name " 
+                                          ForegroundColor="Blue"
+                                          FontSize="Default"
+                                          FontAttributes="Bold"/>
+                                    <Span Text="of the icon and the "
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>
+                                    <Span Text="Size " 
+                                          ForegroundColor="Blue"
+                                          FontAttributes="Bold"
+                                          FontSize="Default"/>
+                                    <Span Text="can be edited by selecting the icon while in 'Edit Mode'. Once pressed in 'Edit Mode' a menu will pop up and present you with several options. The options included are listed below: "
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>                                    
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    
+                            <Label>
+                              <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#x2022; " 
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>   
+                                    <Span Text="Reset Size" 
+                                          ForegroundColor="Blue"
+                                          FontSize="Default"
+                                          FontAttributes="Bold"/>
+                                    <Span Text=": This option will reset the icon to original size. This is good if you feel you want to start back at the original size of the icon." 
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>
+                                </FormattedString>
+                              </Label.FormattedText>
+                            </Label>
+
+                            <Label>
+                              <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#x2022; " 
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>   
+                                    <Span Text="Increase Size" 
+                                          ForegroundColor="Blue"
+                                          FontSize="Default"
+                                          FontAttributes="Bold"/>
+                                    <Span Text=": This option will increase the size of the icon you selected. You can choose to increase the size slightly (10%) or significantly (50%) as necessary." 
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>
+                                </FormattedString>
+                              </Label.FormattedText>
+                            </Label>
+                    
+                            <Label>
+                              <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#x2022; " 
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>   
+                                    <Span Text="Decrease Size" 
+                                          ForegroundColor="Blue"
+                                          FontSize="Default"
+                                          FontAttributes="Bold"/>
+                                    <Span Text=": This option will decrease the size of the icon you selected. You can choose to decrease the size slightly (10%) or significantly (50%) as necessary." 
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>
+                                </FormattedString>
+                              </Label.FormattedText>
+                            </Label>
+
+                            <Label>
+                              <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#x2022; " 
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>   
+                                    <Span Text="Edit Icon Text" 
+                                          ForegroundColor="Green"
+                                          FontSize="Default"
+                                          FontAttributes="Bold"/>
+                                    <Span Text=": This option will let you change the text written on the icon. Once the text changes, the speech output will then be 'read' loud (i.e., it will say what you press)." 
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>
+                                </FormattedString>
+                              </Label.FormattedText>
+                            </Label>
+                    
+                            <Label>
+                              <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#x2022; " 
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>   
+                                    <Span Text="Delete Icon" 
+                                          ForegroundColor="Red"
+                                          FontSize="Default"
+                                          FontAttributes="Bold"/>
+                                    <Span Text=": This option will delete the icon if you desire. A confirmation window will be presented to make sure you want to remove it. Deleted icons cannot be recovered." 
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>
+                                </FormattedString>
+                              </Label.FormattedText>
+                            </Label>
+
+
+                <!-- Changing Operating Mode -->
                     <Label Margin="0, 10, 0, 0">
                       <Label.FormattedText>
                         <FormattedString>
-                          <Span Text="Auto-deselecting..." 
+                          <Span Text="Mode of Operation" 
                                 FontAttributes="Bold" 
-                                FontSize="Default"/>
+                                FontSize="Default"
+                                ForegroundColor="Black"/>
                         </FormattedString>
                       </Label.FormattedText>
                     </Label>
+                    
+                            <Label>
+                              <Label.FormattedText>
+                                <FormattedString>
+                                  <Span Text="The FastTalker app is designed to support a range of communicators. Early communicators may need to start in "  
+                                        ForegroundColor="Black"
+                                        FontSize="Default"/>
+                                  <Span Text="Single Icon "  
+                                        ForegroundColor="Blue"
+                                        FontAttributes="Bold"
+                                        FontSize="Default"/>
+                                  <Span Text="mode. In this mode, the app will respond to how "  
+                                        ForegroundColor="Black"
+                                        FontSize="Default"/>
+                                  <Span Text="individual icons "  
+                                        ForegroundColor="Blue"
+                                        FontAttributes="Bold"
+                                        FontSize="Default"/>
+                                  <Span Text="are pressed. For example, the focus of this mode is on outputting single words. In contrast, more advanced communicators may be using "  
+                                        ForegroundColor="Black"
+                                        FontSize="Default"/>
+                                  <Span Text="Sentence Frame "  
+                                        ForegroundColor="Orange"
+                                        FontAttributes="Bold"
+                                        FontSize="Default"/>
+                                  <Span Text="mode. In this mode, the app will respond to the words dragged onto a "  
+                                        ForegroundColor="Black"
+                                        FontSize="Default"/>
+                                  <Span Text="Sentence Frame"  
+                                        ForegroundColor="Orange"
+                                        FontAttributes="Bold"
+                                        FontSize="Default"/>
+                                  <Span Text=". For example, a communicator may use this mode to string the words 'I Want' and 'Train' before hitting the speech output button."  
+                                        ForegroundColor="Black"
+                                        FontSize="Default"/>
+                                </FormattedString>
+                              </Label.FormattedText>
+                            </Label>
 
+                    <!-- Auto-Deselecting Mode -->
                     <Label Margin="0, 10, 0, 0">
                       <Label.FormattedText>
                         <FormattedString>
-                          <Span Text="Icon pinning..." 
+                          <Span Text="Auto-Deselection" 
                                 FontAttributes="Bold" 
-                                FontSize="Default"/>
+                                FontSize="Default"
+                                ForegroundColor="Black"/>
                         </FormattedString>
                       </Label.FormattedText>
                     </Label>
+                    
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="By default, the app will keep icons 'active' once pressed in Single Icon Mode. In this way, the communicator does not have to re-select the icon again (i.e., it stays green). "
+                                          ForegroundColor="Black"
+                                          FontSize="Default"/>
+                                    <Span Text="You may disable this functionality by toggling 'Auto-Deselect'. If toggled, the communicator will be to manually re-select the icon if they want to communicate. "
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>
+                                    <Span Text="This is turned off by default, but may be useful in situations when the learner is not focusing on the screen and only pressing the speech emitter."
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>                                    
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
 
+                    <!-- Icon Pinning -->
+                    <Label Margin="0, 10, 0, 0">
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="Icon Pinning" 
+                                FontAttributes="Bold" 
+                                FontSize="Default"
+                                ForegroundColor="Black"/>
+                        </FormattedString>
+                      </Label.FormattedText>
+                    </Label>
+                    
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="By default, icons on the board are freely moveable by the communicator. This is similar to the picture card approach, since they can be freely interacted with. "
+                                          ForegroundColor="Black"
+                                          FontSize="Default"/>
+                                    <Span Text="However, there may be times when you disable to remove this functionality. If 'Pinned', the icon will be fixed to its current location outside of the 'Edit Mode'. "
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>
+                                    <Span Text="This is turned off by default, but may be useful in situations when the learner becomes preoccupied with moving the icons about rather than communicating."
+                                          FontSize="Default"
+                                          ForegroundColor="Black"/>                                    
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
 
-                
                 </StackLayout>
             </ScrollView>
     </StackLayout>

@@ -29,6 +29,7 @@
                        HorizontalTextAlignment="Center"
                        FontSize="Large"
                        FontAttributes="Bold"
+                       TextColor="Black"
                        Margin="0,5,0,0"
                        Grid.Row="0"
                        Grid.Column="0"
