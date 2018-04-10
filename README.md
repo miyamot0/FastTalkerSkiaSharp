@@ -1,4 +1,4 @@
-# FastTalkerSkiaSharp
+# Fast Talker (SkiaSharp)
 Fast Talker (Skia port) is a native extension of earlier work to establish a free and open source application for use in the treatment of communication disorders.  Fast Tasker is built upon Xamarin Forms and SkiaSharp, both open-source frameworks for use in native development of applications for Android, iOS, Windows Mobile, and Blackberry.  Fast Talker is fully supported on all platforms, though only Android and iOS are actively maintained and under evaluation at this point.
 
 ### Features
@@ -17,9 +17,10 @@ Fast Talker (Skia port) is a native extension of earlier work to establish a fre
  - Todo
 
 ### Version
- - 1.0.0.0
+ - 1.0.0.1
 
 ### Changelog
+ - 1.0.0.1 - Documentation
  - 1.0.0.0 - Initial push
 
 ### Derivative Works
