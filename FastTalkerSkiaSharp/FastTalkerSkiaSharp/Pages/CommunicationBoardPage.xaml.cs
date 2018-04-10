@@ -280,7 +280,7 @@ namespace FastTalkerSkiaSharp.Pages
         }
 
         /// <summary>
-        /// 
+        /// Keep icon within bounds of canvas
         /// </summary>
         private void ClampCurrentIconToCanvasBounds()
         {
@@ -321,22 +321,18 @@ namespace FastTalkerSkiaSharp.Pages
             {
                 case SkiaSharp.Views.Forms.SKTouchAction.Pressed:
                     ProcessInitialTouchEvent(e, outputVerbose: App.OutputVerbose);
-
-                    break;
+					return;
 
                 case SkiaSharp.Views.Forms.SKTouchAction.Moved:
                     ProcessMovedTouchEvent(e, outputVerbose: App.OutputVerbose);
-
                     return;
 
                 case SkiaSharp.Views.Forms.SKTouchAction.Released:
                     ProcessCompletedTouchEvent(e, outputVerbose: App.OutputVerbose);
-
                     return;
                     
                 default:
                     _currentElement = null;
-
                     return;
             }        
         }
@@ -509,9 +505,16 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "Completed icon tap");
 
-                        ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
+						if (App.InstanceModificationPage == null)
+                        {
+							App.InstanceModificationPage = new ModifyPage(_currentElement, canvas.Controller);
+                        }
+                        else
+                        {
+							App.InstanceModificationPage.UpdateCurrentIcon(_currentElement);
+                        }
 
-                        await Navigation.PushPopupAsync(iconModificationPopup);
+						await Navigation.PushPopupAsync(App.InstanceModificationPage);
                     }
                     else if (canvas.Controller.InEditMode && 
                              !_currentElement.IsInsertableIntoFolder && 
@@ -521,16 +524,23 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "Completed icon held > 3s");
 
-                        ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
+						if (App.InstanceModificationPage == null)
+                        {
+							App.InstanceModificationPage = new ModifyPage(_currentElement, canvas.Controller);
+                        }
+                        else
+                        {
+							App.InstanceModificationPage.UpdateCurrentIcon(_currentElement);
+                        }
 
-                        await Navigation.PushPopupAsync(iconModificationPopup);
+						await Navigation.PushPopupAsync(App.InstanceModificationPage);
                     }
                     else if (hasMoved && _currentElement.IsInsertableIntoFolder)
                     {
                         Debug.WriteLineIf(outputVerbose, "Icon completed, has moved");
 
-                        IEnumerable<SkiaSharp.Elements.Element> folderOfInterest = canvas.Elements.Where(elem => elem.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder) && 
-                                                                                                         !elem.IsStoredInAFolder)
+                        IEnumerable<SkiaSharp.Elements.Element> folderOfInterest = canvas.Elements
+							          .Where(elem => elem.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder) && !elem.IsStoredInAFolder)
                                       .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds));
 
                         App.UserInputInstance.InsertIntoFolder(_currentElement: _currentElement, 
@@ -548,9 +558,16 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "Completed folder tap");
 
-                        ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
+						if (App.InstanceModificationPage == null)
+						{
+							App.InstanceModificationPage = new ModifyPage(_currentElement, canvas.Controller);
+						}
+						else
+						{
+							App.InstanceModificationPage.UpdateCurrentIcon(_currentElement);
+						}
 
-                        await Navigation.PushPopupAsync(iconModificationPopup);
+						await Navigation.PushPopupAsync(App.InstanceModificationPage);
 
                         e.Handled = true;
                     }
@@ -560,9 +577,16 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "Completed folder hold");
 
-                        ModifyPage iconModificationPopup = new ModifyPage(_currentElement, canvas.Controller);
+						if (App.InstanceModificationPage == null)
+                        {
+							App.InstanceModificationPage = new ModifyPage(_currentElement, canvas.Controller);
+                        }
+                        else
+                        {
+							App.InstanceModificationPage.UpdateCurrentIcon(_currentElement);
+                        }
 
-                        await Navigation.PushPopupAsync(iconModificationPopup);
+						await Navigation.PushPopupAsync(App.InstanceModificationPage);
 
                         e.Handled = true;
                     }
@@ -584,22 +608,30 @@ namespace FastTalkerSkiaSharp.Pages
                             return;
                         }
 
-                        StoredIconPopupViewModel viewModel = new StoredIconPopupViewModel
-                        {
-                            Padding = new Thickness(100, 100, 100, 100),
-                            IsSystemPadding = true,
-                            FolderWithIcons = _currentElement.Text,
-                            ItemsMatching = itemsMatching,
-                        };
+						if (App.InstanceStoredIconsViewModel == null)
+						{
+							App.InstanceStoredIconsViewModel = new StoredIconPopupViewModel
+                            {
+                                Padding = new Thickness(100, 100, 100, 100),
+                                IsSystemPadding = true,
+                                FolderWithIcons = _currentElement.Text,
+                                ItemsMatching = itemsMatching,
+                            };
 
-                        viewModel.IconSelected += RestoreIcon;
+							App.InstanceStoredIconsViewModel.IconSelected += RestoreIcon;
 
-                        StoredIconPopup page = new StoredIconPopup()
-                        {
-                            BindingContext = viewModel
-                        };
+							App.InstanceStoredIconPage = new StoredIconPopup()
+                            {
+                                BindingContext = App.InstanceStoredIconsViewModel
+                            };
+						}
+						else
+						{
+							App.InstanceStoredIconsViewModel.FolderWithIcons = _currentElement.Text;
+							App.InstanceStoredIconsViewModel.ItemsMatching = itemsMatching;
+						}
 
-                        await App.Current.MainPage.Navigation.PushPopupAsync(page);
+						await App.Current.MainPage.Navigation.PushPopupAsync(App.InstanceStoredIconPage);
 
                         e.Handled = true;
                     }
@@ -620,22 +652,30 @@ namespace FastTalkerSkiaSharp.Pages
                             return;
                         }
 
-                        StoredIconPopupViewModel viewModel = new StoredIconPopupViewModel
+						if (App.InstanceStoredIconsViewModel == null)
                         {
-                            Padding = new Thickness(100, 100, 100, 100),
-                            IsSystemPadding = true,
-                            FolderWithIcons = _currentElement.Text,
-                            ItemsMatching = itemsMatching,
-                        };
+                            App.InstanceStoredIconsViewModel = new StoredIconPopupViewModel
+                            {
+                                Padding = new Thickness(100, 100, 100, 100),
+                                IsSystemPadding = true,
+                                FolderWithIcons = _currentElement.Text,
+                                ItemsMatching = itemsMatching,
+                            };
 
-                        viewModel.IconSelected += RestoreIcon;
+                            App.InstanceStoredIconsViewModel.IconSelected += RestoreIcon;
 
-                        StoredIconPopup page = new StoredIconPopup()
+                            App.InstanceStoredIconPage = new StoredIconPopup()
+                            {
+                                BindingContext = App.InstanceStoredIconsViewModel
+                            };
+                        }
+                        else
                         {
-                            BindingContext = viewModel
-                        };
+                            App.InstanceStoredIconsViewModel.FolderWithIcons = _currentElement.Text;
+                            App.InstanceStoredIconsViewModel.ItemsMatching = itemsMatching;
+                        }
 
-                        await App.Current.MainPage.Navigation.PushPopupAsync(page);
+						await App.Current.MainPage.Navigation.PushPopupAsync(App.InstanceStoredIconPage);
 
                         e.Handled = true;
                     }
@@ -652,7 +692,6 @@ namespace FastTalkerSkiaSharp.Pages
 
                         if ((DateTime.Now - emitterPressTime).Seconds >= 3 && !canvas.Controller.InEditMode)
                         {
-
                             canvas.Controller.UpdateSettings(isEditing: !canvas.Controller.InEditMode,
                                                              isInFrame: canvas.Controller.InFramedMode,
                                                              isAutoDeselecting: canvas.Controller.RequireDeselect,
@@ -800,19 +839,6 @@ namespace FastTalkerSkiaSharp.Pages
                                                                                                  opaqueBackground: true);
 
             canvas.Elements.Add(settingsElement);
-
-            /*
-            // Delete zone
-            deleteReference = App.ImageBuilderInstance.BuildNamedIcon(resource: "FastTalkerSkiaSharp.Images.Trash.png",
-                                                                      text: "Delete",
-                                                                      x: Constants.DeviceLayout.Bezel,
-                                                                      y: canvas.CanvasSize.Height - Constants.DeviceLayout.Bezel,
-                                                                      tagCode: (int)SkiaSharp.Elements.CanvasView.Role.Delete,
-                                                                      alignBottom: true,
-                                                                      opaqueBackground: true);
-
-            canvas.Elements.Add(deleteReference);
-            */
         }
     }
 }

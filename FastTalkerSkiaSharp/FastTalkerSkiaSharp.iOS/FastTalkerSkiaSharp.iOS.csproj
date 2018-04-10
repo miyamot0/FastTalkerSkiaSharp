@@ -92,6 +92,8 @@
     <CodesignProvision>VS: com.smallnstats.FastTalkerSkiaSharp Development</CodesignProvision>
     <CodesignKey>iPhone Developer: Shawn Gilroy (8F466XTP7N)</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <BuildIpa>true</BuildIpa>
+    <IpaIncludeArtwork>true</IpaIncludeArtwork>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controls\CustomScrollViewRenderer.cs" />

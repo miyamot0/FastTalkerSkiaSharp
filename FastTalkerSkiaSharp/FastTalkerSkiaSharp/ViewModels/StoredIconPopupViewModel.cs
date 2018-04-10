@@ -32,6 +32,13 @@ namespace FastTalkerSkiaSharp.ViewModels
 
         public StoredIconPopupViewModel() { }
 
+		public void UnloadInformation()
+		{
+			Rows.Clear();
+
+			ItemsMatching.Clear();
+		}
+        
         public void LoadInformationAsync(StackLayout coreLayout)
         {
             if (Rows == null)

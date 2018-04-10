@@ -16,5 +16,10 @@ namespace FastTalkerSkiaSharp.Pages
                 IsSystemPadding = false
             };
         }
+
+		public void UpdateCurrentIcon(SkiaSharp.Elements.Element _currentElement)
+		{
+			((ModifyIconViewModel)BindingContext).UpdateIcon(_currentElement);
+		}
     }
 }

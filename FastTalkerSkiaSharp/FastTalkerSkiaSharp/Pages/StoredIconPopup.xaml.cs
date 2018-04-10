@@ -39,5 +39,12 @@ namespace FastTalkerSkiaSharp.Pages
 
             (BindingContext as StoredIconPopupViewModel).LoadInformationAsync(coreLayout);
         }
-    }
+
+		protected override void OnDisappearing()
+		{
+			base.OnDisappearing();
+
+			(BindingContext as StoredIconPopupViewModel).UnloadInformation();
+		}
+	}
 }
