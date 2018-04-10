@@ -23,6 +23,12 @@ Fast Talker (Skia port) is a native extension of earlier work to establish a fre
  - 1.0.0.1 - Documentation
  - 1.0.0.0 - Initial push
 
+### TODO List
+ - Local Server - Load/Resave
+ - Dimension-specific Assets (Low- and High-density displays)
+ - Documentation and Help
+ - Performance improvements
+
 ### Derivative Works
 Fast Talker is a derivative work of an earlier project and uses licensed software:
 * [Fast Talker](https://github.com/miyamot0/FastTalker) - [GPL-V3](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) - Copyright 2016-2018 Shawn Gilroy. [www.smallnstats.com](http://www.smallnstats.com)
