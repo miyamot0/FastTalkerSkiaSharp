@@ -69,6 +69,11 @@ namespace FastTalkerSkiaSharp.Pages
         float xPos;
         SkiaSharp.SKSize sizeOfStrip;
 
+        float topMargin = 5f;
+
+        float textSize = 28f;
+        float btnTextSize = 56f;
+
         SkiaSharp.Elements.Element _currentElement;
 
         uint animationLength = 300;
@@ -78,6 +83,9 @@ namespace FastTalkerSkiaSharp.Pages
             InitializeComponent ();
 		}
 
+        /// <summary>
+        /// Fire event once layout is inflated
+        /// </summary>
         protected async override void OnAppearing()
         {
             base.OnAppearing();
@@ -125,6 +133,12 @@ namespace FastTalkerSkiaSharp.Pages
                      (sizeOfStrip.Height / 3f) - (float)(Rng.Next(0, 40) - 20));
         }
 
+        /// <summary>
+        /// Animating figures
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="xEnd"></param>
+        /// <param name="yEnd"></param>
         void Animater(SkiaSharp.Elements.Element item, float xEnd, float yEnd)
         {
             SKRect oldCenter = item.Bounds;
@@ -154,31 +168,35 @@ namespace FastTalkerSkiaSharp.Pages
             });
         }
 
+        /// <summary>
+        /// Draw text on board
+        /// </summary>
         void DrawText()
         {
-            var centerX = (DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 10f).Width / 2f);
+            var centerX = canvasTitle.CanvasSize.Width / 2f;
+            var centerY = canvasTitle.CanvasSize.Height / 2f;
 
-            #region Top messages
+            #region Upper Text
 
             var topText = new SkiaSharp.Elements.Text("Developed by Shawn Gilroy (C) 2017")
             {
-                Size = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 1f),
+                Size = new SKSize(canvasTitle.CanvasSize.Width, canvasTitle.CanvasSize.Height / 10f),
                 ForeColor = SKColors.White,
                 AutoSize = true,
-                FontSize = 32f,
+                FontSize = textSize,
             };
 
             topText.X = centerX - topText.Width / 2f;
-            topText.Y = topText.Height + 5f;
+            topText.Y = topText.Height / 2f;
 
             canvasTitle.Controller.Elements.Add(topText);
 
             var subText = new SkiaSharp.Elements.Text("Released under the General Public License, Version 3.0")
             {
-                Size = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 1f),
+                Size = new SKSize(canvasTitle.CanvasSize.Width, canvasTitle.CanvasSize.Height / 10f),
                 ForeColor = SKColors.White,
                 AutoSize = true,
-                FontSize = 32f,
+                FontSize = textSize,
             };
 
             subText.X = centerX - subText.Width / 2f;
@@ -188,45 +206,71 @@ namespace FastTalkerSkiaSharp.Pages
 
             #endregion
 
-            var iconsText = new SkiaSharp.Elements.Text("Visual symbols from \"Mulberry Symbol Set\" Copyright 2008-2012 Garry Paxton (CC-BY-SA 2.0). http://straight-street.com")
+            #region Lower Text
+
+            var iconsText = new SkiaSharp.Elements.Text("Copyright 2008-2012 Garry Paxton (CC-BY-SA 2.0). http://straight-street.com")
             {
-                Size = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 1f),
+                Size = new SKSize(canvasTitle.CanvasSize.Width, canvasTitle.CanvasSize.Height / 10f),
                 ForeColor = SKColors.White,
                 AutoSize = true,
-                FontSize = 32f,
+                FontSize = textSize,
             };
 
             iconsText.X = centerX - iconsText.Width / 2f;
-            iconsText.Y = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 7f).Height - (iconsText.Height + 50);
+            iconsText.Y = canvasTitle.CanvasSize.Height - iconsText.Height;
 
             canvasTitle.Controller.Elements.Add(iconsText);
-            
-            var sizeBtn = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 8f, 1.5f);
 
-            var xOffset = (DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 7f).Width - sizeBtn.Width)/2f;
+            var iconsText2 = new SkiaSharp.Elements.Text("Visual symbols from \"Mulberry Symbol Set\"")
+            {
+                Size = new SKSize(canvasTitle.CanvasSize.Width, canvasTitle.CanvasSize.Height / 10f),
+                ForeColor = SKColors.White,
+                AutoSize = true,
+                FontSize = textSize,
+            };
 
-            SKRect rect = new SKRect(xOffset, 
-                DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 4f).Height,
-                xOffset + sizeBtn.Width,
-                DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 4f).Height + sizeBtn.Height);
+            iconsText2.X = centerX - iconsText2.Width / 2f;
+            iconsText2.Y = iconsText.Top - (iconsText2.Height + 5f);
+
+            canvasTitle.Controller.Elements.Add(iconsText2);
+
+            #endregion
+
+            #region Button
+
+            var sizeBtn = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 8f, 2f);
+
+            var xOffset = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 1, 7f).Width;
+
+            SKRect rect = new SKRect(xOffset,
+                                     sizeOfStrip.Height,
+                                     sizeBtn.Width + xOffset, 
+                                     sizeBtn.Height / 2f);
 
             var button = new SkiaSharp.Elements.RoundRectangle(rect)
             {
                 BorderColor = SKColors.Black,
                 FillColor = SKColors.IndianRed,
-                BorderWidth = 10,
+                BorderWidth = 6,
                 CornerRadius = new SKPoint(25,25),
-                Tag = 999
+                Tag = 999,
             };
 
+            button.Height = sizeBtn.Height / 2f;
+            button.Y = ((canvasTitle.CanvasSize.Height / 2f) + (iconsText2.Top))/2f - button.Height/2f;
+
             canvasTitle.Controller.Elements.Add(button);
+
+            #endregion
+
+            #region Button Text
 
             var btnText = new SkiaSharp.Elements.Text("Load Communication Board")
             {
                 Size = new SKSize(button.Width, button.Height),
                 ForeColor = SKColors.White,
                 AutoSize = true,
-                FontSize = 64f,
+                FontSize = btnTextSize,
                 Tag = 999
             };
 
@@ -234,8 +278,15 @@ namespace FastTalkerSkiaSharp.Pages
             btnText.Y = button.Top + (button.Height / 2f) - (btnText.Height / 2f) + 10;
 
             canvasTitle.Controller.Elements.Add(btnText);
+
+            #endregion
         }
 
+        /// <summary>
+        /// Launch board if hit button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Canvas_Touch(object sender, SkiaSharp.Views.Forms.SKTouchEventArgs e)
         {
             if (e.ActionType == SkiaSharp.Views.Forms.SKTouchAction.Pressed)
