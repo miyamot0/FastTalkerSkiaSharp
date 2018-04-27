@@ -30,12 +30,15 @@ namespace FastTalkerSkiaSharp.Models
     {
         public string Name1 { get; set; }
         public ImageSource Image1 { get; set; }
+		public int Rotation1 { get; set; }
 
         public string Name2 { get; set; }
-        public ImageSource Image2 { get; set; }
+		public ImageSource Image2 { get; set; }
+        public int Rotation2 { get; set; }
 
         public string Name3 { get; set; }
-        public ImageSource Image3 { get; set; }
+		public ImageSource Image3 { get; set; }
+        public int Rotation3 { get; set; }
 
         public double WidthRequest { get; set; }
 

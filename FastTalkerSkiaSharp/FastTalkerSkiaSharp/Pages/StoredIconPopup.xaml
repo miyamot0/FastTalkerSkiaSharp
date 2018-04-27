@@ -36,6 +36,8 @@
 
                                 <Image HeightRequest="{Binding WidthRequest}"
                                        Source="{Binding Image1}"
+                                       Rotation="{Binding Rotation1}"
+                                       Margin="5"
                                        Grid.Row="0"
                                        Grid.Column="0">
                                     <Image.GestureRecognizers>
@@ -46,6 +48,8 @@
 
                                 <Image HeightRequest="{Binding WidthRequest}"
                                        Source="{Binding Image2}"
+                                       Rotation="{Binding Rotation2}"
+                                       Margin="5"
                                        Grid.Row="0"
                                        Grid.Column="1">
                                     <Image.GestureRecognizers>
@@ -56,6 +60,8 @@
 
                                 <Image HeightRequest="{Binding WidthRequest}"
                                        Source="{Binding Image3}"
+                                       Rotation="{Binding Rotation3}"
+                                       Margin="5"
                                        Grid.Row="0"
                                        Grid.Column="2">
                                     <Image.GestureRecognizers>

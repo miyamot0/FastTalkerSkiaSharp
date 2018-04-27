@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using FastTalkerSkiaSharp.Helpers;
 using FastTalkerSkiaSharp.Models;
@@ -54,6 +55,9 @@ namespace FastTalkerSkiaSharp.ViewModels
 
             ImageSource source1, source2, source3;
             string tempName1, tempName2, tempName3;
+			int rotation1, rotation2, rotation3;
+
+			rotation1 = rotation2 = rotation3 = 0;
 
             for (i = 0; (j + i) < ItemsMatching.Count;)
             {
@@ -65,26 +69,65 @@ namespace FastTalkerSkiaSharp.ViewModels
 
                 for (j = 0; j < 3 && (j + i) < ItemsMatching.Count; j++)
                 {
-                    if (j == 0)
-                    {
-                        tempName1 = ItemsMatching[j + i].Text;
-                        source1 = ImageSource.FromResource(ItemsMatching[j + i].ImageInformation);
+					System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "ResourceName: " + ItemsMatching[j + i].Text +
+					                                     " Local: " + ItemsMatching[j + i].LocalImage);
+
+					if (j == 0)
+					{
+						tempName1 = ItemsMatching[j + i].Text;
+
+						if (ItemsMatching[j + i].LocalImage)
+						{
+							source1 = ImageSource.FromResource(ItemsMatching[j + i].ImageInformation);
+							rotation1 = 0;
+						}
+						else
+						{
+							byte[] data = System.Convert.FromBase64String(ItemsMatching[j + i].ImageInformation);
+							source1 = ImageSource.FromStream(() => new MemoryStream(data));
+                            rotation1 = 180;
+						}
                     }
                     else if (j == 1)
                     {
                         tempName2 = ItemsMatching[j + i].Text;
-                        source2 = ImageSource.FromResource(ItemsMatching[j + i].ImageInformation);
+
+						if (ItemsMatching[j + i].LocalImage)
+                        {
+							source2 = ImageSource.FromResource(ItemsMatching[j + i].ImageInformation);
+                            rotation2 = 0;
+                        }
+                        else
+                        {
+							byte[] data = System.Convert.FromBase64String(ItemsMatching[j + i].ImageInformation);
+							source2 = ImageSource.FromStream(() => new MemoryStream(data));
+                            rotation2 = 180;
+                        }
                     }
                     else if (j == 2)
                     {
                         tempName3 = ItemsMatching[j + i].Text;
-                        source3 = ImageSource.FromResource(ItemsMatching[j + i].ImageInformation);
+
+						if (ItemsMatching[j + i].LocalImage)
+                        {
+							source3 = ImageSource.FromResource(ItemsMatching[j + i].ImageInformation);
+                            rotation3 = 0;
+                        }
+                        else
+                        {
+                            byte[] data = System.Convert.FromBase64String(ItemsMatching[j + i].ImageInformation);
+							source3 = ImageSource.FromStream(() => new MemoryStream(data));
+                            rotation3 = 180;
+                        }
                     }
                 }
 
                 j = 0;
 
-                Rows.Add(CreateModel(tempName1, source1, tempName2, source2, tempName3, source3, coreLayout.Width / 4));
+				Rows.Add(CreateModel(tempName1, source1, rotation1,
+				                     tempName2, source2, rotation2,
+				                     tempName3, source3, rotation3,
+				                     coreLayout.Width / 4));
 
                 i += 3;
             }
@@ -101,21 +144,24 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// <param name="name3">Name3.</param>
         /// <param name="res3">Res3.</param>
         /// <param name="recommendedWidth">Recommended width.</param>
-        private DisplayImageRowModel CreateModel(string name1, ImageSource res1,
-                                         string name2, ImageSource res2,
-                                         string name3, ImageSource res3,
+        private DisplayImageRowModel CreateModel(string name1, ImageSource res1, int rot1,
+                                         string name2, ImageSource res2, int rot2,
+                                         string name3, ImageSource res3, int rot3,
                                          double recommendedWidth)
         {
             return new DisplayImageRowModel()
             {
                 Name1 = name1,
                 Image1 = res1,
+				Rotation1 = rot1,
 
                 Name2 = name2,
                 Image2 = res2,
+				Rotation2 = rot2,
 
                 Name3 = name3,
                 Image3 = res3,
+				Rotation3 = rot3,
 
                 WidthRequest = recommendedWidth,
 
