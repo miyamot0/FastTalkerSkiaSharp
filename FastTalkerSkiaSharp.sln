@@ -11,9 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastTalkerSkiaSharp", "Fast
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CD2AF992-9E4E-4CD6-A32B-3002E85F305D}"
 	ProjectSection(SolutionItems) = preProject
-		FT-Drag.gif = FT-Drag.gif
-		FT-Folders.gif = FT-Folders.gif
-		FT-Modify.gif = FT-Modify.gif
 		LICENSE = LICENSE
 		LICENSE-LauncherHijack = LICENSE-LauncherHijack
 		LICENSE-Mulberry_Symbols = LICENSE-Mulberry_Symbols
@@ -21,6 +18,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE-Xamarin_Forms = LICENSE-Xamarin_Forms
 		LICENSE-Xamarin_Plugins = LICENSE-Xamarin_Plugins
 		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{7EF1B3EE-7A94-43AA-8C3F-88D230B62A1B}"
+	ProjectSection(SolutionItems) = preProject
+		Samples\Anim-Folders.gif = Samples\Anim-Folders.gif
+		Samples\Anim-Icon Mode.gif = Samples\Anim-Icon Mode.gif
+		Samples\Anim-Icon Selection.gif = Samples\Anim-Icon Selection.gif
+		Samples\Anim-Sentence Mode.gif = Samples\Anim-Sentence Mode.gif
 	EndProjectSection
 EndProject
 Global
@@ -123,6 +128,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7EF1B3EE-7A94-43AA-8C3F-88D230B62A1B} = {CD2AF992-9E4E-4CD6-A32B-3002E85F305D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FE27BE1A-43B7-414E-B158-D4B97FE9E3D7}

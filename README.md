@@ -14,9 +14,10 @@ Fast Talker (Skia port) is a native extension of earlier work to establish a fre
  - Save all boards automatically, all locally managed!
 
 ### Images
-![Alt text](FT-Drag.gif?raw=true "Drag Icons")
-![Alt text](FT-Modify.gif?raw=true "Modify Icons")
-![Alt text](FT-Folders.gif?raw=true "Open Folders")
+![Alt text](Samples/Anim-Icon Mode.gif?raw=true "Drag Icons")
+![Alt text](Samples/Anim-Folders.gif?raw=true "Drag Icons")
+![Alt text](Samples/Anim-Sentence Mode.gif?raw=true "Drag Icons")
+![Alt text](Samples/Anim-Icon Selection.gif?raw=true "Drag Icons")
 
 ### Version
  - 1.0.0.1
@@ -28,8 +29,6 @@ Fast Talker (Skia port) is a native extension of earlier work to establish a fre
 ### TODO List
  - Local Server - Load/Resave
  - Dimension-specific Assets (Low- and High-density displays)
- - Documentation and Help
- - Performance improvements
 
 ### Derivative Works
 Fast Talker is a derivative work of an earlier project and uses licensed software:
