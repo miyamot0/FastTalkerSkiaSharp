@@ -85,8 +85,12 @@ namespace FastTalkerSkiaSharp.ViewModels
 						{
 							byte[] data = System.Convert.FromBase64String(ItemsMatching[j + i].ImageInformation);
 							source1 = ImageSource.FromStream(() => new MemoryStream(data));
-                            rotation1 = 180;
-						}
+
+                            if (Device.RuntimePlatform == Device.iOS)
+                            {
+                                rotation1 = 180;
+                            }
+                        }
                     }
                     else if (j == 1)
                     {
@@ -101,7 +105,11 @@ namespace FastTalkerSkiaSharp.ViewModels
                         {
 							byte[] data = System.Convert.FromBase64String(ItemsMatching[j + i].ImageInformation);
 							source2 = ImageSource.FromStream(() => new MemoryStream(data));
-                            rotation2 = 180;
+
+                            if (Device.RuntimePlatform == Device.iOS)
+                            {
+                                rotation2 = 180;
+                            }
                         }
                     }
                     else if (j == 2)
@@ -117,7 +125,11 @@ namespace FastTalkerSkiaSharp.ViewModels
                         {
                             byte[] data = System.Convert.FromBase64String(ItemsMatching[j + i].ImageInformation);
 							source3 = ImageSource.FromStream(() => new MemoryStream(data));
-                            rotation3 = 180;
+
+                            if (Device.RuntimePlatform == Device.iOS)
+                            {
+                                rotation3 = 180;
+                            }
                         }
                     }
                 }
