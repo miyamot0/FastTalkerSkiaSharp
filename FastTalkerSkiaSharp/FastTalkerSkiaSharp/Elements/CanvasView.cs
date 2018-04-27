@@ -28,7 +28,11 @@ namespace SkiaSharp.Elements
         {
             return Elements.GetElementAtPoint(point);
         }
-                
+
+        public void SuspendLayout() => _controller.SuspendLayout();
+
+        public void ResumeLayout(bool invalidate = false) => _controller.ResumeLayout(invalidate);
+
         protected override void OnPaintSurface(SKPaintSurfaceEventArgs e)
         {
             _controller.Clear(e.Surface.Canvas);

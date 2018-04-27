@@ -37,8 +37,6 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
     public class ImplementationSpeechOutput : Java.Lang.Object, InterfaceSpeechOutput, TextToSpeech.IOnInitListener
 #pragma warning restore CS0618 
     {
-        private UtteranceProgressListener listener;
-
         private TextToSpeech speaker;
         private string toSpeak;
 

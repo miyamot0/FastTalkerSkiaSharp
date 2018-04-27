@@ -59,6 +59,8 @@ namespace SkiaSharp.Elements
 
         #region Properties
 
+        private int _suspendLayout;
+
         private SKColor _backgroundColor;
         public SKColor BackgroundColor
         {
@@ -225,7 +227,10 @@ namespace SkiaSharp.Elements
         /// </summary>
         public void Invalidate()
         {
-            OnInvalidate?.Invoke(this, EventArgs.Empty);
+            if (_suspendLayout == 0)
+            {
+                OnInvalidate?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>
@@ -301,7 +306,24 @@ namespace SkiaSharp.Elements
                 }
             }
         }
-        
+
+        public void SuspendLayout()
+        {
+            _suspendLayout++;
+        }
+
+        public void ResumeLayout(bool invalidate = false)
+        {
+            if (_suspendLayout > 0)
+            {
+                _suspendLayout--;
+            }
+            if (invalidate)
+            {
+                Invalidate();
+            }
+        }
+
         #endregion Public methods
     }
 }

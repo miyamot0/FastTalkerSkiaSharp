@@ -90,6 +90,8 @@ namespace FastTalkerSkiaSharp
 		public static StoredIconPopupViewModel InstanceStoredIconsViewModel;
 		public static StoredIconPopup InstanceStoredIconPage;
 
+        public static NavigationPage BoardPage;
+
         public App()
         {
             InitializeComponent();
@@ -98,7 +100,7 @@ namespace FastTalkerSkiaSharp
 
             Database.Init();
 
-            var boardPage = new NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
+            BoardPage = new NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
 
             if (Device.RuntimePlatform == Device.Android)
             {
@@ -106,7 +108,10 @@ namespace FastTalkerSkiaSharp
                 DependencyService.Get<InterfaceAdministration>().RequestAdmin(HasAdmin);
             }
 
-            MainPage = boardPage;
+            //MainPage = BoardPage;
+
+            MainPage = new TitlePage();
+
         }
 
         protected override void OnStart () { }

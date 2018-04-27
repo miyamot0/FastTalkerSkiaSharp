@@ -8,11 +8,27 @@
 
   <ItemGroup>
     <None Remove="Data\StoredJson.json" />
+    <None Remove="DisplayImages\A.png" />
+    <None Remove="DisplayImages\E.png" />
+    <None Remove="DisplayImages\F.png" />
+    <None Remove="DisplayImages\K.png" />
+    <None Remove="DisplayImages\L.png" />
+    <None Remove="DisplayImages\R.png" />
+    <None Remove="DisplayImages\S.png" />
+    <None Remove="DisplayImages\T.png" />
     <None Remove="Images\*.png" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Data\StoredJson.json" />
+    <EmbeddedResource Include="DisplayImages\A.png" />
+    <EmbeddedResource Include="DisplayImages\E.png" />
+    <EmbeddedResource Include="DisplayImages\F.png" />
+    <EmbeddedResource Include="DisplayImages\K.png" />
+    <EmbeddedResource Include="DisplayImages\L.png" />
+    <EmbeddedResource Include="DisplayImages\R.png" />
+    <EmbeddedResource Include="DisplayImages\S.png" />
+    <EmbeddedResource Include="DisplayImages\T.png" />
     <EmbeddedResource Include="Images\*.png" />
   </ItemGroup>
 
@@ -54,6 +70,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\StoredIconPopup.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\TitlePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

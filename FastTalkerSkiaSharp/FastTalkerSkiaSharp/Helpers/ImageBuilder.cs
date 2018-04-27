@@ -103,6 +103,30 @@ namespace FastTalkerSkiaSharp.Helpers
             }
         }
 
+        public SkiaSharp.Elements.Image BuildStaticElement(string resource, float xPercent, float yPercent, int tag, float degrees)
+        {
+            using (var stream = App.MainAssembly.GetManifestResourceStream(resource))
+            {
+
+                SkiaSharp.SKSize size = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, xPercent, yPercent);
+
+                SkiaSharp.SKPoint centerPoint = DeviceLayout.GetEmitterPoint(canvasReference.CanvasSize, size);
+
+                SkiaSharp.Elements.Image emitterReference = new SkiaSharp.Elements.Image(SkiaSharp.SKBitmap.Decode(stream))
+                {
+                    Tag = tag,
+                    Transformation = SKMatrix.MakeRotationDegrees(degrees)
+                };
+
+                emitterReference.Bounds = SkiaSharp.SKRect.Create(centerPoint.X,
+                                                                  centerPoint.Y,
+                                                                  size.Height,
+                                                                  size.Height);
+
+                return emitterReference;
+            }
+        }
+
         /// <summary>
         /// Builds user interface icons
         /// </summary>
