@@ -23,9 +23,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{7EF1B3EE-7A94-43AA-8C3F-88D230B62A1B}"
 	ProjectSection(SolutionItems) = preProject
 		Samples\Anim-Folders.gif = Samples\Anim-Folders.gif
-		Samples\Anim-Icon Mode.gif = Samples\Anim-Icon Mode.gif
-		Samples\Anim-Icon Selection.gif = Samples\Anim-Icon Selection.gif
-		Samples\Anim-Sentence Mode.gif = Samples\Anim-Sentence Mode.gif
+		Samples\Anim-IconMode.gif = Samples\Anim-IconMode.gif
+		Samples\Anim-IconSelection.gif = Samples\Anim-IconSelection.gif
+		Samples\Anim-SentenceMode.gif = Samples\Anim-SentenceMode.gif
 	EndProjectSection
 EndProject
 Global

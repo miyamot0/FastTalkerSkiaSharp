@@ -14,10 +14,10 @@ Fast Talker (Skia port) is a native extension of earlier work to establish a fre
  - Save all boards automatically, all locally managed!
 
 ### Images
-![Alt text](Samples/Anim-Icon Mode.gif?raw=true "Drag Icons")
+![Alt text](Samples/Anim-IconMode.gif?raw=true "Drag Icons")
 ![Alt text](Samples/Anim-Folders.gif?raw=true "Drag Icons")
-![Alt text](Samples/Anim-Sentence Mode.gif?raw=true "Drag Icons")
-![Alt text](Samples/Anim-Icon Selection.gif?raw=true "Drag Icons")
+![Alt text](Samples/Anim-SentenceMode.gif?raw=true "Drag Icons")
+![Alt text](Samples/Anim-IconSelection.gif?raw=true "Drag Icons")
 
 ### Version
  - 1.0.0.1
