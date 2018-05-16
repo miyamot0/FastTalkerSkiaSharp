@@ -13,6 +13,7 @@
     <AssemblyName>FastTalkerSkiaSharp.iOS</AssemblyName>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <ReleaseVersion>1.0.0.3</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -195,9 +196,6 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios167.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios1024.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Landscape_fullscreen%401x.png">
       <Visible>false</Visible>
     </ImageAsset>
@@ -246,6 +244,11 @@
     <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iPad-Portrait_v7%402x.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ios1024c.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ITunesArtwork Include="iTunesArtwork" />
+    <ITunesArtwork Include="iTunesArtwork%402x" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
