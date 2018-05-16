@@ -14,14 +14,4 @@
                              BackgroundColor="Gray"
                              EnableTouchEvents="True" />
     </StackLayout>
-    <!--
-    <Grid>
-        <views:SKCanvasView x:Name=""
-                            PaintSurface="OnPainting" 
-                            EnableTouchEvents="True" 
-                            Touch="OnTouch"
-                            HorizontalOptions="FillAndExpand"
-                            VerticalOptions="FillAndExpand"/>
-    </Grid>
-    -->
 </ContentPage>

@@ -202,7 +202,7 @@ namespace FastTalkerSkiaSharp.Pages
 
             canvasTitle.Controller.Elements.Add(topText);
 
-            var subText = new SkiaSharp.Elements.Text("Released under the General Public License, Version 3.0")
+            var subText = new SkiaSharp.Elements.Text("Released under the Mozilla Public License, Version 2.0")
             {
                 Size = new SKSize(canvasTitle.CanvasSize.Width, canvasTitle.CanvasSize.Height / 10f),
                 ForeColor = SKColors.White,
