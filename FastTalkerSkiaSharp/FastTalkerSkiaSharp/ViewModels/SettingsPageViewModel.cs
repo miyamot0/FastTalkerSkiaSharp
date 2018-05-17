@@ -445,7 +445,7 @@ namespace FastTalkerSkiaSharp.ViewModels
             {
                 case SettingsAction.SaveBoard:
                     controller.PromptResave();
-
+                    
                     break;
 
                 case SettingsAction.InvalidateBoardIcon:

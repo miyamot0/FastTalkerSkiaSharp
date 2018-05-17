@@ -132,6 +132,8 @@ namespace FastTalkerSkiaSharp.Pages
             }
 
             await App.Database.InsertOrUpdateAsync(App.BoardSettings);
+
+			ClearIconsInPlay();
         }
 
         /// <summary>
