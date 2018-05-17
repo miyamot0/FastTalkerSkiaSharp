@@ -116,20 +116,21 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             Images = new List<DisplayImageModel>();
 
-            List<string> mFolderIcons = new List<string>() {    "FolderOpenDarkBlue",
-                                                                "FolderOpenDarkPink",
-                                                                "FolderOpenDarkPurple",
-                                                                "FolderOpenGreen",
-                                                                "FolderOpenLightBlue",
-                                                                "FolderOpenRed" };
+            List<string> mFolderIcons = new List<string>() {    "Dark Blue",
+                                                                "Dark Pink",
+                                                                "Dark Purple",
+                                                                "Green",
+                                                                "Light Blue",
+                                                                "Red" };
 
             foreach (var iconName in mFolderIcons)
             {
                 Images.Add(new DisplayImageModel
                 {
                     Image = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng +
-                                                                   "{0}" +
-                                                                   LanguageSettings.ResourceSuffixPng, iconName)),
+					                                               "FolderOpen{0}" +
+                                                                   LanguageSettings.ResourceSuffixPng, 
+					                                               RemoveWhitespace(iconName))),
                     Name = iconName
                 });
             }
@@ -143,12 +144,14 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             selectedIconString = obj as string;
 
+			selectedIconString = RemoveWhitespace(selectedIconString);
+
             if (string.IsNullOrWhiteSpace(selectedIconString)) return;
 
             needsImage = false;
 
             PreviewCurrentIcon = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng +
-                                                                        "{0}" +
+			                                                            "FolderOpen{0}" +
                                                                         LanguageSettings.ResourceSuffixPng, selectedIconString));
         }
 
@@ -167,14 +170,26 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
             else
             {
+				System.Diagnostics.Debug.WriteLine(string.Format("FolderOpen{0}", selectedIconString));
+
                 FolderConstructed(new ArgsSelectedIcon
                 {
                     Name = FolderNameText,
-                    ImageSource = selectedIconString
+					ImageSource = string.Format("FolderOpen{0}", selectedIconString)
                 });
 
                 await App.Current.MainPage.Navigation.PopAsync();
             }
+        }
+
+        /// <summary>
+        /// Removes the whitespace.
+        /// </summary>
+        /// <returns>The whitespace.</returns>
+		/// <param name="imageString">Input.</param>
+		public string RemoveWhitespace(string imageString)
+        {
+			return new string(imageString.Where(c => !Char.IsWhiteSpace(c)).ToArray());
         }
     }
 }
