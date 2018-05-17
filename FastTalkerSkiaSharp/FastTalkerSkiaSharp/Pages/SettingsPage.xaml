@@ -42,7 +42,8 @@
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Resume User Operation"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -56,7 +57,8 @@
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="{Binding DeselectText}"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -70,7 +72,8 @@
                              Grid.Column="2"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="{Binding ModeText}"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -84,7 +87,8 @@
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Add Local Image"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -98,7 +102,8 @@
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Take Photo"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -112,7 +117,8 @@
                              Grid.Column="2"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Add Stored Image"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -126,7 +132,8 @@
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Add Folder"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -140,7 +147,8 @@
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Show Help"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -154,7 +162,8 @@
                              Grid.Column="2"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="About"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"

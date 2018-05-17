@@ -41,7 +41,8 @@
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Reset Size"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -55,7 +56,8 @@
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Increase Size 10%"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -69,7 +71,8 @@
                              Grid.Column="2"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Increase Size 50%"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -83,7 +86,8 @@
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Edit Icon Text"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -97,7 +101,8 @@
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Decrease Size 10%"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -111,7 +116,8 @@
                              Grid.Column="2"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Decrease Size 50%"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -125,7 +131,8 @@
                              Grid.Column="0"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Pinning Icon"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
@@ -139,7 +146,8 @@
                              Grid.Column="1"
                              VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                    <Frame Style="{StaticResource popUpFrameStyle}">
+                    <Frame Style="{StaticResource popUpFrameStyle}"
+                           Margin="{DynamicResource dynamicFrameMargin}">
                         <Button Text="Delete Icon"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"

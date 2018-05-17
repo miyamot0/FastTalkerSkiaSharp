@@ -101,12 +101,13 @@ namespace FastTalkerSkiaSharp
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
 				App.Current.Resources["dynamicTextSize"] = Device.GetNamedSize(NamedSize.Large, typeof(Button));
+				App.Current.Resources["dynamicFrameMargin"] = new Thickness(5, 25);
 			}
 
             //MainPage = BoardPage;
 
             MainPage = new TitlePage();
-
+            
         }
 
         protected override void OnStart () { }

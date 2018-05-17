@@ -31,6 +31,11 @@
             <Style x:Key="dynamicTextSize" TargetType="Button">
                 <Setter Property="Font" Value="Default"/>
             </Style>
+
+            <!-- Dynamic Frame Margin -->
+            <Style x:Key="dynamicFrameMargin" TargetType="Button">
+                <Setter Property="Margin" Value="0"/>
+            </Style>
             
             <!-- Pop up button theming -->
             <Style x:Key="popUpButtonStyle" TargetType="Button">
