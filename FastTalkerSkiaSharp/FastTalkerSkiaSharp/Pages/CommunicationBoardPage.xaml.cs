@@ -698,7 +698,11 @@ namespace FastTalkerSkiaSharp.Pages
                         }
 						else if ((DateTime.Now - emitterPressTime).Seconds >= thresholdReset && canvas.Controller.InEditMode)
 						{
-							Debug.WriteLineIf(outputVerbose, "In reset hook, disabled");
+							// TODO: Confirm message?
+
+							Debug.WriteLineIf(outputVerbose, "In reset hook, returning to home");
+                            
+							await Navigation.PopModalAsync(false);
 						}
                         else
                         {

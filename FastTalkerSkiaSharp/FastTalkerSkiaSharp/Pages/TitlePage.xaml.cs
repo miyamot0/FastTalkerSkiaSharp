@@ -78,6 +78,8 @@ namespace FastTalkerSkiaSharp.Pages
 
         ImageBuilder Instance;
 
+		bool isDrawing = true;
+
         int currentItem = 0;
         float xPos;
         SkiaSharp.SKSize sizeOfStrip;
@@ -95,6 +97,8 @@ namespace FastTalkerSkiaSharp.Pages
 
 			NavigationPage.SetHasNavigationBar(this, false);
             NavigationPage.SetHasBackButton(this, false);
+
+			isDrawing = true;
 		}
 
         /// <summary>
@@ -103,6 +107,9 @@ namespace FastTalkerSkiaSharp.Pages
         protected async override void OnAppearing()
         {
             base.OnAppearing();
+
+            // Only animate once
+			if (!isDrawing) return;
 
             while (canvasTitle.CanvasSize.Width == 0)
             {
@@ -178,6 +185,8 @@ namespace FastTalkerSkiaSharp.Pages
                 else if (currentItem == canvasTitle.Controller.Elements.Count)
                 {
                     DrawText();
+
+					isDrawing = false;
                 }
             });
         }
@@ -309,7 +318,10 @@ namespace FastTalkerSkiaSharp.Pages
 
                 if (_currentElement != null && _currentElement.Tag == 999)
                 {
-                    App.Current.MainPage = new NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
+                    //App.Current.MainPage = new NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
+					App.BoardPage = new NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
+
+					Navigation.PushModalAsync(App.BoardPage, false);
                 }
             }
 
