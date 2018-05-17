@@ -44,6 +44,9 @@ namespace FastTalkerSkiaSharp.Pages
         private bool inInitialLoading = true;
         private bool hasMoved = false;
 
+		private int thresholdAdmin = 3;
+		private int thresholdReset = 10;
+
         InterfaceSpeechOutput commInterface;
 
         public CommunicationBoardPage()
@@ -682,7 +685,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                         Debug.WriteLineIf(outputVerbose, "Seconds held: " + (DateTime.Now - emitterPressTime).TotalSeconds.ToString());
 
-                        if ((DateTime.Now - emitterPressTime).Seconds >= 3 && !canvas.Controller.InEditMode)
+						if ((DateTime.Now - emitterPressTime).Seconds >= thresholdAdmin && !canvas.Controller.InEditMode)
                         {
                             canvas.Controller.UpdateSettings(isEditing: !canvas.Controller.InEditMode,
                                                              isInFrame: canvas.Controller.InFramedMode,
@@ -693,6 +696,10 @@ namespace FastTalkerSkiaSharp.Pages
 
                             ClearIconsInPlay();
                         }
+						else if ((DateTime.Now - emitterPressTime).Seconds >= thresholdReset && canvas.Controller.InEditMode)
+						{
+							Debug.WriteLineIf(outputVerbose, "In reset hook, disabled");
+						}
                         else
                         {
                             if (canvas.Controller.InFramedMode)
