@@ -44,6 +44,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Reset Size"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding ButtonResetSize}"/>
                     </Frame>
                 </StackLayout>
@@ -57,6 +58,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Increase Size 10%"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding ButtonIncreaseSize}"/>
                     </Frame>
                 </StackLayout>
@@ -70,6 +72,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Increase Size 50%"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding ButtonIncreaseSize2}"/>
                     </Frame>
                 </StackLayout>
@@ -83,6 +86,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Edit Icon Text"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding ButtonEditText}"/>
                     </Frame>
                 </StackLayout>
@@ -96,6 +100,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Decrease Size 10%"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding ButtonDecreaseSize}"/>
                     </Frame>                    
                 </StackLayout>
@@ -109,6 +114,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Decrease Size 50%"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding ButtonDecreaseSize2}"/>
                     </Frame>
                 </StackLayout>
@@ -122,6 +128,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Pinning Icon"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding ButtonPinning}"/>
                     </Frame>
                 </StackLayout>
@@ -135,6 +142,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Delete Icon"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding ButtonDelete}"/>
                     </Frame>
                 </StackLayout>

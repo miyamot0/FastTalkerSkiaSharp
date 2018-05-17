@@ -45,6 +45,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Resume User Operation"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding CommandSaveBoard}"/>
                     </Frame>
                 </StackLayout>
@@ -58,6 +59,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="{Binding DeselectText}"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding CommandDeselecting}"/>
                     </Frame>
                 </StackLayout>
@@ -71,6 +73,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="{Binding ModeText}"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding CommandOperatingMode}"/>
                     </Frame>
                 </StackLayout>
@@ -84,6 +87,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Add Local Image"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding CommandAddIconLocal}"/>
                     </Frame>
                 </StackLayout>
@@ -97,6 +101,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Take Photo"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding CommandAddIconPhoto}"/>
                     </Frame>
                 </StackLayout>
@@ -110,6 +115,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Add Stored Image"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding CommandAddIconStored}"/>
                     </Frame>
                 </StackLayout>
@@ -123,6 +129,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Add Folder"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding CommandAddFolder}"/>
                     </Frame>
                 </StackLayout>
@@ -136,6 +143,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="Show Help"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding CommandHelp}"/>
                     </Frame>
                 </StackLayout>
@@ -149,6 +157,7 @@
                     <Frame Style="{StaticResource popUpFrameStyle}">
                         <Button Text="About"
                                 Style="{StaticResource popUpButtonStyle}"
+                                FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding CommandAbout}"/>
                     </Frame>
                 </StackLayout>
@@ -159,6 +168,7 @@
                         Grid.ColumnSpan="3"
                         Margin="5, 0, 5, 2.5"
                         Command="{Binding CommandClose}"
+                        FontSize="{DynamicResource dynamicTextSize}"
                         Text="Save and Close"/>
             </Grid>
         </StackLayout>

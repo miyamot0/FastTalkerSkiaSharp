@@ -98,6 +98,11 @@ namespace FastTalkerSkiaSharp
                 DependencyService.Get<InterfaceAdministration>().RequestAdmin(HasAdmin);
             }
 
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				App.Current.Resources["dynamicTextSize"] = Device.GetNamedSize(NamedSize.Large, typeof(Button));
+			}
+
             //MainPage = BoardPage;
 
             MainPage = new TitlePage();

@@ -26,6 +26,11 @@
                    x:Key="GlobalBorderColor">
                 <x:Arguments><x:String>#000000</x:String></x:Arguments>
             </Color>
+
+            <!-- Dynamic Text Size -->
+            <Style x:Key="dynamicTextSize" TargetType="Button">
+                <Setter Property="Font" Value="Default"/>
+            </Style>
             
             <!-- Pop up button theming -->
             <Style x:Key="popUpButtonStyle" TargetType="Button">
@@ -33,6 +38,7 @@
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="BorderColor" Value="Transparent" />
                 <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="Font" Value="{DynamicResource dynamicTextSize}" />
             </Style>
             
             <!-- Pop up frame theming -->
