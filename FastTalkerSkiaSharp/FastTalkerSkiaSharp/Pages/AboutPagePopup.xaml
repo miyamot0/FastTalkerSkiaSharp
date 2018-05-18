@@ -98,7 +98,7 @@
                     <Label>
                       <Label.FormattedText>
                         <FormattedString>
-                          <Span Text="&#x2022; Fast Talker - GPLv3 - Copyright 2016-2018 Shawn Gilroy. "  
+                          <Span Text="&#x2022; Fast Talker - MPLv2 - Copyright 2016-2018 Shawn Gilroy. "  
                                 ForegroundColor="Black"
                                 FontSize="Default"/>
                           <Span Text="www.smallnstats.com"  
@@ -111,7 +111,7 @@
                     <Label>
                       <Label.FormattedText>
                         <FormattedString>
-                          <Span Text="&#x2022; Cross-Platform-Communication-App - GPLv3 - Copyright 2016-2017 Shawn Gilroy. "  
+                          <Span Text="&#x2022; Cross-Platform-Communication-App - MPLv2 - Copyright 2016-2018 Shawn Gilroy. "  
                                 ForegroundColor="Black"
                                 FontSize="Default"/>
                           <Span Text="www.smallnstats.com"  
@@ -163,6 +163,19 @@
                                 ForegroundColor="Black"
                                 FontSize="Default"/>
                           <Span Text="https://github.com/aritchie/userdialogs" 
+                                FontSize="Default" 
+                                ForegroundColor="Blue"/>
+                        </FormattedString>
+                      </Label.FormattedText>                
+                    </Label>
+
+                    <Label>
+                      <Label.FormattedText>
+                        <FormattedString>
+                          <Span Text="&#x2022; KeyboardOverlap - MIT Licensed - Copyright (c) 2014 Paul Patarinski. "  
+                                ForegroundColor="Black"
+                                FontSize="Default"/>
+                          <Span Text="https://github.com/paulpatarinski/Xamarin.Forms.Plugins/tree/master/KeyboardOverlap" 
                                 FontSize="Default" 
                                 ForegroundColor="Blue"/>
                         </FormattedString>

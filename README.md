@@ -23,7 +23,7 @@ Fast Talker (Skia port) is a native extension of earlier work to establish a fre
  - 1.0.0.4
 
 ### Changelog
- - 1.0.0.4 - Help page added to start
+ - 1.0.0.4 - Help page added to start, softkeyboard fixes
  - 1.0.0.3 - UI Tweaks
  - 1.0.0.2 - Betas
  - 1.0.0.1 - Documentation
@@ -40,6 +40,7 @@ Fast Talker uses licensed visual images in order to operate:
 ### Referenced Works (Packages)
 Fast Talker uses a number of open source projects to work properly:
 * [ACR UserDialogs](https://github.com/aritchie/userdialogs) - MIT Licensed - Copyright (c) 2016 Allan Ritchie
+* [KeyboardOverlap](https://github.com/paulpatarinski/Xamarin.Forms.Plugins/tree/master/KeyboardOverlap) - MIT Licensed - Copyright (c) 2014 Paul Patarinski
 * [LauncherHijack](https://github.com/parrotgeek1/LauncherHijack) - Permissively Licensed. Copyright (c) 2017 Ethan Nelson-Moore
 * [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) - MIT Licensed. Copyright (c) 2007 James Newton-King 
 * [RotorGames.Popup](https://github.com/rotorgames/Rg.Plugins.Popup) - MIT Licensed. Copyright (c) 2017 RotorGames
