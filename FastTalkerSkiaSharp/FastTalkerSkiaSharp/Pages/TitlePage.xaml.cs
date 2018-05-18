@@ -81,8 +81,12 @@ namespace FastTalkerSkiaSharp.Pages
 		bool isDrawing = true;
 
         int currentItem = 0;
+        int jitterSpan = 80;
+        int jitterSpanSide = 20;
+
         float xPos;
-        SkiaSharp.SKSize sizeOfStrip;
+
+        SKSize sizeOfStrip;
 
         float textSize = 28f;
         float btnTextSize = 56f;
@@ -123,7 +127,7 @@ namespace FastTalkerSkiaSharp.Pages
             SkiaSharp.Elements.Image tempImage;
 
             sizeOfStrip = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 0.05f, 5.0f);
-            SkiaSharp.SKSize sizeOfPanel = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 10f);
+            SKSize sizeOfPanel = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 10f);
 
             xPos = sizeOfStrip.Width;
 
@@ -136,8 +140,8 @@ namespace FastTalkerSkiaSharp.Pages
                                                                       yPercent: 1f,
                                                                       tag: -1);
 
-                    tempImage.X = (sizeOfPanel.Width / 2) - tempImage.Width / 2f;
-                    tempImage.Y = sizeOfStrip.Height;
+                    tempImage.X = canvasTitle.CanvasSize.Width / 2f - tempImage.Width / 2f;
+                    tempImage.Y = canvasTitle.CanvasSize.Height / 2f - tempImage.Height / 2f;
 
                     tempImage.BorderColor = SKColors.Black;
                     tempImage.BorderWidth = 2f;
@@ -147,8 +151,8 @@ namespace FastTalkerSkiaSharp.Pages
             }
 
             Animater(canvasTitle.Controller.Elements[currentItem],
-                     xPos - (float)(Rng.Next(0, 10) - 5),
-                     (sizeOfStrip.Height / 3f) - (float)(Rng.Next(0, 80) - 40));
+                     xPos - (float)(Rng.Next(0, jitterSpanSide) - jitterSpanSide / 2),
+                     (sizeOfStrip.Height / 3f) - (float)(Rng.Next(0, jitterSpan) - jitterSpan / 2));
         }
 
         /// <summary>
@@ -176,8 +180,8 @@ namespace FastTalkerSkiaSharp.Pages
                 if (currentItem < canvasTitle.Controller.Elements.Count)
                 {
                     Animater(canvasTitle.Controller.Elements[currentItem],
-                             xPos + canvasTitle.Controller.Elements[currentItem].Width * (float)currentItem - (float)(Rng.Next(0, 10) - 5),
-                             (sizeOfStrip.Height / 3f) - (float)(Rng.Next(0, 40) - 20));
+                             xPos + canvasTitle.Controller.Elements[currentItem].Width * (float)currentItem - (float)(Rng.Next(0, jitterSpanSide) - jitterSpanSide / 2),
+                             (sizeOfStrip.Height / 3f) - (float)(Rng.Next(0, jitterSpan) - jitterSpan / 2));
                 }
                 else if (currentItem == canvasTitle.Controller.Elements.Count)
                 {

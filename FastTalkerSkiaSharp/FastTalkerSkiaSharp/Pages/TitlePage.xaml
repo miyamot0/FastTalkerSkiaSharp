@@ -4,7 +4,7 @@
              xmlns:elements="clr-namespace:SkiaSharp.Elements;assembly=FastTalkerSkiaSharp"
              x:Class="FastTalkerSkiaSharp.Pages.TitlePage"
              Title="Title Page">
-    <StackLayout x:Name="hackLayout"
+    <StackLayout x:Name="hackLayoutTitle"
                  HorizontalOptions="FillAndExpand"
                  VerticalOptions="FillAndExpand">
         <elements:CanvasView x:Name="canvasTitle" 

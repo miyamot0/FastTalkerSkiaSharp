@@ -43,7 +43,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="canvas">Canvas.</param>
         public SkiaSharp.Elements.Rectangle BuildSentenceStrip()
         {
-            SkiaSharp.SKSize sizeOfStrip = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
+            SKSize sizeOfStrip = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
                                                                       DeviceLayout.StripWidth, DeviceLayout.StripHeight);
 
             return new SkiaSharp.Elements.Rectangle(SkiaSharp.SKRect.Create(DeviceLayout.Bezel,
@@ -75,7 +75,7 @@ namespace FastTalkerSkiaSharp.Helpers
             using (var stream = App.MainAssembly.GetManifestResourceStream(resource))
             {
 
-                SkiaSharp.SKSize sizeOfEmitter = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, xPercent, yPercent);
+                SKSize sizeOfEmitter = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, xPercent, yPercent);
 
                 SkiaSharp.Elements.Image emitterReference = new SkiaSharp.Elements.Image(SkiaSharp.SKBitmap.Decode(stream))
                 {
@@ -98,7 +98,7 @@ namespace FastTalkerSkiaSharp.Helpers
             using (var stream = App.MainAssembly.GetManifestResourceStream(resource))
             {
 
-                SkiaSharp.SKSize size = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, xPercent, yPercent);
+                SKSize size = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, xPercent, yPercent);
 
                 SkiaSharp.SKPoint centerPoint = DeviceLayout.GetEmitterPoint(canvasReference.CanvasSize, size);
 
@@ -183,7 +183,7 @@ namespace FastTalkerSkiaSharp.Helpers
 
                     canvas2.Flush();
 
-                    SkiaSharp.SKSize finalSize = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
+                    SKSize finalSize = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
                                         DeviceLayout.InterfaceDimensionDefault,
                                         DeviceLayout.InterfaceDimensionDefault);
 
@@ -275,7 +275,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     canvas2.Flush();
                 }
 
-                SkiaSharp.SKSize finalSize = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
+                SKSize finalSize = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
                                                                         DeviceLayout.InterfaceDimensionDefault,
                                                                         DeviceLayout.InterfaceDimensionDefault);
 
@@ -359,7 +359,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     canvas2.Flush();
                 }
 
-                SkiaSharp.SKSize finalSize = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
+                SKSize finalSize = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
                                                                         DeviceLayout.InterfaceDimensionDefault,
                                                                         DeviceLayout.InterfaceDimensionDefault);
 
@@ -467,7 +467,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     canvas2.Flush();
                 }
 
-                SkiaSharp.SKSize finalSize = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
+                SKSize finalSize = DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
                                                                         DeviceLayout.InterfaceDimensionDefault,
                                                                         DeviceLayout.InterfaceDimensionDefault);
 
