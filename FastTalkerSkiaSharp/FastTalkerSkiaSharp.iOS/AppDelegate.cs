@@ -31,6 +31,8 @@ namespace FastTalkerSkiaSharp.iOS
 
             LoadApplication(new App());
 
+			KeyboardOverlap.Forms.Plugin.iOSUnified.KeyboardOverlapRenderer.Init();
+
             UIApplication.SharedApplication.SetStatusBarHidden(true, true);
             UIApplication.SharedApplication.StatusBarHidden = true;
 
