@@ -181,6 +181,8 @@ namespace FastTalkerSkiaSharp.Pages
                 Debug.WriteLineIf(App.OutputVerbose, "Requesting permissions..");
 
                 inInitialLoading = false;
+
+				await App.Current.MainPage.Navigation.PushPopupAsync(new HelpPopup());
             }
         }
 

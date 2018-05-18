@@ -20,9 +20,10 @@ Fast Talker (Skia port) is a native extension of earlier work to establish a fre
 ![Alt text](Samples/Anim-IconSelection.gif?raw=true "Drag Icons")
 
 ### Version
- - 1.0.0.3
+ - 1.0.0.4
 
 ### Changelog
+ - 1.0.0.4 - Help page added to start
  - 1.0.0.3 - UI Tweaks
  - 1.0.0.2 - Betas
  - 1.0.0.1 - Documentation
