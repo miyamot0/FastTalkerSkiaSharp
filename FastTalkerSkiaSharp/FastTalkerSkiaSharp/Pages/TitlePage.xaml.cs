@@ -94,10 +94,7 @@ namespace FastTalkerSkiaSharp.Pages
         public TitlePage ()
 		{
             InitializeComponent ();
-
-			NavigationPage.SetHasNavigationBar(this, false);
-            NavigationPage.SetHasBackButton(this, false);
-
+            
 			isDrawing = true;
 		}
 
@@ -318,10 +315,9 @@ namespace FastTalkerSkiaSharp.Pages
 
                 if (_currentElement != null && _currentElement.Tag == 999)
                 {
-                    //App.Current.MainPage = new NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
 					App.BoardPage = new NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
 
-					Navigation.PushModalAsync(App.BoardPage, false);
+					Application.Current.MainPage = App.BoardPage;
                 }
             }
 

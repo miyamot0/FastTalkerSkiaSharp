@@ -703,8 +703,8 @@ namespace FastTalkerSkiaSharp.Pages
 							// TODO: Confirm message?
 
 							Debug.WriteLineIf(outputVerbose, "In reset hook, returning to home");
-                            
-							await Navigation.PopModalAsync(false);
+
+							App.Current.MainPage = new TitlePage();
 						}
                         else
                         {

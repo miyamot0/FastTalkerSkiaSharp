@@ -24,7 +24,7 @@ namespace FastTalkerSkiaSharp
 {
     public partial class App : Application
 	{
-        public static bool OutputVerbose = false;
+        public static bool OutputVerbose = true;
 
         public static bool HasAdmin = false;
 
@@ -104,7 +104,7 @@ namespace FastTalkerSkiaSharp
 				App.Current.Resources["dynamicFrameMargin"] = new Thickness(5, 25);
 			}
             
-			MainPage = new NavigationPage(new TitlePage());
+			MainPage = new TitlePage();
         }
 
         protected override void OnStart () { }

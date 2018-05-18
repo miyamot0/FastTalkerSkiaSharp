@@ -50,6 +50,14 @@ namespace FastTalkerSkiaSharp.ViewModels
         public event Action<ArgsSelectedIcon> SaveFolderEvent = delegate { };
         public event Action<SkiaSharp.Elements.Element> SaveCommunicationElementEvent = delegate { };
 
+		public enum SettingsAction
+        {
+            SaveBoard,
+            InvalidateBoardFrame,
+            InvalidateBoardIcon,
+            ResumeOperation
+        }
+
         string _deselectText;
         public string DeselectText
         {
@@ -78,6 +86,10 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Set up VM
+        /// </summary>
+        /// <param name="_controller">Controller.</param>
         public SettingsPageViewModel(SkiaSharp.Elements.ElementsController _controller)
         {
             controller = _controller;
@@ -180,7 +192,11 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         async void AddIconLocal()
         {
+			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal()");
+
             await App.Current.MainPage.Navigation.PopAllPopupAsync();
+
+			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal() post");
 
             CommunicationIconPickerViewModel viewModel = new CommunicationIconPickerViewModel();
             viewModel.IconConstructed += SaveCommunicationIconEvent;
@@ -190,7 +206,13 @@ namespace FastTalkerSkiaSharp.ViewModels
                 BindingContext = viewModel
             };
 
-            await App.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
+			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal() end");
+
+            //await App.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
+			await App.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
+
+			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal() finished");
+
         }
 
         /// <summary>
@@ -429,14 +451,10 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
         }
 
-        public enum SettingsAction
-        {
-            SaveBoard,
-            InvalidateBoardFrame,
-            InvalidateBoardIcon,
-            ResumeOperation
-        }
-
+        /// <summary>
+        /// Settings interaction.
+        /// </summary>
+        /// <param name="obj">Object.</param>
         private void SettingsInteraction(SettingsAction obj)
         {
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, obj);
