@@ -20,6 +20,10 @@ namespace FastTalkerSkiaSharp.Storage
     {
         private static SQLite.SQLiteAsyncConnection database;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="dbFilePath"></param>
         public ApplicationDatabase(string dbFilePath)
         {
             database = new SQLite.SQLiteAsyncConnection(dbFilePath);

@@ -13,6 +13,9 @@
 
 namespace FastTalkerSkiaSharp.Storage
 {
+    /// <summary>
+    /// SQLite Model
+    /// </summary>
     public class CommunicationSettings
     {
         [SQLite.PrimaryKey, SQLite.AutoIncrement]

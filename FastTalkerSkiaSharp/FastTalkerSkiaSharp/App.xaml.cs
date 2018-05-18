@@ -32,8 +32,8 @@ namespace FastTalkerSkiaSharp
         public static float DisplayScreenHeight;
         public static float DisplayScaleFactor;
 
-        static Storage.ApplicationDatabase database;
-        public static Storage.ApplicationDatabase Database
+        static ApplicationDatabase database;
+        public static ApplicationDatabase Database
         {
             get
             {
@@ -90,7 +90,7 @@ namespace FastTalkerSkiaSharp
 
             Database.Init();
 
-            BoardPage = new NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
+            BoardPage = new NavigationPage(new CommunicationBoardPage());
 
             if (Device.RuntimePlatform == Device.Android)
             {

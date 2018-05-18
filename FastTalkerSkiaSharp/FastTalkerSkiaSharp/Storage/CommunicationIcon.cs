@@ -13,6 +13,10 @@
 
 namespace FastTalkerSkiaSharp.Storage
 {
+
+    /// <summary>
+    /// SQLite Model
+    /// </summary>
     public class CommunicationIcon
     {
         [SQLite.PrimaryKey, SQLite.AutoIncrement]
