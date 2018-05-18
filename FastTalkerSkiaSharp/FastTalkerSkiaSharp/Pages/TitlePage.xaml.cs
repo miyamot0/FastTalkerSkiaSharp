@@ -148,7 +148,7 @@ namespace FastTalkerSkiaSharp.Pages
 
             Animater(canvasTitle.Controller.Elements[currentItem],
                      xPos - (float)(Rng.Next(0, 10) - 5),
-                     (sizeOfStrip.Height / 3f) - (float)(Rng.Next(0, 40) - 20));
+                     (sizeOfStrip.Height / 3f) - (float)(Rng.Next(0, 80) - 40));
         }
 
         /// <summary>

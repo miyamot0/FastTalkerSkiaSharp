@@ -44,7 +44,7 @@
                              HorizontalOptions="FillAndExpand">
                     <Frame Style="{StaticResource popUpFrameStyle}"
                            Margin="{DynamicResource dynamicFrameMargin}">
-                        <Button Text="Resume User Operation"
+                        <Button Text="Resume Operation"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding CommandSaveBoard}"/>
@@ -89,7 +89,7 @@
                              HorizontalOptions="FillAndExpand">
                     <Frame Style="{StaticResource popUpFrameStyle}"
                            Margin="{DynamicResource dynamicFrameMargin}">
-                        <Button Text="Add Local Image"
+                        <Button Text="Add Local Icon"
                                 Style="{StaticResource popUpButtonStyle}"
                                 FontSize="{DynamicResource dynamicTextSize}"
                                 Command="{Binding CommandAddIconLocal}"/>

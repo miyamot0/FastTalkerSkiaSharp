@@ -411,7 +411,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         void RefreshSettingsStatus()
         {
-            DeselectText = GetToggleMessage("Auto-Deselecting: ", controller.RequireDeselect);
+            DeselectText = GetToggleMessage("Auto-Deselect: ", controller.RequireDeselect);
             ModeText = string.Concat("Mode: ", GetModeString());
         }
 
@@ -436,17 +436,17 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             if (controller.InFramedMode)
             {
-                return "Sentence Output";
+                return "Sentence";
             }
             else
             {
                 if (controller.IconModeAuto)
                 {
-                    return "Auto Icon Output";
+                    return "Auto Icon";
                 }
                 else
                 {
-                    return "Manual Icon Output";
+                    return "Manual Icon";
                 }
             }
         }
