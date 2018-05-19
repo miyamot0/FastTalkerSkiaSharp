@@ -172,6 +172,7 @@ namespace FastTalkerSkiaSharp.Pages
             {
                 item.Location = new SKPoint(oldCenter.Left - (deltaX * (float)value),
                                             oldCenter.Top - (deltaY * (float)value));
+
             })
             .Commit(this, "Anim", length: animationLength, easing: Easing.SpringOut, finished: (e,i) => 
             {
