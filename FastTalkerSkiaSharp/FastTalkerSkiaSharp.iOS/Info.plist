@@ -19,7 +19,7 @@
 	<key>MinimumOSVersion</key>
 	<string>11.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>FastTalkerSkiaSharp</string>
+	<string>FastTalker</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.smallnstats.FastTalkerSkiaSharp</string>
 	<key>CFBundleVersion</key>

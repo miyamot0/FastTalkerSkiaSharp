@@ -7,11 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastTalkerSkiaSharp.Android
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastTalkerSkiaSharp.iOS", "FastTalkerSkiaSharp\FastTalkerSkiaSharp.iOS\FastTalkerSkiaSharp.iOS.csproj", "{B4D5ADF2-B055-4890-B4E3-45259E928DB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastTalkerSkiaSharp", "FastTalkerSkiaSharp\FastTalkerSkiaSharp\FastTalkerSkiaSharp.csproj", "{FD1A2DC8-3298-43FE-A592-2BF3F02A3908}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastTalkerSkiaSharp", "FastTalkerSkiaSharp\FastTalkerSkiaSharp\FastTalkerSkiaSharp.csproj", "{FD1A2DC8-3298-43FE-A592-2BF3F02A3908}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CD2AF992-9E4E-4CD6-A32B-3002E85F305D}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
+		LICENSE-KeyboardOverlap = LICENSE-KeyboardOverlap
 		LICENSE-LauncherHijack = LICENSE-LauncherHijack
 		LICENSE-Mulberry_Symbols = LICENSE-Mulberry_Symbols
 		LICENSE-Newtonsoft_Json = LICENSE-Newtonsoft_Json
@@ -19,7 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE-Xamarin_Plugins = LICENSE-Xamarin_Plugins
 		Privacy.md = Privacy.md
 		README.md = README.md
-		LICENSE-KeyboardOverlap = LICENSE-KeyboardOverlap
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{7EF1B3EE-7A94-43AA-8C3F-88D230B62A1B}"
