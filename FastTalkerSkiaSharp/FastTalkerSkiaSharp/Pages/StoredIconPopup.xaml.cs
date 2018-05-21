@@ -11,12 +11,9 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using Rg.Plugins.Popup.Pages;
-using FastTalkerSkiaSharp.ViewModels;
-
 namespace FastTalkerSkiaSharp.Pages
 {
-    public partial class StoredIconPopup : PopupPage
+    public partial class StoredIconPopup : Rg.Plugins.Popup.Pages.PopupPage
     {
         public StoredIconPopup()
         {
@@ -27,14 +24,14 @@ namespace FastTalkerSkiaSharp.Pages
         {
             base.OnAppearingAnimationEnd();
 
-            (BindingContext as StoredIconPopupViewModel).LoadInformationAsync(coreLayout);
+            (BindingContext as FastTalkerSkiaSharp.ViewModels.StoredIconPopupViewModel).LoadInformationAsync(coreLayout);
         }
 
 		protected override void OnDisappearing()
 		{
 			base.OnDisappearing();
 
-			(BindingContext as StoredIconPopupViewModel).UnloadInformation();
+            (BindingContext as FastTalkerSkiaSharp.ViewModels.StoredIconPopupViewModel).UnloadInformation();
 		}
 	}
 }

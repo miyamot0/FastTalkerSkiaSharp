@@ -11,28 +11,24 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using FastTalkerSkiaSharp.ViewModels;
-using Rg.Plugins.Popup.Pages;
-using Xamarin.Forms;
-
 namespace FastTalkerSkiaSharp.Pages
 {
-    public partial class ModifyPage : PopupPage
+    public partial class ModifyPage : Rg.Plugins.Popup.Pages.PopupPage
     {
         public ModifyPage(SkiaSharp.Elements.Element _currentElement, SkiaSharp.Elements.ElementsController _controller)
         {
             InitializeComponent();
 
-            BindingContext = new ModifyIconViewModel(_currentElement, _controller)
+            BindingContext = new FastTalkerSkiaSharp.ViewModels.ModifyIconViewModel(_currentElement, _controller)
             {
-                Padding = new Thickness(50, 50, 50, 50),
+                Padding = new Xamarin.Forms.Thickness(50, 50, 50, 50),
                 IsSystemPadding = false
             };
         }
 
 		public void UpdateCurrentIcon(SkiaSharp.Elements.Element _currentElement)
 		{
-			((ModifyIconViewModel)BindingContext).UpdateIcon(_currentElement);
+            ((FastTalkerSkiaSharp.ViewModels.ModifyIconViewModel)BindingContext).UpdateIcon(_currentElement);
 		}
     }
 }

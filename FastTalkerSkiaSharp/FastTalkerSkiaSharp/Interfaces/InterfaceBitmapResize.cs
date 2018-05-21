@@ -15,8 +15,18 @@ namespace FastTalkerSkiaSharp.Interfaces
 {
     public interface InterfaceBitmapResize
     {
+        /// <summary>
+        /// Resize bitmaps
+        /// </summary>
+        /// <param name="photoPath">Photo path.</param>
+        /// <param name="newPhotoPath">New photo path.</param>
         void ResizeBitmaps(string photoPath, string newPhotoPath);
 
+        /// <summary>
+        /// Rotate bitmaps as needed
+        /// </summary>
+        /// <returns>The image.</returns>
+        /// <param name="photoPath">Photo path.</param>
         byte[] RotateImage(string photoPath);
     }
 }

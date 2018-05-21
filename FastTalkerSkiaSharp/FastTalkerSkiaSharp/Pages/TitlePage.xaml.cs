@@ -11,18 +11,13 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using FastTalkerSkiaSharp.Constants;
-using FastTalkerSkiaSharp.Helpers;
 using SkiaSharp;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Xamarin.Forms;
 
 namespace FastTalkerSkiaSharp.Pages
 {
-    public partial class TitlePage : ContentPage
+    public partial class TitlePage : Xamarin.Forms.ContentPage
 	{
-        public List<SKImage> ImageCollection;
+        public System.Collections.Generic.List<SKImage> ImageCollection;
 
         SKPaint iconBackground;
         SKPaint IconBackground
@@ -76,7 +71,7 @@ namespace FastTalkerSkiaSharp.Pages
             }
         }
 
-        ImageBuilder Instance;
+        FastTalkerSkiaSharp.Helpers.ImageBuilder Instance;
 
 		bool isDrawing = true;
 
@@ -114,11 +109,11 @@ namespace FastTalkerSkiaSharp.Pages
 
             while (canvasTitle.CanvasSize.Width == 0)
             {
-                await Task.Delay(50);
+                await System.Threading.Tasks.Task.Delay(50);
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "waiting...");
             }
 
-            Instance = new ImageBuilder(canvasTitle);
+            Instance = new FastTalkerSkiaSharp.Helpers.ImageBuilder(canvasTitle);
 
             canvasTitle.Controller.BackgroundColor = SKColors.BlueViolet;
 
@@ -126,8 +121,8 @@ namespace FastTalkerSkiaSharp.Pages
 
             SkiaSharp.Elements.Image tempImage;
 
-            sizeOfStrip = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 0.05f, 5.0f);
-            SKSize sizeOfPanel = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 10f);
+            sizeOfStrip = FastTalkerSkiaSharp.Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 0.05f, 5.0f);
+            SKSize sizeOfPanel = FastTalkerSkiaSharp.Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 10f);
 
             xPos = sizeOfStrip.Width;
 
@@ -168,13 +163,13 @@ namespace FastTalkerSkiaSharp.Pages
             float deltaX = oldCenter.Left - xEnd;
             float deltaY = oldCenter.Top - yEnd;
 
-            new Animation((value) =>
+            new Xamarin.Forms.Animation((value) =>
             {
                 item.Location = new SKPoint(oldCenter.Left - (deltaX * (float)value),
                                             oldCenter.Top - (deltaY * (float)value));
 
             })
-            .Commit(this, "Anim", length: animationLength, easing: Easing.SpringOut, finished: (e,i) => 
+            .Commit(this, "Anim", length: animationLength, easing: Xamarin.Forms.Easing.SpringOut, finished: (e,i) => 
             {
                 currentItem = currentItem + 1;
 
@@ -263,9 +258,9 @@ namespace FastTalkerSkiaSharp.Pages
 
             #region Button
 
-            var sizeBtn = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 8f, 2f);
+            var sizeBtn = FastTalkerSkiaSharp.Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 8f, 2f);
 
-            var xOffset = DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 1, 7f).Width;
+            var xOffset = FastTalkerSkiaSharp.Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 1, 7f).Width;
 
             SKRect rect = new SKRect(xOffset,
                                      sizeOfStrip.Height,
@@ -320,9 +315,9 @@ namespace FastTalkerSkiaSharp.Pages
 
                 if (_currentElement != null && _currentElement.Tag == 999)
                 {
-					App.BoardPage = new NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
+                    App.BoardPage = new Xamarin.Forms.NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
 
-					Application.Current.MainPage = App.BoardPage;
+                    Xamarin.Forms.Application.Current.MainPage = App.BoardPage;
                 }
             }
 

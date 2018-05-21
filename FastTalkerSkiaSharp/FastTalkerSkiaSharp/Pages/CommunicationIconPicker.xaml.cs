@@ -11,12 +11,9 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using Xamarin.Forms;
-using FastTalkerSkiaSharp.ViewModels;
-
 namespace FastTalkerSkiaSharp.Pages
 {
-    public partial class CommunicationIconPicker : ContentPage
+    public partial class CommunicationIconPicker : Xamarin.Forms.ContentPage
     {
         public CommunicationIconPicker()
         {
@@ -30,7 +27,7 @@ namespace FastTalkerSkiaSharp.Pages
         {
             base.OnAppearing();
 
-            (BindingContext as CommunicationIconPickerViewModel).InitialLoading();
+            (BindingContext as FastTalkerSkiaSharp.ViewModels.CommunicationIconPickerViewModel).InitialLoading();
         }
     }
 }

@@ -11,20 +11,13 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using System;
-using System.Collections.Generic;
-using FastTalkerSkiaSharp.Helpers;
-using FastTalkerSkiaSharp.Models;
-using Xamarin.Forms;
-using FastTalkerSkiaSharp.ViewModels;
-
 namespace FastTalkerSkiaSharp.Pages
 {
-    public partial class FolderIconPicker : ContentPage
+    public partial class FolderIconPicker : Xamarin.Forms.ContentPage
     {
-        public event Action<ArgsSelectedIcon> FolderConstructed = delegate { };
+        public event System.Action<FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon> FolderConstructed = delegate { };
 
-        public List<DisplayImageModel> Images { get; set; }
+        public System.Collections.Generic.List<FastTalkerSkiaSharp.Models.DisplayImageModel> Images { get; set; }
 
         public FolderIconPicker()
         {
@@ -38,7 +31,7 @@ namespace FastTalkerSkiaSharp.Pages
         {
             base.OnAppearing();
 
-            (BindingContext as FolderIconPickerViewModel).LoadImagesOnLoad();
+            (BindingContext as FastTalkerSkiaSharp.ViewModels.FolderIconPickerViewModel).LoadImagesOnLoad();
         }
     }
 }

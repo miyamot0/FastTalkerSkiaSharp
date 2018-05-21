@@ -11,15 +11,11 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using Rg.Plugins.Popup.Pages;
-using FastTalkerSkiaSharp.ViewModels;
-using SkiaSharp.Elements;
-
 namespace FastTalkerSkiaSharp.Pages
 {
-    public partial class SettingsPage : PopupPage
+    public partial class SettingsPage : Rg.Plugins.Popup.Pages.PopupPage
     {
-        public SettingsPage(ElementsController _controllerReference, SettingsPageViewModel _viewModel)
+        public SettingsPage(SkiaSharp.Elements.ElementsController _controllerReference, FastTalkerSkiaSharp.ViewModels.SettingsPageViewModel _viewModel)
         {
             InitializeComponent();
 
