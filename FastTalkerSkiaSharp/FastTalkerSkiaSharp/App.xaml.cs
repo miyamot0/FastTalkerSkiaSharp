@@ -17,7 +17,7 @@ using System.Reflection;
 namespace FastTalkerSkiaSharp
 {
     public partial class App : Application
-	{
+    {
         public static bool OutputVerbose = false;
         public static bool HasAdmin = false;
 
@@ -83,7 +83,7 @@ namespace FastTalkerSkiaSharp
 
             BoardPage = new NavigationPage(new Pages.CommunicationBoardPage());
 
-			if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
+            if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
             {
                 HasAdmin = DependencyService.Get<Interfaces.InterfaceAdministration>().IsAdmin();
 
@@ -93,19 +93,19 @@ namespace FastTalkerSkiaSharp
                 }
             }
 
-			if (Device.Idiom == TargetIdiom.Tablet)
-			{
-				App.Current.Resources["dynamicTextSize"] = Device.GetNamedSize(NamedSize.Large, typeof(Button));
-				App.Current.Resources["dynamicFrameMargin"] = new Thickness(5, 25);
-			}
-            
+            if (Device.Idiom == TargetIdiom.Tablet)
+            {
+                Application.Current.Resources["dynamicTextSize"] = Device.GetNamedSize(NamedSize.Large, typeof(Button));
+                Application.Current.Resources["dynamicFrameMargin"] = new Thickness(5, 25);
+            }
+
             MainPage = new Pages.TitlePage();
         }
 
-        protected override void OnStart () { }
+        protected override void OnStart() { }
 
-		protected override void OnSleep () { }
+        protected override void OnSleep() { }
 
-		protected override void OnResume () { }
-	}
+        protected override void OnResume() { }
+    }
 }

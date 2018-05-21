@@ -17,7 +17,7 @@ namespace FastTalkerSkiaSharp.ViewModels
 {
     public class CommunicationIconPickerViewModel : PopupUpViewModel
     {
-        public event System.Action<FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon> IconConstructed = delegate { };
+        public event System.Action<Helpers.ArgsSelectedIcon> IconConstructed = delegate { };
 
         System.Collections.ObjectModel.ObservableCollection<string> _categories;
         public System.Collections.ObjectModel.ObservableCollection<string> Categories
@@ -49,8 +49,8 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
         }
 
-        System.Collections.ObjectModel.ObservableCollection<FastTalkerSkiaSharp.Models.DisplayImageModel> _images;
-        public System.Collections.ObjectModel.ObservableCollection<FastTalkerSkiaSharp.Models.DisplayImageModel> Images
+        System.Collections.ObjectModel.ObservableCollection<Models.DisplayImageModel> _images;
+        public System.Collections.ObjectModel.ObservableCollection<Models.DisplayImageModel> Images
         {
             get
             {
@@ -115,7 +115,7 @@ namespace FastTalkerSkiaSharp.ViewModels
                 LoadingInitialJson();
             }
 
-            Images = new System.Collections.ObjectModel.ObservableCollection<FastTalkerSkiaSharp.Models.DisplayImageModel>();
+            Images = new System.Collections.ObjectModel.ObservableCollection<Models.DisplayImageModel>();
         }
 
         /// <summary>
@@ -127,11 +127,11 @@ namespace FastTalkerSkiaSharp.ViewModels
             {
                 if (App.storedIcons == null || App.storedIcons.StoredIcons.Count == 0)
                 {
-                    using (System.IO.Stream stream = App.MainAssembly.GetManifestResourceStream(FastTalkerSkiaSharp.Constants.LanguageSettings.ResourcePrefixJson))
+                    using (System.IO.Stream stream = App.MainAssembly.GetManifestResourceStream(Constants.LanguageSettings.ResourcePrefixJson))
                     {
                         using (System.IO.StreamReader reader = new System.IO.StreamReader(stream))
                         {
-                            App.storedIcons = Newtonsoft.Json.JsonConvert.DeserializeObject<FastTalkerSkiaSharp.Models.StoredIconContainerModel>(reader.ReadToEnd());
+                            App.storedIcons = Newtonsoft.Json.JsonConvert.DeserializeObject<Models.StoredIconContainerModel>(reader.ReadToEnd());
                         }
                     }
                 }
@@ -158,7 +158,7 @@ namespace FastTalkerSkiaSharp.ViewModels
                                                         .Select(icons => icons.Name)
                                                         .ToList();
 
-                System.Collections.ObjectModel.ObservableCollection<FastTalkerSkiaSharp.Models.DisplayImageModel> _tempImages = new System.Collections.ObjectModel.ObservableCollection<FastTalkerSkiaSharp.Models.DisplayImageModel>();
+                System.Collections.ObjectModel.ObservableCollection<Models.DisplayImageModel> _tempImages = new System.Collections.ObjectModel.ObservableCollection<Models.DisplayImageModel>();
 
                 double counter = 0d;
                 double total = mIcons.Count;
@@ -168,11 +168,11 @@ namespace FastTalkerSkiaSharp.ViewModels
 
                 foreach (var iconName in mIcons)
                 {
-                    _tempImages.Add(new FastTalkerSkiaSharp.Models.DisplayImageModel
+                    _tempImages.Add(new Models.DisplayImageModel
                     {
-                        Image = Xamarin.Forms.ImageSource.FromResource(string.Format(FastTalkerSkiaSharp.Constants.LanguageSettings.ResourcePrefixPng +
+                        Image = Xamarin.Forms.ImageSource.FromResource(string.Format(Constants.LanguageSettings.ResourcePrefixPng +
                                                                        "{0}" +
-                                                                       FastTalkerSkiaSharp.Constants.LanguageSettings.ResourceSuffixPng, iconName)),
+                                                                       Constants.LanguageSettings.ResourceSuffixPng, iconName)),
                         Name = iconName
                     });
 
@@ -209,9 +209,9 @@ namespace FastTalkerSkiaSharp.ViewModels
 
             needsImage = false;
 
-            PreviewCurrentIcon = Xamarin.Forms.ImageSource.FromResource(string.Format(FastTalkerSkiaSharp.Constants.LanguageSettings.ResourcePrefixPng +
+            PreviewCurrentIcon = Xamarin.Forms.ImageSource.FromResource(string.Format(Constants.LanguageSettings.ResourcePrefixPng +
                                                                         "{0}" +
-                                                                        FastTalkerSkiaSharp.Constants.LanguageSettings.ResourceSuffixPng, selectedIconString));
+                                                                        Constants.LanguageSettings.ResourceSuffixPng, selectedIconString));
 
             IconNameText = selectedIconString;
         }
@@ -227,7 +227,7 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
             else
             {
-                IconConstructed(new FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon
+                IconConstructed(new Helpers.ArgsSelectedIcon
                 {
                     Name = IconNameText,
                     ImageSource = selectedIconString

@@ -24,14 +24,14 @@ namespace FastTalkerSkiaSharp.Pages
         {
             base.OnAppearingAnimationEnd();
 
-            (BindingContext as FastTalkerSkiaSharp.ViewModels.StoredIconPopupViewModel).LoadInformationAsync(coreLayout);
+            (BindingContext as ViewModels.StoredIconPopupViewModel).LoadInformationAsync(coreLayout);
         }
 
-		protected override void OnDisappearing()
-		{
-			base.OnDisappearing();
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
 
-            (BindingContext as FastTalkerSkiaSharp.ViewModels.StoredIconPopupViewModel).UnloadInformation();
-		}
-	}
+            (BindingContext as ViewModels.StoredIconPopupViewModel).UnloadInformation();
+        }
+    }
 }

@@ -93,7 +93,6 @@ namespace FastTalkerSkiaSharp.Storage
         /// Gets the icons async
         /// </summary>
         /// <returns>The icons async.</returns>
-        /// <param name="instance">Instance.</param>
         public async System.Threading.Tasks.Task<System.Collections.Generic.List<CommunicationIcon>> GetIconsAsync()
         {
             var icons = await database.Table<CommunicationIcon>().ToListAsync();

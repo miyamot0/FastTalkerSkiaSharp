@@ -32,11 +32,11 @@ namespace FastTalkerSkiaSharp.ViewModels
 
         public System.Windows.Input.ICommand CommandClose { get; set; }
 
-        public event System.Action<FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon> SaveCommunicationIconEvent = delegate { };
-        public event System.Action<FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon> SaveFolderEvent = delegate { };
+        public event System.Action<Helpers.ArgsSelectedIcon> SaveCommunicationIconEvent = delegate { };
+        public event System.Action<Helpers.ArgsSelectedIcon> SaveFolderEvent = delegate { };
         public event System.Action<SkiaSharp.Elements.Element> SaveCommunicationElementEvent = delegate { };
 
-		public enum SettingsAction
+        public enum SettingsAction
         {
             SaveBoard,
             InvalidateBoardFrame,
@@ -178,26 +178,26 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         async void AddIconLocal()
         {
-			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal()");
+            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal()");
 
             await Xamarin.Forms.Application.Current.MainPage.Navigation.PopAllPopupAsync();
 
-			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal() post");
+            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal() post");
 
             CommunicationIconPickerViewModel viewModel = new CommunicationIconPickerViewModel();
             viewModel.IconConstructed += SaveCommunicationIconEvent;
 
-            FastTalkerSkiaSharp.Pages.CommunicationIconPicker newCommunicationPage = new FastTalkerSkiaSharp.Pages.CommunicationIconPicker()
+            Pages.CommunicationIconPicker newCommunicationPage = new Pages.CommunicationIconPicker()
             {
                 BindingContext = viewModel
             };
 
-			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal() end");
+            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal() end");
 
             //await App.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
-			await Xamarin.Forms.Application.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
+            await Xamarin.Forms.Application.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
 
-			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal() finished");
+            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal() finished");
 
         }
 
@@ -212,9 +212,9 @@ namespace FastTalkerSkiaSharp.ViewModels
 
             if (base64 == null) return;
 
-            FastTalkerSkiaSharp.Storage.CommunicationIcon dynamicIcon = new FastTalkerSkiaSharp.Storage.CommunicationIcon()
+            Storage.CommunicationIcon dynamicIcon = new Storage.CommunicationIcon()
             {
-                Tag = FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Communication),
+                Tag = Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication),
                 Text = base64[0],
                 Local = false,
                 IsStoredInFolder = false,
@@ -297,9 +297,9 @@ namespace FastTalkerSkiaSharp.ViewModels
 
                     file.Dispose();
 
-                    FastTalkerSkiaSharp.Storage.CommunicationIcon dynamicIcon = new FastTalkerSkiaSharp.Storage.CommunicationIcon()
+                    Storage.CommunicationIcon dynamicIcon = new Storage.CommunicationIcon()
                     {
-                        Tag = FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Communication),
+                        Tag = Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication),
                         Text = userInput.Text,
                         Local = false,
                         IsStoredInFolder = false,
@@ -337,12 +337,12 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             await Xamarin.Forms.Application.Current.MainPage.Navigation.PopAllPopupAsync();
 
-            System.Collections.Generic.IEnumerable<SkiaSharp.Elements.Element> foldersInField = controller.Elements.Where(elem => elem.Tag == FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Folder));
+            System.Collections.Generic.IEnumerable<SkiaSharp.Elements.Element> foldersInField = controller.Elements.Where(elem => elem.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder));
 
             FolderIconPickerViewModel viewModel = new FolderIconPickerViewModel(foldersInField);
             viewModel.FolderConstructed += SaveFolderEvent;
 
-            FastTalkerSkiaSharp.Pages.FolderIconPicker folderPicker = new FastTalkerSkiaSharp.Pages.FolderIconPicker()
+            Pages.FolderIconPicker folderPicker = new Pages.FolderIconPicker()
             {
                 BindingContext = viewModel
             };
@@ -355,7 +355,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         async void ShowHelpPopup()
         {
-            FastTalkerSkiaSharp.Pages.HelpPopup mPopup = new FastTalkerSkiaSharp.Pages.HelpPopup();
+            Pages.HelpPopup mPopup = new Pages.HelpPopup();
 
             await Xamarin.Forms.Application.Current.MainPage.Navigation.PushPopupAsync(mPopup);
         }
@@ -365,7 +365,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         async void ShowAboutPopup()
         {
-            FastTalkerSkiaSharp.Pages.AboutPagePopup page = new FastTalkerSkiaSharp.Pages.AboutPagePopup();
+            Pages.AboutPagePopup page = new Pages.AboutPagePopup();
 
             await Xamarin.Forms.Application.Current.MainPage.Navigation.PushPopupAsync(page);
         }
@@ -449,7 +449,7 @@ namespace FastTalkerSkiaSharp.ViewModels
             {
                 case SettingsAction.SaveBoard:
                     controller.PromptResave();
-                    
+
                     break;
 
                 case SettingsAction.InvalidateBoardIcon:

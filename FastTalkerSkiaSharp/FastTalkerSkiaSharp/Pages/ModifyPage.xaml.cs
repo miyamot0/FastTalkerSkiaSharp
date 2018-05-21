@@ -19,16 +19,16 @@ namespace FastTalkerSkiaSharp.Pages
         {
             InitializeComponent();
 
-            BindingContext = new FastTalkerSkiaSharp.ViewModels.ModifyIconViewModel(_currentElement, _controller)
+            BindingContext = new ViewModels.ModifyIconViewModel(_currentElement, _controller)
             {
                 Padding = new Xamarin.Forms.Thickness(50, 50, 50, 50),
                 IsSystemPadding = false
             };
         }
 
-		public void UpdateCurrentIcon(SkiaSharp.Elements.Element _currentElement)
-		{
-            ((FastTalkerSkiaSharp.ViewModels.ModifyIconViewModel)BindingContext).UpdateIcon(_currentElement);
-		}
+        public void UpdateCurrentIcon(SkiaSharp.Elements.Element _currentElement)
+        {
+            ((ViewModels.ModifyIconViewModel)BindingContext).UpdateIcon(_currentElement);
+        }
     }
 }

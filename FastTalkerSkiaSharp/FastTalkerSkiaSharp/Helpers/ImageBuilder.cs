@@ -39,18 +39,18 @@ namespace FastTalkerSkiaSharp.Helpers
                                                                                           Constants.DeviceLayout.StripWidth,
                                                                                           Constants.DeviceLayout.StripHeight);
 
-            return new SkiaSharp.Elements.Rectangle(SkiaSharp.SKRect.Create(Constants.DeviceLayout.Bezel,
+            return new SkiaSharp.Elements.Rectangle(SKRect.Create(Constants.DeviceLayout.Bezel,
                                                                             Constants.DeviceLayout.Bezel,
                                                                             sizeOfStrip.Width,
                                                                             sizeOfStrip.Height))
             {
-                FillColor = new SkiaSharp.SKColor(SKColors.White.Red,
+                FillColor = new SKColor(SKColors.White.Red,
                                                   SKColors.White.Green,
                                                   SKColors.White.Blue, 200),
-                BorderColor = new SkiaSharp.SKColor(SKColors.Black.Red,
+                BorderColor = new SKColor(SKColors.Black.Red,
                                                     SKColors.Black.Green,
                                                     SKColors.Black.Blue, 200),
-                Tag = FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.SentenceFrame),
+                Tag = Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.SentenceFrame),
                 IsStoredInAFolder = false,
             };
         }
@@ -75,9 +75,9 @@ namespace FastTalkerSkiaSharp.Helpers
                     Tag = tag
                 };
 
-                SkiaSharp.SKPoint centerPoint = Constants.DeviceLayout.GetEmitterPoint(canvasReference.CanvasSize, sizeOfEmitter);
+                SKPoint centerPoint = Constants.DeviceLayout.GetEmitterPoint(canvasReference.CanvasSize, sizeOfEmitter);
 
-                emitterReference.Bounds = SkiaSharp.SKRect.Create(centerPoint.X,
+                emitterReference.Bounds = SKRect.Create(centerPoint.X,
                                                                   centerPoint.Y,
                                                                   sizeOfEmitter.Height,
                                                                   sizeOfEmitter.Height);
@@ -93,7 +93,7 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 SKSize size = Constants.DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, xPercent, yPercent);
 
-                SkiaSharp.SKPoint centerPoint = Constants.DeviceLayout.GetEmitterPoint(canvasReference.CanvasSize, size);
+                SKPoint centerPoint = Constants.DeviceLayout.GetEmitterPoint(canvasReference.CanvasSize, size);
 
                 SkiaSharp.Elements.Image emitterReference = new SkiaSharp.Elements.Image(SkiaSharp.SKBitmap.Decode(stream))
                 {
@@ -101,7 +101,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     Transformation = SKMatrix.MakeRotationDegrees(degrees)
                 };
 
-                emitterReference.Bounds = SkiaSharp.SKRect.Create(centerPoint.X,
+                emitterReference.Bounds = SKRect.Create(centerPoint.X,
                                                                   centerPoint.Y,
                                                                   size.Height,
                                                                   size.Height);
@@ -133,18 +133,17 @@ namespace FastTalkerSkiaSharp.Helpers
 
             using (System.IO.Stream stream = App.MainAssembly.GetManifestResourceStream(resource))
             {
-                SkiaSharp.SKBitmap tempBitmapPre = SkiaSharp.SKBitmap.Decode(stream);
-                SkiaSharp.SKBitmap tempBitmap = tempBitmapPre.Resize(new SKImageInfo((int)loadedSize.Width, (int)loadedSize.Width),
+                SKBitmap tempBitmapPre = SKBitmap.Decode(stream);
+                SKBitmap tempBitmap = tempBitmapPre.Resize(new SKImageInfo((int)loadedSize.Width, (int)loadedSize.Width),
                                                                     SKBitmapResizeMethod.Lanczos3);
                 //SkiaSharp.SKBitmap tempBitmap = SkiaSharp.SKBitmap.Decode(stream);
 
-
-                SkiaSharp.SKBitmap returnBitmap = new SkiaSharp.SKBitmap((int)System.Math.Round(tempBitmap.Width * 1.5),
+                SKBitmap returnBitmap = new SKBitmap((int)System.Math.Round(tempBitmap.Width * 1.5),
                                                                          (int)System.Math.Round(tempBitmap.Height * 1.5),
                                                                          tempBitmap.ColorType,
                                                                          tempBitmap.AlphaType);
 
-                using (SkiaSharp.SKCanvas canvas2 = new SkiaSharp.SKCanvas(returnBitmap))
+                using (SKCanvas canvas2 = new SKCanvas(returnBitmap))
                 {
                     if (opaqueBackground)
                     {
@@ -156,17 +155,17 @@ namespace FastTalkerSkiaSharp.Helpers
                     }
 
 
-                    canvas2.DrawBitmap(tempBitmap, SkiaSharp.SKRect.Create(System.Convert.ToInt16(tempBitmap.Width * 0.25),
+                    canvas2.DrawBitmap(tempBitmap, SKRect.Create(System.Convert.ToInt16(tempBitmap.Width * 0.25),
                                                                            System.Convert.ToInt16(tempBitmap.Height * 0.1),
                                                                            tempBitmap.Width,
                                                                            tempBitmap.Height));
 
-                    using (SkiaSharp.SKPaint paint = new SkiaSharp.SKPaint())
+                    using (SKPaint paint = new SKPaint())
                     {
                         paint.TextSize = Constants.DeviceLayout.TextSizeDefault * App.DisplayScaleFactor;
                         paint.IsAntialias = true;
                         paint.Color = SKColors.Black;
-                        paint.TextAlign = SkiaSharp.SKTextAlign.Center;
+                        paint.TextAlign = SKTextAlign.Center;
 
                         canvas2.DrawText(text,
                                          (System.Convert.ToSingle(tempBitmap.Width) * 1.5f) / 2f,
@@ -181,7 +180,7 @@ namespace FastTalkerSkiaSharp.Helpers
                                                                                                 Constants.DeviceLayout.InterfaceDimensionDefault);
 
 
-                    SkiaSharp.SKPoint settingsPoint;
+                    SKPoint settingsPoint;
 
                     if ((int)x == -1 || (int)y == -1)
                     {
@@ -189,7 +188,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     }
                     else
                     {
-                        settingsPoint = new SkiaSharp.SKPoint(x, y);
+                        settingsPoint = new SKPoint(x, y);
                     }
 
                     if (alignRight)
@@ -213,7 +212,7 @@ namespace FastTalkerSkiaSharp.Helpers
                         IsInsertableIntoFolder = false,
                         StoredFolderTag = "",
                         BorderWidth = 2f,
-                        Bounds = SkiaSharp.SKRect.Create(settingsPoint, finalSize)
+                        Bounds = SKRect.Create(settingsPoint, finalSize)
                     };
 
                     return image;
@@ -234,30 +233,30 @@ namespace FastTalkerSkiaSharp.Helpers
 
             using (System.IO.Stream stream = App.MainAssembly.GetManifestResourceStream(icon.ResourceLocation))
             {
-                SkiaSharp.SKBitmap tempBitmapPre = SkiaSharp.SKBitmap.Decode(stream);
-                SkiaSharp.SKBitmap tempBitmap = tempBitmapPre.Resize(new SKImageInfo((int)loadedSize.Width, (int)loadedSize.Width),
+                SKBitmap tempBitmapPre = SKBitmap.Decode(stream);
+                SKBitmap tempBitmap = tempBitmapPre.Resize(new SKImageInfo((int)loadedSize.Width, (int)loadedSize.Width),
                                                                  SKBitmapResizeMethod.Lanczos3);
 
-                SkiaSharp.SKBitmap returnBitmap = new SkiaSharp.SKBitmap((int)System.Math.Round(tempBitmap.Width * 1.4),
+                SKBitmap returnBitmap = new SKBitmap((int)System.Math.Round(tempBitmap.Width * 1.4),
                                                                          (int)System.Math.Round(tempBitmap.Height * 1.4),
                                                                          tempBitmap.ColorType,
                                                                          tempBitmap.AlphaType);
 
-                using (SkiaSharp.SKCanvas canvas2 = new SkiaSharp.SKCanvas(returnBitmap))
+                using (SKCanvas canvas2 = new SKCanvas(returnBitmap))
                 {
                     canvas2.Clear(SKColors.Transparent);
 
-                    canvas2.DrawBitmap(tempBitmap, SkiaSharp.SKRect.Create(System.Convert.ToInt16(tempBitmap.Width * 0.2),
+                    canvas2.DrawBitmap(tempBitmap, SKRect.Create(System.Convert.ToInt16(tempBitmap.Width * 0.2),
                                                                            System.Convert.ToInt16(tempBitmap.Height * 0.1),
                                                                            tempBitmap.Width,
                                                                            tempBitmap.Height));
 
-                    using (SkiaSharp.SKPaint paint = new SkiaSharp.SKPaint())
+                    using (SKPaint paint = new SKPaint())
                     {
                         paint.TextSize = Constants.DeviceLayout.TextSizeDefault * App.DisplayScaleFactor * icon.Scale;
                         paint.IsAntialias = true;
                         paint.Color = SKColors.Black;
-                        paint.TextAlign = SkiaSharp.SKTextAlign.Center;
+                        paint.TextAlign = SKTextAlign.Center;
 
                         canvas2.DrawText(icon.Text,
                                         (System.Convert.ToSingle(tempBitmap.Width) * 1.4f) / 2f,
@@ -272,7 +271,7 @@ namespace FastTalkerSkiaSharp.Helpers
                                                                                             Constants.DeviceLayout.InterfaceDimensionDefault,
                                                                                             Constants.DeviceLayout.InterfaceDimensionDefault);
 
-                SkiaSharp.SKPoint settingsPoint;
+                SKPoint settingsPoint;
 
                 if ((int)icon.X == -1 || (int)icon.Y == -1)
                 {
@@ -280,7 +279,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 }
                 else
                 {
-                    settingsPoint = new SkiaSharp.SKPoint(icon.X, icon.Y);
+                    settingsPoint = new SKPoint(icon.X, icon.Y);
                 }
 
                 image = new SkiaSharp.Elements.Image(returnBitmap)
@@ -296,7 +295,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     CurrentScale = icon.Scale,
                     BorderColor = SKColors.Black,
                     BorderWidth = 2f,
-                    Bounds = SkiaSharp.SKRect.Create(settingsPoint, loadedSize)
+                    Bounds = SKRect.Create(settingsPoint, loadedSize)
                 };
 
                 return image;
@@ -318,30 +317,30 @@ namespace FastTalkerSkiaSharp.Helpers
 
             using (System.IO.Stream stream = new System.IO.MemoryStream(data))
             {
-                SkiaSharp.SKBitmap tempBitmapPre = SkiaSharp.SKBitmap.Decode(stream);
-                SkiaSharp.SKBitmap tempBitmap = tempBitmapPre.Resize(new SKImageInfo((int)loadedSize.Width, (int)loadedSize.Width),
+                SKBitmap tempBitmapPre = SKBitmap.Decode(stream);
+                SKBitmap tempBitmap = tempBitmapPre.Resize(new SKImageInfo((int)loadedSize.Width, (int)loadedSize.Width),
                                                                  SKBitmapResizeMethod.Lanczos3);
 
-                SkiaSharp.SKBitmap returnBitmap = new SkiaSharp.SKBitmap((int)System.Math.Round(tempBitmap.Width * 1.4),
+                SKBitmap returnBitmap = new SKBitmap((int)System.Math.Round(tempBitmap.Width * 1.4),
                                                                          (int)System.Math.Round(tempBitmap.Height * 1.4),
                                                                          tempBitmap.ColorType,
                                                                          tempBitmap.AlphaType);
 
-                using (SkiaSharp.SKCanvas canvas2 = new SkiaSharp.SKCanvas(returnBitmap))
+                using (SKCanvas canvas2 = new SKCanvas(returnBitmap))
                 {
                     canvas2.Clear(SKColors.Transparent);
 
-                    canvas2.DrawBitmap(tempBitmap, SkiaSharp.SKRect.Create(System.Convert.ToInt16(tempBitmap.Width * 0.2),
+                    canvas2.DrawBitmap(tempBitmap, SKRect.Create(System.Convert.ToInt16(tempBitmap.Width * 0.2),
                                                                            System.Convert.ToInt16(tempBitmap.Height * 0.1),
                                                                            tempBitmap.Width,
                                                                            tempBitmap.Height));
 
-                    using (SkiaSharp.SKPaint paint = new SkiaSharp.SKPaint())
+                    using (SKPaint paint = new SKPaint())
                     {
                         paint.TextSize = Constants.DeviceLayout.TextSizeDefault * App.DisplayScaleFactor * icon.Scale;
                         paint.IsAntialias = true;
                         paint.Color = SKColors.Black;
-                        paint.TextAlign = SkiaSharp.SKTextAlign.Center;
+                        paint.TextAlign = SKTextAlign.Center;
 
                         canvas2.DrawText(icon.Text,
                                         (System.Convert.ToSingle(tempBitmap.Width) * 1.4f) / 2f,
@@ -356,7 +355,7 @@ namespace FastTalkerSkiaSharp.Helpers
                                                                                             Constants.DeviceLayout.InterfaceDimensionDefault,
                                                                                             Constants.DeviceLayout.InterfaceDimensionDefault);
 
-                SkiaSharp.SKPoint settingsPoint;
+                SKPoint settingsPoint;
 
                 if ((int)icon.X == -1 || (int)icon.Y == -1)
                 {
@@ -364,7 +363,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 }
                 else
                 {
-                    settingsPoint = new SkiaSharp.SKPoint(icon.X, icon.Y);
+                    settingsPoint = new SKPoint(icon.X, icon.Y);
                 }
 
                 image = new SkiaSharp.Elements.Image(returnBitmap)
@@ -380,7 +379,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     CurrentScale = icon.Scale,
                     BorderColor = SKColors.Black,
                     BorderWidth = 2f,
-                    Bounds = SkiaSharp.SKRect.Create(settingsPoint, loadedSize)
+                    Bounds = SKRect.Create(settingsPoint, loadedSize)
                 };
 
                 System.Array.Clear(data, 0, data.Length);
@@ -398,7 +397,7 @@ namespace FastTalkerSkiaSharp.Helpers
         {
             var item = new Storage.CommunicationIcon()
             {
-                Tag = FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Communication),
+                Tag = Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication),
                 Text = selectedIconArgs.Name,
                 Local = true,
                 IsStoredInFolder = false,
@@ -426,30 +425,30 @@ namespace FastTalkerSkiaSharp.Helpers
 
             using (System.IO.Stream stream = App.MainAssembly.GetManifestResourceStream(icon.ResourceLocation))
             {
-                SkiaSharp.SKBitmap tempBitmapPre = SkiaSharp.SKBitmap.Decode(stream);
-                SkiaSharp.SKBitmap tempBitmap = tempBitmapPre.Resize(new SKImageInfo((int)loadedSize.Width, (int)loadedSize.Width),
+                SKBitmap tempBitmapPre = SKBitmap.Decode(stream);
+                SKBitmap tempBitmap = tempBitmapPre.Resize(new SKImageInfo((int)loadedSize.Width, (int)loadedSize.Width),
                                                                  SKBitmapResizeMethod.Lanczos3);
 
-                SkiaSharp.SKBitmap returnBitmap = new SkiaSharp.SKBitmap((int)System.Math.Round(tempBitmap.Width * 1.5),
+                SKBitmap returnBitmap = new SKBitmap((int)System.Math.Round(tempBitmap.Width * 1.5),
                                                                          (int)System.Math.Round(tempBitmap.Height * 1.5),
                                                                          tempBitmap.ColorType,
                                                                          tempBitmap.AlphaType);
 
-                using (SkiaSharp.SKCanvas canvas2 = new SkiaSharp.SKCanvas(returnBitmap))
+                using (SKCanvas canvas2 = new SKCanvas(returnBitmap))
                 {
                     canvas2.Clear(SKColors.Transparent);
 
-                    canvas2.DrawBitmap(tempBitmap, SkiaSharp.SKRect.Create(System.Convert.ToInt16(tempBitmap.Width * 0.15),
+                    canvas2.DrawBitmap(tempBitmap, SKRect.Create(System.Convert.ToInt16(tempBitmap.Width * 0.15),
                                                                            System.Convert.ToInt16(tempBitmap.Height * 0.1),
                                                                            tempBitmap.Width * 1.3f,
                                                                            tempBitmap.Height * 1.3f));
 
-                    using (SkiaSharp.SKPaint paint = new SkiaSharp.SKPaint())
+                    using (SKPaint paint = new SKPaint())
                     {
                         paint.TextSize = Constants.DeviceLayout.TextSizeDefault * App.DisplayScaleFactor * icon.Scale;
                         paint.IsAntialias = true;
                         paint.Color = SKColors.White;
-                        paint.TextAlign = SkiaSharp.SKTextAlign.Center;
+                        paint.TextAlign = SKTextAlign.Center;
 
                         canvas2.DrawText(icon.Text,
                                         (System.Convert.ToSingle(tempBitmap.Width) * 1.5f) / 2f,
@@ -464,7 +463,7 @@ namespace FastTalkerSkiaSharp.Helpers
                                                                                             Constants.DeviceLayout.InterfaceDimensionDefault,
                                                                                             Constants.DeviceLayout.InterfaceDimensionDefault);
 
-                SkiaSharp.SKPoint settingsPoint;
+                SKPoint settingsPoint;
 
                 if ((int)icon.X == -1 || (int)icon.Y == -1)
                 {
@@ -472,7 +471,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 }
                 else
                 {
-                    settingsPoint = new SkiaSharp.SKPoint(icon.X, icon.Y);
+                    settingsPoint = new SKPoint(icon.X, icon.Y);
                 }
 
                 image = new SkiaSharp.Elements.Image(returnBitmap)
@@ -488,7 +487,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     CurrentScale = icon.Scale,
                     BorderColor = SKColors.Black,
                     BorderWidth = 2f,
-                    Bounds = SkiaSharp.SKRect.Create(settingsPoint, loadedSize)
+                    Bounds = SKRect.Create(settingsPoint, loadedSize)
                 };
 
                 return image;
@@ -504,7 +503,7 @@ namespace FastTalkerSkiaSharp.Helpers
         {
             var item = new Storage.CommunicationIcon()
             {
-                Tag = FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Folder),
+                Tag = Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder),
                 Text = selectedIconArgs.Name,
                 Local = true,
                 IsStoredInFolder = false,
@@ -556,7 +555,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 case Constants.LanguageSettings.EditText:
                     newText = await App.UserInputInstance.ModifyIconTextAsync(newText);
 
-                    if (element.Tag == FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Folder) &&
+                    if (element.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder) &&
                         canvasReference.Elements.Where(elem => elem.Text == newText).Any())
                     {
                         await Acr.UserDialogs.UserDialogs.Instance.AlertAsync("Please select a different name for the folder.", title: "Cannot rename folder.");
@@ -597,19 +596,19 @@ namespace FastTalkerSkiaSharp.Helpers
                 HashCode = element.GetHashCode()
             };
 
-            if (element.Tag == FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Communication) && icon.Local)
+            if (element.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication) && icon.Local)
             {
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "CanvasView.Role.Communication && icon.Local");
 
                 return BuildCommunicationIconLocal(icon);
             }
-            else if (element.Tag == FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Communication) && !icon.Local)
+            else if (element.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication) && !icon.Local)
             {
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "CanvasView.Role.Communication && !icon.Local");
 
                 return BuildCommunicationIconDynamic(icon);
             }
-            else if (element.Tag == FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Folder))
+            else if (element.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder))
             {
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "CanvasView.Role.Folder");
 

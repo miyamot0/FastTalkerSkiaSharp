@@ -17,12 +17,12 @@ namespace FastTalkerSkiaSharp.ViewModels
 {
     public class StoredIconPopupViewModel : PopupUpViewModel
     {
-        public event System.Action<FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon> IconSelected = delegate { };
+        public event System.Action<Helpers.ArgsSelectedIcon> IconSelected = delegate { };
 
-        System.Collections.ObjectModel.ObservableCollection<FastTalkerSkiaSharp.Models.DisplayImageRowModel> _rows;
-        public System.Collections.ObjectModel.ObservableCollection<FastTalkerSkiaSharp.Models.DisplayImageRowModel> Rows 
-        { 
-            get 
+        System.Collections.ObjectModel.ObservableCollection<Models.DisplayImageRowModel> _rows;
+        public System.Collections.ObjectModel.ObservableCollection<Models.DisplayImageRowModel> Rows
+        {
+            get
             {
                 return _rows;
             }
@@ -37,18 +37,18 @@ namespace FastTalkerSkiaSharp.ViewModels
 
         public string FolderWithIcons { get; set; }
 
-		public void UnloadInformation()
-		{
-			Rows.Clear();
+        public void UnloadInformation()
+        {
+            Rows.Clear();
 
-			ItemsMatching.Clear();
-		}
-        
+            ItemsMatching.Clear();
+        }
+
         public void LoadInformationAsync(Xamarin.Forms.StackLayout coreLayout)
         {
             if (Rows == null)
             {
-                Rows = new System.Collections.ObjectModel.ObservableCollection<FastTalkerSkiaSharp.Models.DisplayImageRowModel>();
+                Rows = new System.Collections.ObjectModel.ObservableCollection<Models.DisplayImageRowModel>();
             }
             else
             {
@@ -59,9 +59,9 @@ namespace FastTalkerSkiaSharp.ViewModels
 
             Xamarin.Forms.ImageSource source1, source2, source3;
             string tempName1, tempName2, tempName3;
-			int rotation1, rotation2, rotation3;
+            int rotation1, rotation2, rotation3;
 
-			rotation1 = rotation2 = rotation3 = 0;
+            rotation1 = rotation2 = rotation3 = 0;
 
             for (i = 0; (j + i) < ItemsMatching.Count;)
             {
@@ -73,21 +73,21 @@ namespace FastTalkerSkiaSharp.ViewModels
 
                 for (j = 0; j < 3 && (j + i) < ItemsMatching.Count; j++)
                 {
-					System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "ResourceName: " + ItemsMatching[j + i].Text +
-					                                     " Local: " + ItemsMatching[j + i].LocalImage);
+                    System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "ResourceName: " + ItemsMatching[j + i].Text +
+                                                         " Local: " + ItemsMatching[j + i].LocalImage);
 
-					if (j == 0)
-					{
-						tempName1 = ItemsMatching[j + i].Text;
+                    if (j == 0)
+                    {
+                        tempName1 = ItemsMatching[j + i].Text;
 
-						if (ItemsMatching[j + i].LocalImage)
-						{
+                        if (ItemsMatching[j + i].LocalImage)
+                        {
                             source1 = Xamarin.Forms.ImageSource.FromResource(ItemsMatching[j + i].ImageInformation);
-							rotation1 = 0;
-						}
-						else
-						{
-							byte[] data = System.Convert.FromBase64String(ItemsMatching[j + i].ImageInformation);
+                            rotation1 = 0;
+                        }
+                        else
+                        {
+                            byte[] data = System.Convert.FromBase64String(ItemsMatching[j + i].ImageInformation);
                             source1 = Xamarin.Forms.ImageSource.FromStream(() => new System.IO.MemoryStream(data));
 
                             if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
@@ -100,14 +100,14 @@ namespace FastTalkerSkiaSharp.ViewModels
                     {
                         tempName2 = ItemsMatching[j + i].Text;
 
-						if (ItemsMatching[j + i].LocalImage)
+                        if (ItemsMatching[j + i].LocalImage)
                         {
                             source2 = Xamarin.Forms.ImageSource.FromResource(ItemsMatching[j + i].ImageInformation);
                             rotation2 = 0;
                         }
                         else
                         {
-							byte[] data = System.Convert.FromBase64String(ItemsMatching[j + i].ImageInformation);
+                            byte[] data = System.Convert.FromBase64String(ItemsMatching[j + i].ImageInformation);
                             source2 = Xamarin.Forms.ImageSource.FromStream(() => new System.IO.MemoryStream(data));
 
                             if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
@@ -120,7 +120,7 @@ namespace FastTalkerSkiaSharp.ViewModels
                     {
                         tempName3 = ItemsMatching[j + i].Text;
 
-						if (ItemsMatching[j + i].LocalImage)
+                        if (ItemsMatching[j + i].LocalImage)
                         {
                             source3 = Xamarin.Forms.ImageSource.FromResource(ItemsMatching[j + i].ImageInformation);
                             rotation3 = 0;
@@ -140,10 +140,10 @@ namespace FastTalkerSkiaSharp.ViewModels
 
                 j = 0;
 
-				Rows.Add(CreateModel(tempName1, source1, rotation1,
-				                     tempName2, source2, rotation2,
-				                     tempName3, source3, rotation3,
-				                     coreLayout.Width / 4));
+                Rows.Add(CreateModel(tempName1, source1, rotation1,
+                                     tempName2, source2, rotation2,
+                                     tempName3, source3, rotation3,
+                                     coreLayout.Width / 4));
 
                 i += 3;
             }
@@ -160,24 +160,24 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// <param name="name3">Name3.</param>
         /// <param name="res3">Res3.</param>
         /// <param name="recommendedWidth">Recommended width.</param>
-        private FastTalkerSkiaSharp.Models.DisplayImageRowModel CreateModel(string name1, Xamarin.Forms.ImageSource res1, int rot1,
+        private Models.DisplayImageRowModel CreateModel(string name1, Xamarin.Forms.ImageSource res1, int rot1,
                                                  string name2, Xamarin.Forms.ImageSource res2, int rot2,
                                                  string name3, Xamarin.Forms.ImageSource res3, int rot3,
                                                  double recommendedWidth)
         {
-            return new FastTalkerSkiaSharp.Models.DisplayImageRowModel()
+            return new Models.DisplayImageRowModel()
             {
                 Name1 = name1,
                 Image1 = res1,
-				Rotation1 = rot1,
+                Rotation1 = rot1,
 
                 Name2 = name2,
                 Image2 = res2,
-				Rotation2 = rot2,
+                Rotation2 = rot2,
 
                 Name3 = name3,
                 Image3 = res3,
-				Rotation3 = rot3,
+                Rotation3 = rot3,
 
                 WidthRequest = recommendedWidth,
 
@@ -189,7 +189,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// Icon in listview was clicked, add to field and close
         /// </summary>
         /// <param name="obj">Object.</param>
-        private void TappedCommand(object obj)
+        void TappedCommand(object obj)
         {
             string iconToReintroduce = obj as string;
 
@@ -197,7 +197,7 @@ namespace FastTalkerSkiaSharp.ViewModels
 
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Tapped Command: " + obj as string);
 
-            IconSelected(new FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon
+            IconSelected(new Helpers.ArgsSelectedIcon
             {
                 Name = iconToReintroduce,
                 ImageSource = null
@@ -211,7 +211,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">E.</param>
-        private async void OnClose(object sender, System.EventArgs e)
+        async void OnClose(object sender, System.EventArgs e)
         {
 #pragma warning disable CS0618 // Type or member is obsolete
             await PopupNavigation.PopAsync();

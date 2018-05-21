@@ -15,9 +15,9 @@ namespace FastTalkerSkiaSharp.Pages
 {
     public partial class FolderIconPicker : Xamarin.Forms.ContentPage
     {
-        public event System.Action<FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon> FolderConstructed = delegate { };
+        public event System.Action<Helpers.ArgsSelectedIcon> FolderConstructed = delegate { };
 
-        public System.Collections.Generic.List<FastTalkerSkiaSharp.Models.DisplayImageModel> Images { get; set; }
+        public System.Collections.Generic.List<Models.DisplayImageModel> Images { get; set; }
 
         public FolderIconPicker()
         {
@@ -31,7 +31,7 @@ namespace FastTalkerSkiaSharp.Pages
         {
             base.OnAppearing();
 
-            (BindingContext as FastTalkerSkiaSharp.ViewModels.FolderIconPickerViewModel).LoadImagesOnLoad();
+            (BindingContext as ViewModels.FolderIconPickerViewModel).LoadImagesOnLoad();
         }
     }
 }

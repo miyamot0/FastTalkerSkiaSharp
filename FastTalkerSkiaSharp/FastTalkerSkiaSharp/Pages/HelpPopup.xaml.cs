@@ -19,7 +19,7 @@ namespace FastTalkerSkiaSharp.Pages
         {
             InitializeComponent();
 
-            BindingContext = new FastTalkerSkiaSharp.ViewModels.PopupUpViewModel()
+            BindingContext = new ViewModels.PopupUpViewModel()
             {
                 Padding = new Xamarin.Forms.Thickness(50, 50, 50, 50),
                 IsSystemPadding = true

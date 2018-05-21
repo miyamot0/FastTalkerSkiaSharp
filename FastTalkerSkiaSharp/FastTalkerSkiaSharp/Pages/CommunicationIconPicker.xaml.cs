@@ -27,7 +27,7 @@ namespace FastTalkerSkiaSharp.Pages
         {
             base.OnAppearing();
 
-            (BindingContext as FastTalkerSkiaSharp.ViewModels.CommunicationIconPickerViewModel).InitialLoading();
+            (BindingContext as ViewModels.CommunicationIconPickerViewModel).InitialLoading();
         }
     }
 }

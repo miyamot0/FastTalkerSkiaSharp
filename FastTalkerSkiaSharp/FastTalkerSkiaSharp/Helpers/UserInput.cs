@@ -36,7 +36,7 @@ namespace FastTalkerSkiaSharp.Helpers
 
             if (App.InstanceSettingsPageViewModel == null)
             {
-                App.InstanceSettingsPageViewModel = new FastTalkerSkiaSharp.ViewModels.SettingsPageViewModel(canvasRef.Controller)
+                App.InstanceSettingsPageViewModel = new ViewModels.SettingsPageViewModel(canvasRef.Controller)
                 {
                     Padding = new Xamarin.Forms.Thickness(50, 50, 50, 50),
                     IsSystemPadding = false
@@ -49,7 +49,7 @@ namespace FastTalkerSkiaSharp.Helpers
 
             if (App.InstanceSettingsPage == null)
             {
-                App.InstanceSettingsPage = new FastTalkerSkiaSharp.Pages.SettingsPage(canvasRef.Controller, App.InstanceSettingsPageViewModel);
+                App.InstanceSettingsPage = new Pages.SettingsPage(canvasRef.Controller, App.InstanceSettingsPageViewModel);
             }
 
             await Xamarin.Forms.Application.Current.MainPage.Navigation.PushPopupAsync(App.InstanceSettingsPage);
@@ -120,7 +120,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 {
                     currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
 
-                }).Commit(Xamarin.Forms.Application.Current.MainPage, "Anim", length: FastTalkerSkiaSharp.Constants.DeviceLayout.AnimationShrinkMillis, finished: async (v2, c2) =>
+                }).Commit(Xamarin.Forms.Application.Current.MainPage, "Anim", length: Constants.DeviceLayout.AnimationShrinkMillis, finished: async (v2, c2) =>
                 {
                     canvasRef.Elements.Remove(currentElement);
                     canvasRef.Controller.PromptResave();
@@ -157,7 +157,7 @@ namespace FastTalkerSkiaSharp.Helpers
                         System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, e.ToString());
                     }
 
-                }).Commit(Xamarin.Forms.Application.Current.MainPage, "Anim", length: FastTalkerSkiaSharp.Constants.DeviceLayout.AnimationShrinkMillis, finished: async (v2, c2) =>
+                }).Commit(Xamarin.Forms.Application.Current.MainPage, "Anim", length: Constants.DeviceLayout.AnimationShrinkMillis, finished: async (v2, c2) =>
                 {
                     try
                     {
@@ -236,7 +236,7 @@ namespace FastTalkerSkiaSharp.Helpers
                         }
                     }
 
-                }).Commit(Xamarin.Forms.Application.Current.MainPage, "Anim", length: FastTalkerSkiaSharp.Constants.DeviceLayout.AnimationMoveMillis, finished: (v, c) =>
+                }).Commit(Xamarin.Forms.Application.Current.MainPage, "Anim", length: Constants.DeviceLayout.AnimationMoveMillis, finished: (v, c) =>
                 {
                     new Xamarin.Forms.Animation((value) =>
                     {
@@ -252,7 +252,7 @@ namespace FastTalkerSkiaSharp.Helpers
                             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, e.ToString());
                         }
 
-                    }).Commit(Xamarin.Forms.Application.Current.MainPage, "Anim", length: FastTalkerSkiaSharp.Constants.DeviceLayout.AnimationShrinkMillis, finished: (v2, c2) =>
+                    }).Commit(Xamarin.Forms.Application.Current.MainPage, "Anim", length: Constants.DeviceLayout.AnimationShrinkMillis, finished: (v2, c2) =>
                     {
                         try
                         {
@@ -267,7 +267,7 @@ namespace FastTalkerSkiaSharp.Helpers
                             }
                         }
                         catch (System.Exception e)
-                        { 
+                        {
                             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, e.ToString());
                         }
                     });
@@ -283,9 +283,9 @@ namespace FastTalkerSkiaSharp.Helpers
         public async System.Threading.Tasks.Task<string> ModifyIconTextAsync(string prevText)
         {
             var text = await Acr.UserDialogs.UserDialogs.Instance.PromptAsync("Enter name for image",
-                                                              title: FastTalkerSkiaSharp.Constants.LanguageSettings.EditTitle,
-                                                              okText: FastTalkerSkiaSharp.Constants.LanguageSettings.EditTextOK,
-                                                              cancelText: FastTalkerSkiaSharp.Constants.LanguageSettings.EditTextCancel,
+                                                              title: Constants.LanguageSettings.EditTitle,
+                                                              okText: Constants.LanguageSettings.EditTextOK,
+                                                              cancelText: Constants.LanguageSettings.EditTextCancel,
                                                               placeholder: prevText);
 
             return text.Text;
@@ -350,7 +350,7 @@ namespace FastTalkerSkiaSharp.Helpers
                             newPath = System.IO.Path.Combine(path, System.IO.Path.GetFileNameWithoutExtension(@file.Path) + "crop.jpg");
 
                             // <!-- Note: this crops an image to square, since not a default in Android -->
-                            Xamarin.Forms.DependencyService.Get<FastTalkerSkiaSharp.Interfaces.InterfaceBitmapResize>().ResizeBitmaps(@file.Path, @newPath);
+                            Xamarin.Forms.DependencyService.Get<Interfaces.InterfaceBitmapResize>().ResizeBitmaps(@file.Path, @newPath);
 
                         }
                         else if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)

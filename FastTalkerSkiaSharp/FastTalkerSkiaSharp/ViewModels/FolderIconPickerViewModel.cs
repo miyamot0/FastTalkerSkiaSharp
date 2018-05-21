@@ -17,10 +17,10 @@ namespace FastTalkerSkiaSharp.ViewModels
 {
     public class FolderIconPickerViewModel : PopupUpViewModel
     {
-        public event System.Action<FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon> FolderConstructed = delegate { };
+        public event System.Action<Helpers.ArgsSelectedIcon> FolderConstructed = delegate { };
 
-        System.Collections.Generic.List<FastTalkerSkiaSharp.Models.DisplayImageModel> _images;
-        public System.Collections.Generic.List<FastTalkerSkiaSharp.Models.DisplayImageModel> Images
+        System.Collections.Generic.List<Models.DisplayImageModel> _images;
+        public System.Collections.Generic.List<Models.DisplayImageModel> Images
         {
             get
             {
@@ -106,7 +106,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         public void LoadImagesOnLoad()
         {
-            Images = new System.Collections.Generic.List<FastTalkerSkiaSharp.Models.DisplayImageModel>();
+            Images = new System.Collections.Generic.List<Models.DisplayImageModel>();
 
             System.Collections.Generic.List<string> mFolderIcons = new System.Collections.Generic.List<string>() {    "Dark Blue",
                                                                 "Dark Pink",
@@ -117,11 +117,11 @@ namespace FastTalkerSkiaSharp.ViewModels
 
             foreach (var iconName in mFolderIcons)
             {
-                Images.Add(new FastTalkerSkiaSharp.Models.DisplayImageModel
+                Images.Add(new Models.DisplayImageModel
                 {
-                    Image = Xamarin.Forms.ImageSource.FromResource(string.Format(FastTalkerSkiaSharp.Constants.LanguageSettings.ResourcePrefixPng +
+                    Image = Xamarin.Forms.ImageSource.FromResource(string.Format(Constants.LanguageSettings.ResourcePrefixPng +
                                                                    "FolderOpen{0}" +
-                                                                   FastTalkerSkiaSharp.Constants.LanguageSettings.ResourceSuffixPng,
+                                                                   Constants.LanguageSettings.ResourceSuffixPng,
                                                                    RemoveWhitespace(iconName))),
                     Name = iconName
                 });
@@ -142,9 +142,9 @@ namespace FastTalkerSkiaSharp.ViewModels
 
             needsImage = false;
 
-            PreviewCurrentIcon = Xamarin.Forms.ImageSource.FromResource(string.Format(FastTalkerSkiaSharp.Constants.LanguageSettings.ResourcePrefixPng +
+            PreviewCurrentIcon = Xamarin.Forms.ImageSource.FromResource(string.Format(Constants.LanguageSettings.ResourcePrefixPng +
                                                                         "FolderOpen{0}" +
-                                                                        FastTalkerSkiaSharp.Constants.LanguageSettings.ResourceSuffixPng, selectedIconString));
+                                                                        Constants.LanguageSettings.ResourceSuffixPng, selectedIconString));
         }
 
         /// <summary>

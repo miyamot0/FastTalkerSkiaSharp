@@ -16,7 +16,7 @@ using SkiaSharp;
 namespace FastTalkerSkiaSharp.Pages
 {
     public partial class TitlePage : Xamarin.Forms.ContentPage
-	{
+    {
         public System.Collections.Generic.List<SKImage> ImageCollection;
 
         SKPaint iconBackground;
@@ -71,9 +71,9 @@ namespace FastTalkerSkiaSharp.Pages
             }
         }
 
-        FastTalkerSkiaSharp.Helpers.ImageBuilder Instance;
+        Helpers.ImageBuilder Instance;
 
-		bool isDrawing = true;
+        bool isDrawing = true;
 
         int currentItem = 0;
         int jitterSpan = 80;
@@ -90,12 +90,12 @@ namespace FastTalkerSkiaSharp.Pages
 
         uint animationLength = 300;
 
-        public TitlePage ()
-		{
-            InitializeComponent ();
-            
-			isDrawing = true;
-		}
+        public TitlePage()
+        {
+            InitializeComponent();
+
+            isDrawing = true;
+        }
 
         /// <summary>
         /// Fire event once layout is inflated
@@ -105,7 +105,7 @@ namespace FastTalkerSkiaSharp.Pages
             base.OnAppearing();
 
             // Only animate once
-			if (!isDrawing) return;
+            if (!isDrawing) return;
 
             while (canvasTitle.CanvasSize.Width == 0)
             {
@@ -113,7 +113,7 @@ namespace FastTalkerSkiaSharp.Pages
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "waiting...");
             }
 
-            Instance = new FastTalkerSkiaSharp.Helpers.ImageBuilder(canvasTitle);
+            Instance = new Helpers.ImageBuilder(canvasTitle);
 
             canvasTitle.Controller.BackgroundColor = SKColors.BlueViolet;
 
@@ -121,8 +121,8 @@ namespace FastTalkerSkiaSharp.Pages
 
             SkiaSharp.Elements.Image tempImage;
 
-            sizeOfStrip = FastTalkerSkiaSharp.Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 0.05f, 5.0f);
-            SKSize sizeOfPanel = FastTalkerSkiaSharp.Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 10f);
+            sizeOfStrip = Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 0.05f, 5.0f);
+            SKSize sizeOfPanel = Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 10f);
 
             xPos = sizeOfStrip.Width;
 
@@ -142,7 +142,7 @@ namespace FastTalkerSkiaSharp.Pages
                     tempImage.BorderWidth = 2f;
 
                     canvasTitle.Controller.Elements.Add(tempImage);
-                }  
+                }
             }
 
             Animater(canvasTitle.Controller.Elements[currentItem],
@@ -169,7 +169,7 @@ namespace FastTalkerSkiaSharp.Pages
                                             oldCenter.Top - (deltaY * (float)value));
 
             })
-            .Commit(this, "Anim", length: animationLength, easing: Xamarin.Forms.Easing.SpringOut, finished: (e,i) => 
+            .Commit(this, "Anim", length: animationLength, easing: Xamarin.Forms.Easing.SpringOut, finished: (e, i) =>
             {
                 currentItem = currentItem + 1;
 
@@ -183,7 +183,7 @@ namespace FastTalkerSkiaSharp.Pages
                 {
                     DrawText();
 
-					isDrawing = false;
+                    isDrawing = false;
                 }
             });
         }
@@ -258,13 +258,13 @@ namespace FastTalkerSkiaSharp.Pages
 
             #region Button
 
-            var sizeBtn = FastTalkerSkiaSharp.Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 8f, 2f);
+            var sizeBtn = Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 8f, 2f);
 
-            var xOffset = FastTalkerSkiaSharp.Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 1, 7f).Width;
+            var xOffset = Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 1, 7f).Width;
 
             SKRect rect = new SKRect(xOffset,
                                      sizeOfStrip.Height,
-                                     sizeBtn.Width + xOffset, 
+                                     sizeBtn.Width + xOffset,
                                      sizeBtn.Height / 2f);
 
             var button = new SkiaSharp.Elements.RoundRectangle(rect)
@@ -272,12 +272,12 @@ namespace FastTalkerSkiaSharp.Pages
                 BorderColor = SKColors.Black,
                 FillColor = SKColors.IndianRed,
                 BorderWidth = 6,
-                CornerRadius = new SKPoint(25,25),
+                CornerRadius = new SKPoint(25, 25),
                 Tag = 999,
             };
 
             button.Height = sizeBtn.Height / 2f;
-            button.Y = ((canvasTitle.CanvasSize.Height / 2f) + (iconsText2.Top))/2f - button.Height/2f;
+            button.Y = ((canvasTitle.CanvasSize.Height / 2f) + (iconsText2.Top)) / 2f - button.Height / 2f;
 
             canvasTitle.Controller.Elements.Add(button);
 
