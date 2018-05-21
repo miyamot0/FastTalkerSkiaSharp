@@ -11,21 +11,18 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using System.ComponentModel;
-using Xamarin.Forms;
-
 namespace FastTalkerSkiaSharp.ViewModels
 {
-    public class PopupUpViewModel : INotifyPropertyChanged
+    public class PopupUpViewModel : System.ComponentModel.INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
         }
 
-        private Thickness _padding;
-        public Thickness Padding
+        Xamarin.Forms.Thickness _padding;
+        public Xamarin.Forms.Thickness Padding
         {
             get
             {
@@ -38,7 +35,7 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
         }
 
-        private bool _isSystemPadding = true;
+        bool _isSystemPadding = true;
         public bool IsSystemPadding
         {
             get

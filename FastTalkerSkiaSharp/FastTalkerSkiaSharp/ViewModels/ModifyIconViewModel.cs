@@ -11,11 +11,7 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using System.Windows.Input;
-using Xamarin.Forms;
-using FastTalkerSkiaSharp.Constants;
 using System.Linq;
-using FastTalkerSkiaSharp.Elements;
 
 namespace FastTalkerSkiaSharp.ViewModels
 {
@@ -24,31 +20,31 @@ namespace FastTalkerSkiaSharp.ViewModels
         SkiaSharp.Elements.Element currentElement;
         SkiaSharp.Elements.ElementsController controller;
 
-        public ICommand ButtonResetSize { get; set; }
-        public ICommand ButtonIncreaseSize { get; set; }
-        public ICommand ButtonIncreaseSize2 { get; set; }
-        public ICommand ButtonDecreaseSize { get; set; }
-        public ICommand ButtonDecreaseSize2 { get; set; }
-        public ICommand ButtonEditText { get; set; }
-        public ICommand ButtonPinning { get; set; }
-        public ICommand ButtonDelete { get; set; }
+        public System.Windows.Input.ICommand ButtonResetSize { get; set; }
+        public System.Windows.Input.ICommand ButtonIncreaseSize { get; set; }
+        public System.Windows.Input.ICommand ButtonIncreaseSize2 { get; set; }
+        public System.Windows.Input.ICommand ButtonDecreaseSize { get; set; }
+        public System.Windows.Input.ICommand ButtonDecreaseSize2 { get; set; }
+        public System.Windows.Input.ICommand ButtonEditText { get; set; }
+        public System.Windows.Input.ICommand ButtonPinning { get; set; }
+        public System.Windows.Input.ICommand ButtonDelete { get; set; }
 
         public ModifyIconViewModel(SkiaSharp.Elements.Element _currentElement, SkiaSharp.Elements.ElementsController _controller)
         {
             currentElement = _currentElement;
             controller = _controller;
 
-            ButtonResetSize = new Command(ResetSizeOfButton);
+            ButtonResetSize = new Xamarin.Forms.Command(ResetSizeOfButton);
 
-            ButtonIncreaseSize = new Command(IncreaseSizeOfIcon);
-            ButtonIncreaseSize2 = new Command(IncreaseSizeOfIconLarge);
+            ButtonIncreaseSize = new Xamarin.Forms.Command(IncreaseSizeOfIcon);
+            ButtonIncreaseSize2 = new Xamarin.Forms.Command(IncreaseSizeOfIconLarge);
 
-            ButtonDecreaseSize = new Command(DecreaseSizeOfIcon);
-            ButtonDecreaseSize2 = new Command(DecreaseSizeOfIconLarge);
+            ButtonDecreaseSize = new Xamarin.Forms.Command(DecreaseSizeOfIcon);
+            ButtonDecreaseSize2 = new Xamarin.Forms.Command(DecreaseSizeOfIconLarge);
 
-            ButtonEditText = new Command(EditIconText);
-            ButtonPinning = new Command(PinIcon);
-            ButtonDelete = new Command(DeleteIcon);
+            ButtonEditText = new Xamarin.Forms.Command(EditIconText);
+            ButtonPinning = new Xamarin.Forms.Command(PinIcon);
+            ButtonDelete = new Xamarin.Forms.Command(DeleteIcon);
         }
 
         /// <summary>
@@ -69,7 +65,7 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
             else
             {
-                if (currentElement.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder))
+                if (currentElement.Tag == FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Folder))
                 {
                     string oldFolderTitle = currentElement.Text;
 
@@ -79,7 +75,7 @@ namespace FastTalkerSkiaSharp.ViewModels
                         for (int i = 0; i < controller.Elements.Count; i++)
                         {
                             controller.Elements[i].StoredFolderTag = (controller.Elements[i].IsStoredInAFolder &&
-                                                                      controller.Elements[i].Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication) &&
+                                                                      controller.Elements[i].Tag == FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Communication) &&
                                                                       controller.Elements[i].StoredFolderTag == oldFolderTitle) ? item.Text : controller.Elements[i].StoredFolderTag;
                         }
                     }
@@ -102,7 +98,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose,"Reset Size");
 
-            UpdateIconInController(LanguageSettings.EditResetSize);
+            UpdateIconInController(FastTalkerSkiaSharp.Constants.LanguageSettings.EditResetSize);
         }
 
         /// <summary>
@@ -112,7 +108,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Increase Size");
 
-            UpdateIconInController(LanguageSettings.EditGrow);
+            UpdateIconInController(FastTalkerSkiaSharp.Constants.LanguageSettings.EditGrow);
         }
 
         /// <summary>
@@ -122,7 +118,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Increase Size Large");
 
-            UpdateIconInController(LanguageSettings.EditGrow2);
+            UpdateIconInController(FastTalkerSkiaSharp.Constants.LanguageSettings.EditGrow2);
         }
 
         /// <summary>
@@ -132,7 +128,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Decrease Size");
 
-            UpdateIconInController(LanguageSettings.EditShrink);
+            UpdateIconInController(FastTalkerSkiaSharp.Constants.LanguageSettings.EditShrink);
         }
 
         /// <summary>
@@ -142,7 +138,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Decrease Size Large");
 
-            UpdateIconInController(LanguageSettings.EditShrink2);
+            UpdateIconInController(FastTalkerSkiaSharp.Constants.LanguageSettings.EditShrink2);
         }
 
         /// <summary>
@@ -152,7 +148,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Edit Text");
 
-            UpdateIconInController(LanguageSettings.EditText);
+            UpdateIconInController(FastTalkerSkiaSharp.Constants.LanguageSettings.EditText);
         }
 
         /// <summary>
@@ -162,7 +158,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Pin Icon");
 
-            UpdateIconInController(LanguageSettings.EditPinning);
+            UpdateIconInController(FastTalkerSkiaSharp.Constants.LanguageSettings.EditPinning);
         }
     
         /// <summary>

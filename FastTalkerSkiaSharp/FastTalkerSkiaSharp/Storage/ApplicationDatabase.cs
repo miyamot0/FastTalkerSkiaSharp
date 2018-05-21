@@ -11,14 +11,13 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using System.Threading.Tasks;
 using System.Linq;
 
 namespace FastTalkerSkiaSharp.Storage
 {
     public class ApplicationDatabase
     {
-        private static SQLite.SQLiteAsyncConnection database;
+        static SQLite.SQLiteAsyncConnection database;
 
         /// <summary>
         /// Constructor
@@ -41,7 +40,7 @@ namespace FastTalkerSkiaSharp.Storage
         /// </summary>
         /// <returns>The or update async.</returns>
         /// <param name="item">Item.</param>
-        public async Task<int> InsertOrUpdateAsync(CommunicationSettings item)
+        public async System.Threading.Tasks.Task<int> InsertOrUpdateAsync(CommunicationSettings item)
         {
             return await database.InsertOrReplaceAsync(item);
         }
@@ -50,7 +49,7 @@ namespace FastTalkerSkiaSharp.Storage
         /// Get the single settings object
         /// </summary>
         /// <returns>The settings async.</returns>
-        public async Task<CommunicationSettings> GetSettingsAsync()
+        public async System.Threading.Tasks.Task<CommunicationSettings> GetSettingsAsync()
         {
             var settings = await database.Table<CommunicationSettings>()?.ToListAsync();
 
@@ -58,15 +57,13 @@ namespace FastTalkerSkiaSharp.Storage
             {
                 return settings.First();
             }
-            else
+
+            return new CommunicationSettings()
             {
-                return new CommunicationSettings()
-                {
-                    InEditMode = false,
-                    InFramedMode = false,
-                    RequireDeselect = false,
-                };
-            }
+                InEditMode = false,
+                InFramedMode = false,
+                RequireDeselect = false,
+            };
         }
 
         /// <summary>
@@ -74,7 +71,7 @@ namespace FastTalkerSkiaSharp.Storage
         /// </summary>
         /// <returns>The or update async.</returns>
         /// <param name="item">Item.</param>
-        public async Task<int> InsertOrUpdateAsync(CommunicationIcon item)
+        public async System.Threading.Tasks.Task<int> InsertOrUpdateAsync(CommunicationIcon item)
         {
             return await database.InsertOrReplaceAsync(item);
         }
@@ -84,7 +81,7 @@ namespace FastTalkerSkiaSharp.Storage
         /// </summary>
         /// <returns>The or update async.</returns>
         /// <param name="items">Items.</param>
-        public async Task<int> InsertOrUpdateAsync(System.Collections.Generic.List<CommunicationIcon> items)
+        public async System.Threading.Tasks.Task<int> InsertOrUpdateAsync(System.Collections.Generic.List<CommunicationIcon> items)
         {
             database.DropTableAsync<CommunicationIcon>().Wait();
             database.CreateTableAsync<CommunicationIcon>().Wait();
@@ -97,19 +94,16 @@ namespace FastTalkerSkiaSharp.Storage
         /// </summary>
         /// <returns>The icons async.</returns>
         /// <param name="instance">Instance.</param>
-        public async Task<System.Collections.Generic.List<CommunicationIcon>> GetIconsAsync()
+        public async System.Threading.Tasks.Task<System.Collections.Generic.List<CommunicationIcon>> GetIconsAsync()
         {
             var icons = await database.Table<CommunicationIcon>().ToListAsync();
 
             if (icons != null)
             {
                 return icons;
+            }
 
-            }
-            else
-            {
-                return new System.Collections.Generic.List<CommunicationIcon>();
-            }
+            return new System.Collections.Generic.List<CommunicationIcon>();
         }
     }
 }

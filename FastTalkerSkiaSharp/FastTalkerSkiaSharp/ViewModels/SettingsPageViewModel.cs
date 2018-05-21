@@ -11,22 +11,8 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Windows.Input;
-using Acr.UserDialogs;
-using FastTalkerSkiaSharp.Elements;
-using FastTalkerSkiaSharp.Helpers;
-using FastTalkerSkiaSharp.Pages;
-using FastTalkerSkiaSharp.Storage;
-using Plugin.Media;
-using Plugin.Media.Abstractions;
-using Plugin.Permissions;
-using Plugin.Permissions.Abstractions;
 using Rg.Plugins.Popup.Extensions;
-using Xamarin.Forms;
 
 namespace FastTalkerSkiaSharp.ViewModels
 {
@@ -34,21 +20,21 @@ namespace FastTalkerSkiaSharp.ViewModels
     {
         SkiaSharp.Elements.ElementsController controller;
 
-        public ICommand CommandSaveBoard { get; set; }
-        public ICommand CommandDeselecting { get; set; }
-        public ICommand CommandOperatingMode { get; set; }
-        public ICommand CommandAddIconLocal { get; set; }
-        public ICommand CommandAddIconPhoto { get; set; }
-        public ICommand CommandAddIconStored { get; set; }
-        public ICommand CommandAddFolder { get; set; }
-        public ICommand CommandHelp { get; set; }
-        public ICommand CommandAbout { get; set; }
+        public System.Windows.Input.ICommand CommandSaveBoard { get; set; }
+        public System.Windows.Input.ICommand CommandDeselecting { get; set; }
+        public System.Windows.Input.ICommand CommandOperatingMode { get; set; }
+        public System.Windows.Input.ICommand CommandAddIconLocal { get; set; }
+        public System.Windows.Input.ICommand CommandAddIconPhoto { get; set; }
+        public System.Windows.Input.ICommand CommandAddIconStored { get; set; }
+        public System.Windows.Input.ICommand CommandAddFolder { get; set; }
+        public System.Windows.Input.ICommand CommandHelp { get; set; }
+        public System.Windows.Input.ICommand CommandAbout { get; set; }
 
-        public ICommand CommandClose { get; set; }
+        public System.Windows.Input.ICommand CommandClose { get; set; }
 
-        public event Action<ArgsSelectedIcon> SaveCommunicationIconEvent = delegate { };
-        public event Action<ArgsSelectedIcon> SaveFolderEvent = delegate { };
-        public event Action<SkiaSharp.Elements.Element> SaveCommunicationElementEvent = delegate { };
+        public event System.Action<FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon> SaveCommunicationIconEvent = delegate { };
+        public event System.Action<FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon> SaveFolderEvent = delegate { };
+        public event System.Action<SkiaSharp.Elements.Element> SaveCommunicationElementEvent = delegate { };
 
 		public enum SettingsAction
         {
@@ -94,18 +80,18 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             controller = _controller;
 
-            CommandSaveBoard = new Command(ResumeOperation);
-            CommandDeselecting = new Command(DeselectOperation);
-            CommandOperatingMode = new Command(ChangeMode);
-            CommandAddIconLocal = new Command(AddIconLocal);
-            CommandAddIconPhoto = new Command(AddIconPhoto);
-            CommandAddIconStored = new Command(AddIconStored);
-            CommandAddFolder = new Command(AddFolder);
+            CommandSaveBoard = new Xamarin.Forms.Command(ResumeOperation);
+            CommandDeselecting = new Xamarin.Forms.Command(DeselectOperation);
+            CommandOperatingMode = new Xamarin.Forms.Command(ChangeMode);
+            CommandAddIconLocal = new Xamarin.Forms.Command(AddIconLocal);
+            CommandAddIconPhoto = new Xamarin.Forms.Command(AddIconPhoto);
+            CommandAddIconStored = new Xamarin.Forms.Command(AddIconStored);
+            CommandAddFolder = new Xamarin.Forms.Command(AddFolder);
 
-            CommandHelp = new Command(ShowHelpPopup);
-            CommandAbout = new Command(ShowAboutPopup);
+            CommandHelp = new Xamarin.Forms.Command(ShowHelpPopup);
+            CommandAbout = new Xamarin.Forms.Command(ShowAboutPopup);
 
-            CommandClose = new Command(Close);
+            CommandClose = new Xamarin.Forms.Command(Close);
 
             RefreshSettingsStatus();
         }
@@ -194,14 +180,14 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
 			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal()");
 
-            await App.Current.MainPage.Navigation.PopAllPopupAsync();
+            await Xamarin.Forms.Application.Current.MainPage.Navigation.PopAllPopupAsync();
 
 			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal() post");
 
             CommunicationIconPickerViewModel viewModel = new CommunicationIconPickerViewModel();
             viewModel.IconConstructed += SaveCommunicationIconEvent;
 
-            CommunicationIconPicker newCommunicationPage = new CommunicationIconPicker()
+            FastTalkerSkiaSharp.Pages.CommunicationIconPicker newCommunicationPage = new FastTalkerSkiaSharp.Pages.CommunicationIconPicker()
             {
                 BindingContext = viewModel
             };
@@ -209,7 +195,7 @@ namespace FastTalkerSkiaSharp.ViewModels
 			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal() end");
 
             //await App.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
-			await App.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
+			await Xamarin.Forms.Application.Current.MainPage.Navigation.PushAsync(newCommunicationPage);
 
 			System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal() finished");
 
@@ -220,15 +206,15 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         async void AddIconPhoto()
         {
-            await App.Current.MainPage.Navigation.PopAllPopupAsync();
+            await Xamarin.Forms.Application.Current.MainPage.Navigation.PopAllPopupAsync();
 
             string[] base64 = await App.UserInputInstance.GetImageFromCameraCallAsync();
 
             if (base64 == null) return;
 
-            CommunicationIcon dynamicIcon = new CommunicationIcon()
+            FastTalkerSkiaSharp.Storage.CommunicationIcon dynamicIcon = new FastTalkerSkiaSharp.Storage.CommunicationIcon()
             {
-                Tag = ElementRoles.GetRoleInt(ElementRoles.Role.Communication),
+                Tag = FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Communication),
                 Text = base64[0],
                 Local = false,
                 IsStoredInFolder = false,
@@ -258,31 +244,31 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         async void AddIconStored()
         {
-            await App.Current.MainPage.Navigation.PopAllPopupAsync();
+            await Xamarin.Forms.Application.Current.MainPage.Navigation.PopAllPopupAsync();
 
-            await CrossMedia.Current.Initialize();
+            await Plugin.Media.CrossMedia.Current.Initialize();
 
-            var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Photos);
+            var status = await Plugin.Permissions.CrossPermissions.Current.CheckPermissionStatusAsync(Plugin.Permissions.Abstractions.Permission.Photos);
 
-            if (status != PermissionStatus.Granted)
+            if (status != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
             {
-                if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Photos))
+                if (await Plugin.Permissions.CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Plugin.Permissions.Abstractions.Permission.Photos))
                 {
-                    await UserDialogs.Instance.AlertAsync("Need access to photos to make icon");
+                    await Acr.UserDialogs.UserDialogs.Instance.AlertAsync("Need access to photos to make icon");
                 }
 
-                var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Photos });
+                var results = await Plugin.Permissions.CrossPermissions.Current.RequestPermissionsAsync(new[] { Plugin.Permissions.Abstractions.Permission.Photos });
 
-                status = results[Permission.Photos];
+                status = results[Plugin.Permissions.Abstractions.Permission.Photos];
             }
 
-            if (status == PermissionStatus.Granted)
+            if (status == Plugin.Permissions.Abstractions.PermissionStatus.Granted)
             {
-                var userInput = await UserDialogs.Instance.PromptAsync("Name the icon to add");
+                var userInput = await Acr.UserDialogs.UserDialogs.Instance.PromptAsync("Name the icon to add");
 
                 if (userInput == null || string.IsNullOrWhiteSpace(userInput.Text)) return;
 
-                Plugin.Media.Abstractions.MediaFile file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions
+                Plugin.Media.Abstractions.MediaFile file = await Plugin.Media.CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
                 {
                     CustomPhotoSize = 500,
                     CompressionQuality = 80,
@@ -294,7 +280,7 @@ namespace FastTalkerSkiaSharp.ViewModels
                     return;
                 }
 
-                if (File.Exists(@file.Path))
+                if (System.IO.File.Exists(@file.Path))
                 {
                     byte[] imageArray = null;
 
@@ -304,16 +290,16 @@ namespace FastTalkerSkiaSharp.ViewModels
                     //}
                     //else
                     //{
-                    imageArray = File.ReadAllBytes(@file.Path);
+                    imageArray = System.IO.File.ReadAllBytes(@file.Path);
                     //}
 
-                    string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+                    string base64ImageRepresentation = System.Convert.ToBase64String(imageArray);
 
                     file.Dispose();
 
-                    CommunicationIcon dynamicIcon = new CommunicationIcon()
+                    FastTalkerSkiaSharp.Storage.CommunicationIcon dynamicIcon = new FastTalkerSkiaSharp.Storage.CommunicationIcon()
                     {
-                        Tag = ElementRoles.GetRoleInt(ElementRoles.Role.Communication),
+                        Tag = FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Communication),
                         Text = userInput.Text,
                         Local = false,
                         IsStoredInFolder = false,
@@ -338,9 +324,9 @@ namespace FastTalkerSkiaSharp.ViewModels
                     SaveCommunicationElementEvent(testImage);
                 }
             }
-            else if (status != PermissionStatus.Unknown)
+            else if (status != Plugin.Permissions.Abstractions.PermissionStatus.Unknown)
             {
-                await UserDialogs.Instance.AlertAsync("Can not continue, try again");
+                await Acr.UserDialogs.UserDialogs.Instance.AlertAsync("Can not continue, try again");
             }
         }
 
@@ -349,19 +335,19 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         async void AddFolder()
         {
-            await App.Current.MainPage.Navigation.PopAllPopupAsync();
+            await Xamarin.Forms.Application.Current.MainPage.Navigation.PopAllPopupAsync();
 
-            IEnumerable<SkiaSharp.Elements.Element> foldersInField = controller.Elements.Where(elem => elem.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder));
+            System.Collections.Generic.IEnumerable<SkiaSharp.Elements.Element> foldersInField = controller.Elements.Where(elem => elem.Tag == FastTalkerSkiaSharp.Elements.ElementRoles.GetRoleInt(FastTalkerSkiaSharp.Elements.ElementRoles.Role.Folder));
 
             FolderIconPickerViewModel viewModel = new FolderIconPickerViewModel(foldersInField);
             viewModel.FolderConstructed += SaveFolderEvent;
 
-            FolderIconPicker folderPicker = new FolderIconPicker()
+            FastTalkerSkiaSharp.Pages.FolderIconPicker folderPicker = new FastTalkerSkiaSharp.Pages.FolderIconPicker()
             {
                 BindingContext = viewModel
             };
 
-            await App.Current.MainPage.Navigation.PushAsync(folderPicker);
+            await Xamarin.Forms.Application.Current.MainPage.Navigation.PushAsync(folderPicker);
         }
 
         /// <summary>
@@ -369,9 +355,9 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         async void ShowHelpPopup()
         {
-            HelpPopup mPopup = new HelpPopup();
+            FastTalkerSkiaSharp.Pages.HelpPopup mPopup = new FastTalkerSkiaSharp.Pages.HelpPopup();
 
-            await App.Current.MainPage.Navigation.PushPopupAsync(mPopup);
+            await Xamarin.Forms.Application.Current.MainPage.Navigation.PushPopupAsync(mPopup);
         }
 
         /// <summary>
@@ -379,9 +365,9 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         async void ShowAboutPopup()
         {
-            AboutPagePopup page = new AboutPagePopup();
+            FastTalkerSkiaSharp.Pages.AboutPagePopup page = new FastTalkerSkiaSharp.Pages.AboutPagePopup();
 
-            await App.Current.MainPage.Navigation.PushPopupAsync(page);
+            await Xamarin.Forms.Application.Current.MainPage.Navigation.PushPopupAsync(page);
         }
 
         /// <summary>
@@ -402,7 +388,7 @@ namespace FastTalkerSkiaSharp.ViewModels
             {
                 SettingsInteraction(SettingsAction.SaveBoard);
 
-                await App.Current.MainPage.Navigation.PopPopupAsync();
+                await Xamarin.Forms.Application.Current.MainPage.Navigation.PopPopupAsync();
             }
         }
 

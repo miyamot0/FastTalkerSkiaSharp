@@ -11,28 +11,16 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using System;
-using FastTalkerSkiaSharp.Helpers;
-using System.Collections.ObjectModel;
-using FastTalkerSkiaSharp.Models;
-using Acr.UserDialogs;
-using System.IO;
-using FastTalkerSkiaSharp.Constants;
-using Newtonsoft.Json;
 using System.Linq;
-using System.Collections.Generic;
-using Xamarin.Forms;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace FastTalkerSkiaSharp.ViewModels
 {
     public class CommunicationIconPickerViewModel : PopupUpViewModel
     {
-        public event Action<ArgsSelectedIcon> IconConstructed = delegate { };
+        public event System.Action<FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon> IconConstructed = delegate { };
 
-        ObservableCollection<string> _categories;
-        public ObservableCollection<string> Categories
+        System.Collections.ObjectModel.ObservableCollection<string> _categories;
+        public System.Collections.ObjectModel.ObservableCollection<string> Categories
         {
             get
             {
@@ -61,8 +49,8 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
         }
 
-        ObservableCollection<DisplayImageModel> _images;
-        public ObservableCollection<DisplayImageModel> Images 
+        System.Collections.ObjectModel.ObservableCollection<FastTalkerSkiaSharp.Models.DisplayImageModel> _images;
+        public System.Collections.ObjectModel.ObservableCollection<FastTalkerSkiaSharp.Models.DisplayImageModel> Images
         {
             get
             {
@@ -75,8 +63,8 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
         }
 
-        ImageSource _previewCurrentIcon;
-        public ImageSource PreviewCurrentIcon
+        Xamarin.Forms.ImageSource _previewCurrentIcon;
+        public Xamarin.Forms.ImageSource PreviewCurrentIcon
         {
             get
             {
@@ -103,18 +91,18 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
         }
 
-        public ICommand IconSelectedFromList { get; set; }
-        public ICommand CommandSaveClicked { get; set; }
+        public System.Windows.Input.ICommand IconSelectedFromList { get; set; }
+        public System.Windows.Input.ICommand CommandSaveClicked { get; set; }
 
-        private bool inInitialLoading = true;
-        private bool needsImage = true;
+        bool inInitialLoading = true;
+        bool needsImage = true;
 
-        private string selectedIconString = "";
+        string selectedIconString = "";
 
         public CommunicationIconPickerViewModel()
         {
-            IconSelectedFromList = new Command(ItemSelected);
-            CommandSaveClicked = new Command(SaveClicked);
+            IconSelectedFromList = new Xamarin.Forms.Command(ItemSelected);
+            CommandSaveClicked = new Xamarin.Forms.Command(SaveClicked);
         }
 
         /// <summary>
@@ -127,7 +115,7 @@ namespace FastTalkerSkiaSharp.ViewModels
                 LoadingInitialJson();
             }
 
-            Images = new ObservableCollection<DisplayImageModel>();
+            Images = new System.Collections.ObjectModel.ObservableCollection<FastTalkerSkiaSharp.Models.DisplayImageModel>();
         }
 
         /// <summary>
@@ -135,20 +123,20 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         void LoadingInitialJson()
         {
-            using (var dlg = UserDialogs.Instance.Progress("Loading icon categories"))
+            using (var dlg = Acr.UserDialogs.UserDialogs.Instance.Progress("Loading icon categories"))
             {
                 if (App.storedIcons == null || App.storedIcons.StoredIcons.Count == 0)
                 {
-                    using (Stream stream = App.MainAssembly.GetManifestResourceStream(LanguageSettings.ResourcePrefixJson))
+                    using (System.IO.Stream stream = App.MainAssembly.GetManifestResourceStream(FastTalkerSkiaSharp.Constants.LanguageSettings.ResourcePrefixJson))
                     {
-                        using (StreamReader reader = new StreamReader(stream))
+                        using (System.IO.StreamReader reader = new System.IO.StreamReader(stream))
                         {
-                            App.storedIcons = JsonConvert.DeserializeObject<StoredIconContainerModel>(reader.ReadToEnd());
+                            App.storedIcons = Newtonsoft.Json.JsonConvert.DeserializeObject<FastTalkerSkiaSharp.Models.StoredIconContainerModel>(reader.ReadToEnd());
                         }
                     }
                 }
 
-                Categories = new ObservableCollection<string>(App.storedIcons.StoredIcons
+                Categories = new System.Collections.ObjectModel.ObservableCollection<string>(App.storedIcons.StoredIcons
                                                                  .SelectMany(m => m.Tags)
                                                                  .Distinct()
                                                                  .Where(m => m.Length > 0)
@@ -162,15 +150,15 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// <param name="newValue">New value.</param>
         async void CategoryChanged(string newValue)
         {
-            using (var dlg = UserDialogs.Instance.Progress("Loading..."))
+            using (var dlg = Acr.UserDialogs.UserDialogs.Instance.Progress("Loading..."))
             {
-                List<string> checkList = new List<string>() { newValue };
+                System.Collections.Generic.List<string> checkList = new System.Collections.Generic.List<string>() { newValue };
 
                 var mIcons = App.storedIcons.StoredIcons.Where(icons => icons.Tags.Intersect(checkList).Any())
                                                         .Select(icons => icons.Name)
                                                         .ToList();
 
-                ObservableCollection<DisplayImageModel> _tempImages = new ObservableCollection<DisplayImageModel>();
+                System.Collections.ObjectModel.ObservableCollection<FastTalkerSkiaSharp.Models.DisplayImageModel> _tempImages = new System.Collections.ObjectModel.ObservableCollection<FastTalkerSkiaSharp.Models.DisplayImageModel>();
 
                 double counter = 0d;
                 double total = mIcons.Count;
@@ -180,19 +168,19 @@ namespace FastTalkerSkiaSharp.ViewModels
 
                 foreach (var iconName in mIcons)
                 {
-                    _tempImages.Add(new DisplayImageModel
+                    _tempImages.Add(new FastTalkerSkiaSharp.Models.DisplayImageModel
                     {
-                        Image = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng +
+                        Image = Xamarin.Forms.ImageSource.FromResource(string.Format(FastTalkerSkiaSharp.Constants.LanguageSettings.ResourcePrefixPng +
                                                                        "{0}" +
-                                                                       LanguageSettings.ResourceSuffixPng, iconName)),
+                                                                       FastTalkerSkiaSharp.Constants.LanguageSettings.ResourceSuffixPng, iconName)),
                         Name = iconName
                     });
 
-                    await Task.Delay(50);
+                    await System.Threading.Tasks.Task.Delay(50);
 
                     counter += 1d;
 
-                    current = (int)Math.Floor(((counter / total) * 100) / 5);
+                    current = (int)System.Math.Floor(((counter / total) * 100) / 5);
 
                     if (current != saved)
                     {
@@ -221,9 +209,9 @@ namespace FastTalkerSkiaSharp.ViewModels
 
             needsImage = false;
 
-            PreviewCurrentIcon = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng +
+            PreviewCurrentIcon = Xamarin.Forms.ImageSource.FromResource(string.Format(FastTalkerSkiaSharp.Constants.LanguageSettings.ResourcePrefixPng +
                                                                         "{0}" +
-                                                                        LanguageSettings.ResourceSuffixPng, selectedIconString));
+                                                                        FastTalkerSkiaSharp.Constants.LanguageSettings.ResourceSuffixPng, selectedIconString));
 
             IconNameText = selectedIconString;
         }
@@ -235,17 +223,17 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             if (needsImage || string.IsNullOrWhiteSpace(IconNameText) || IconNameText.Trim().Length < 2)
             {
-                await UserDialogs.Instance.AlertAsync("Please select an imange and enter a folder name with at least three letters.");
+                await Acr.UserDialogs.UserDialogs.Instance.AlertAsync("Please select an imange and enter a folder name with at least three letters.");
             }
             else
             {
-                IconConstructed(new ArgsSelectedIcon
+                IconConstructed(new FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon
                 {
                     Name = IconNameText,
                     ImageSource = selectedIconString
                 });
 
-                await App.Current.MainPage.Navigation.PopAsync();
+                await Xamarin.Forms.Application.Current.MainPage.Navigation.PopAsync();
             }
         }
     }

@@ -11,24 +11,16 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using FastTalkerSkiaSharp.Constants;
-using FastTalkerSkiaSharp.Models;
-using Xamarin.Forms;
-using System.Windows.Input;
-using Acr.UserDialogs;
-using FastTalkerSkiaSharp.Helpers;
 
 namespace FastTalkerSkiaSharp.ViewModels
 {
     public class FolderIconPickerViewModel : PopupUpViewModel
     {
-        public event Action<ArgsSelectedIcon> FolderConstructed = delegate { };
+        public event System.Action<FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon> FolderConstructed = delegate { };
 
-        List<DisplayImageModel> _images;
-        public List<DisplayImageModel> Images 
+        System.Collections.Generic.List<FastTalkerSkiaSharp.Models.DisplayImageModel> _images;
+        public System.Collections.Generic.List<FastTalkerSkiaSharp.Models.DisplayImageModel> Images
         {
             get
             {
@@ -41,8 +33,8 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
         }
 
-        List<string> _currentFolderStrings;
-        public List<string> CurrentFolderStrings
+        System.Collections.Generic.List<string> _currentFolderStrings;
+        public System.Collections.Generic.List<string> CurrentFolderStrings
         {
             get
             {
@@ -55,8 +47,8 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
         }
 
-        ImageSource _previewCurrentIcon;
-        public ImageSource PreviewCurrentIcon
+        Xamarin.Forms.ImageSource _previewCurrentIcon;
+        public Xamarin.Forms.ImageSource PreviewCurrentIcon
         {
             get
             {
@@ -83,8 +75,8 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
         }
 
-        public ICommand IconSelectedFromList { get; set; }
-        public ICommand CommandSaveClicked { get; set; }
+        public System.Windows.Input.ICommand IconSelectedFromList { get; set; }
+        public System.Windows.Input.ICommand CommandSaveClicked { get; set; }
 
         bool needsImage = true;
         string selectedIconString;
@@ -93,9 +85,9 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// Constructor for VM
         /// </summary>
         /// <param name="currentFolders">Current folders.</param>
-        public FolderIconPickerViewModel(IEnumerable<SkiaSharp.Elements.Element> currentFolders)
+        public FolderIconPickerViewModel(System.Collections.Generic.IEnumerable<SkiaSharp.Elements.Element> currentFolders)
         {
-            CurrentFolderStrings = new List<string>();
+            CurrentFolderStrings = new System.Collections.Generic.List<string>();
 
             if (currentFolders.Any())
             {
@@ -105,8 +97,8 @@ namespace FastTalkerSkiaSharp.ViewModels
                 }
             }
 
-            IconSelectedFromList = new Command(ItemSelected);
-            CommandSaveClicked = new Command(SaveClicked);
+            IconSelectedFromList = new Xamarin.Forms.Command(ItemSelected);
+            CommandSaveClicked = new Xamarin.Forms.Command(SaveClicked);
         }
 
         /// <summary>
@@ -114,9 +106,9 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         public void LoadImagesOnLoad()
         {
-            Images = new List<DisplayImageModel>();
+            Images = new System.Collections.Generic.List<FastTalkerSkiaSharp.Models.DisplayImageModel>();
 
-            List<string> mFolderIcons = new List<string>() {    "Dark Blue",
+            System.Collections.Generic.List<string> mFolderIcons = new System.Collections.Generic.List<string>() {    "Dark Blue",
                                                                 "Dark Pink",
                                                                 "Dark Purple",
                                                                 "Green",
@@ -125,12 +117,12 @@ namespace FastTalkerSkiaSharp.ViewModels
 
             foreach (var iconName in mFolderIcons)
             {
-                Images.Add(new DisplayImageModel
+                Images.Add(new FastTalkerSkiaSharp.Models.DisplayImageModel
                 {
-                    Image = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng +
-					                                               "FolderOpen{0}" +
-                                                                   LanguageSettings.ResourceSuffixPng, 
-					                                               RemoveWhitespace(iconName))),
+                    Image = Xamarin.Forms.ImageSource.FromResource(string.Format(FastTalkerSkiaSharp.Constants.LanguageSettings.ResourcePrefixPng +
+                                                                   "FolderOpen{0}" +
+                                                                   FastTalkerSkiaSharp.Constants.LanguageSettings.ResourceSuffixPng,
+                                                                   RemoveWhitespace(iconName))),
                     Name = iconName
                 });
             }
@@ -144,15 +136,15 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             selectedIconString = obj as string;
 
-			selectedIconString = RemoveWhitespace(selectedIconString);
+            selectedIconString = RemoveWhitespace(selectedIconString);
 
             if (string.IsNullOrWhiteSpace(selectedIconString)) return;
 
             needsImage = false;
 
-            PreviewCurrentIcon = ImageSource.FromResource(string.Format(LanguageSettings.ResourcePrefixPng +
-			                                                            "FolderOpen{0}" +
-                                                                        LanguageSettings.ResourceSuffixPng, selectedIconString));
+            PreviewCurrentIcon = Xamarin.Forms.ImageSource.FromResource(string.Format(FastTalkerSkiaSharp.Constants.LanguageSettings.ResourcePrefixPng +
+                                                                        "FolderOpen{0}" +
+                                                                        FastTalkerSkiaSharp.Constants.LanguageSettings.ResourceSuffixPng, selectedIconString));
         }
 
         /// <summary>
@@ -162,23 +154,23 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             if (needsImage || string.IsNullOrWhiteSpace(FolderNameText) || FolderNameText.Trim().Length < 2)
             {
-                await UserDialogs.Instance.AlertAsync("Please select an imange and enter a folder name with at least three letters.");
+                await Acr.UserDialogs.UserDialogs.Instance.AlertAsync("Please select an imange and enter a folder name with at least three letters.");
             }
             else if (CurrentFolderStrings.Count > 0 && CurrentFolderStrings.Contains(FolderNameText.Trim()))
             {
-                await UserDialogs.Instance.AlertAsync("Please pick a folder with a unique name (cannot have two folders with same name).");
+                await Acr.UserDialogs.UserDialogs.Instance.AlertAsync("Please pick a folder with a unique name (cannot have two folders with same name).");
             }
             else
             {
-				System.Diagnostics.Debug.WriteLine(string.Format("FolderOpen{0}", selectedIconString));
+                System.Diagnostics.Debug.WriteLine(string.Format("FolderOpen{0}", selectedIconString));
 
-                FolderConstructed(new ArgsSelectedIcon
+                FolderConstructed(new FastTalkerSkiaSharp.Helpers.ArgsSelectedIcon
                 {
                     Name = FolderNameText,
-					ImageSource = string.Format("FolderOpen{0}", selectedIconString)
+                    ImageSource = string.Format("FolderOpen{0}", selectedIconString)
                 });
 
-                await App.Current.MainPage.Navigation.PopAsync();
+                await Xamarin.Forms.Application.Current.MainPage.Navigation.PopAsync();
             }
         }
 
@@ -189,7 +181,7 @@ namespace FastTalkerSkiaSharp.ViewModels
 		/// <param name="imageString">Input.</param>
 		public string RemoveWhitespace(string imageString)
         {
-			return new string(imageString.Where(c => !Char.IsWhiteSpace(c)).ToArray());
+            return new string(imageString.Where(c => !System.Char.IsWhiteSpace(c)).ToArray());
         }
     }
 }
