@@ -18,7 +18,7 @@ namespace FastTalkerSkiaSharp
 {
     public partial class App : Application
     {
-        public static bool OutputVerbose = false;
+        public static bool OutputVerbose = true;
         public static bool HasAdmin = false;
 
         public static float DisplayScreenWidth;

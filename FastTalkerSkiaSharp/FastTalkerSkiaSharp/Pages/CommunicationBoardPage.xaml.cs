@@ -391,6 +391,20 @@ namespace FastTalkerSkiaSharp.Pages
 
                         e.Handled = true;
                     }
+                    /* Pinned icons in sentence mode */
+                    else if (canvas.Controller.InFramedMode && 
+                             !canvas.Controller.InEditMode &&
+                             _currentElement.IsPinnedToSpot && 
+                             !stripReference.Bounds.IntersectsWith(_currentElement.Bounds))
+                    {
+                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Hit a pinned icon in sentence mode, outside of frame");
+
+                        e.Handled = true;
+
+                        commInterface.SpeakText(text: _currentElement.Text);
+
+                        _currentElement = null;
+                    }
 
                     return;
             }
