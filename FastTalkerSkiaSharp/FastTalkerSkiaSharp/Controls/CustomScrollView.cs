@@ -21,22 +21,34 @@ using Xamarin.Forms;
 
 namespace FastTalkerSkiaSharp.Controls
 {
+    /// <summary>
+    /// Custom scroll view, to handle horizontal scrolling
+    /// </summary>
     public class CustomScrollView : ScrollView
     {
         public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create("ItemsSource",
                                                                                               typeof(IEnumerable),
                                                                                               typeof(CustomScrollView),
                                                                                               default(IEnumerable),
-
                                                                                               BindingMode.Default,
                                                                                               null,
                                                                                               new BindableProperty.BindingPropertyChangedDelegate(HandleBindingPropertyChangedDelegate));
 
-        private static object HandleBindingPropertyChangedDelegate(BindableObject bindable, object value)
+        /// <summary>
+        /// Err out
+        /// </summary>
+        /// <returns>The binding property changed delegate.</returns>
+        /// <param name="bindable">Bindable.</param>
+        /// <param name="value">Value.</param>
+        static object HandleBindingPropertyChangedDelegate(BindableObject bindable, object value)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Getter
+        /// </summary>
+        /// <value>The items source.</value>
         public IEnumerable ItemsSource
         {
             get
@@ -49,11 +61,18 @@ namespace FastTalkerSkiaSharp.Controls
             }
         }
 
+        /// <summary>
+        /// Template property
+        /// </summary>
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create("ItemTemplate",
                                                                                                typeof(DataTemplate),
                                                                                                typeof(CustomScrollView),
                                                                                                default(DataTemplate));
 
+        /// <summary>
+        /// Getter
+        /// </summary>
+        /// <value>The item template.</value>
         public DataTemplate ItemTemplate
         {
             get
@@ -66,12 +85,22 @@ namespace FastTalkerSkiaSharp.Controls
             }
         }
 
+        /// <summary>
+        /// Event
+        /// </summary>
         public event EventHandler<ItemTappedEventArgs> ItemSelected;
 
+        /// <summary>
+        /// Selected property
+        /// </summary>
         public static readonly BindableProperty SelectedCommandProperty = BindableProperty.Create("SelectedCommand",
                                                                                                   typeof(ICommand),
                                                                                                   typeof(CustomScrollView), null);
 
+        /// <summary>
+        /// Selected command
+        /// </summary>
+        /// <value>The selected command.</value>
         public ICommand SelectedCommand
         {
             get
@@ -84,11 +113,18 @@ namespace FastTalkerSkiaSharp.Controls
             }
         }
 
+        /// <summary>
+        /// Command parameter property
+        /// </summary>
         public static readonly BindableProperty SelectedCommandParameterProperty = BindableProperty.Create("SelectedCommandParameter",
                                                                                                            typeof(object),
                                                                                                            typeof(CustomScrollView),
                                                                                                            null);
-
+        
+        /// <summary>
+        /// Getter/Setter Command property
+        /// </summary>
+        /// <value>The selected command parameter.</value>
         public object SelectedCommandParameter
         {
             get
@@ -101,10 +137,15 @@ namespace FastTalkerSkiaSharp.Controls
             }
         }
 
+        /// <summary>
+        /// Bindings for objects
+        /// </summary>
+        /// <param name="bindable">Bindable.</param>
+        /// <param name="oldValue">Old value.</param>
+        /// <param name="newValue">New value.</param>
         static void HandleBindingPropertyChangedDelegate(BindableObject bindable, object oldValue, object newValue)
         {
             var isOldObservable = oldValue?.GetType().GetTypeInfo().ImplementedInterfaces.Any(i => i == typeof(INotifyCollectionChanged));
-
             var isNewObservable = newValue?.GetType().GetTypeInfo().ImplementedInterfaces.Any(i => i == typeof(INotifyCollectionChanged));
 
             var tl = (CustomScrollView)bindable;
@@ -125,11 +166,19 @@ namespace FastTalkerSkiaSharp.Controls
             }
         }
 
-        private void HandleCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        /// <summary>
+        /// On collection change, call render
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        void HandleCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Render();
         }
 
+        /// <summary>
+        /// Render listview
+        /// </summary>
         public void Render()
         {
             if (ItemTemplate == null || ItemsSource == null)
@@ -152,8 +201,6 @@ namespace FastTalkerSkiaSharp.Controls
                     ItemSelected?.Invoke(this, args);
                 });
 
-                var commandParameter = SelectedCommandParameter ?? item;
-
                 var viewCell = ItemTemplate.CreateContent() as ViewCell;
 
                 viewCell.View.BindingContext = item;
@@ -161,7 +208,7 @@ namespace FastTalkerSkiaSharp.Controls
                 viewCell.View.GestureRecognizers.Add(new TapGestureRecognizer
                 {
                     Command = command,
-                    CommandParameter = commandParameter,
+                    CommandParameter = SelectedCommandParameter ?? item,
                     NumberOfTapsRequired = 1
                 });
 
@@ -169,10 +216,6 @@ namespace FastTalkerSkiaSharp.Controls
             }
 
             Content = layout;
-        }
-
-        public CustomScrollView()
-        {
         }
     }
 }

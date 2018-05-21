@@ -22,24 +22,29 @@ namespace FastTalkerSkiaSharp.Constants
         public const uint AnimationShrinkMillis = 250;
 
         public const float Bezel = 20;
-
         public const float UnitWidth = 10f;
-
         public const float UnitHeight = 10f;
-
         public const float StripWidth = 7.5f;
-
         public const float StripHeight = 1.5f;
-
         public const float InterfaceDimensionDefault = 1f;
-
         public const float TextSizeDefault = 18f;
 
+        /// <summary>
+        /// Return center of SKSize object
+        /// </summary>
+        /// <returns>The center point.</returns>
+        /// <param name="deviceSize">Device size.</param>
         public static SKPoint GetCenterPoint(SKSize deviceSize)
         {
             return new SKPoint(deviceSize.Width / 2f, deviceSize.Height / 2f);
         }
 
+        /// <summary>
+        /// Return center point with some level of random jitter
+        /// </summary>
+        /// <returns>The center point with jitter.</returns>
+        /// <param name="deviceSize">Device size.</param>
+        /// <param name="iconReference">Icon reference.</param>
         public static SKPoint GetCenterPointWithJitter(SKSize deviceSize, SKSize iconReference)
         {
             Random random = new Random();
@@ -53,6 +58,13 @@ namespace FastTalkerSkiaSharp.Constants
                                (deviceSize.Height / 2f - (iconReference.Height / 2f) - deltaY));
         }
 
+        /// <summary>
+        /// Returns SKSize with relative proportion, given the units provided
+        /// </summary>
+        /// <returns>The size by grid.</returns>
+        /// <param name="deviceSize">Device size.</param>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
         public static SKSize GetSizeByGrid(SKSize deviceSize, float x, float y)
         {
             float widthNoBezel = (deviceSize.Width - Bezel * 2) / UnitWidth;
@@ -61,6 +73,12 @@ namespace FastTalkerSkiaSharp.Constants
             return new SKSize(widthNoBezel * x, heightNoBezel * y);
         }
 
+        /// <summary>
+        /// Gets the location for the programmed emitter (at its default)
+        /// </summary>
+        /// <returns>The emitter point.</returns>
+        /// <param name="deviceSize">Device size.</param>
+        /// <param name="emitterSize">Emitter size.</param>
         public static SKPoint GetEmitterPoint(SKSize deviceSize, SKSize emitterSize)
         {
             SKSize sizeStrip = GetSizeByGrid(deviceSize, StripWidth, StripHeight);

@@ -13,12 +13,6 @@
 
 using Xamarin.Forms;
 using System.Reflection;
-using FastTalkerSkiaSharp.Storage;
-using FastTalkerSkiaSharp.Helpers;
-using FastTalkerSkiaSharp.Models;
-using FastTalkerSkiaSharp.Interfaces;
-using FastTalkerSkiaSharp.Pages;
-using FastTalkerSkiaSharp.ViewModels;
 
 namespace FastTalkerSkiaSharp
 {
@@ -32,8 +26,8 @@ namespace FastTalkerSkiaSharp
         public static float DisplayScreenHeight;
         public static float DisplayScaleFactor;
 
-        static ApplicationDatabase database;
-        public static ApplicationDatabase Database
+        static Storage.ApplicationDatabase database;
+        public static Storage.ApplicationDatabase Database
         {
             get
             {
@@ -46,8 +40,8 @@ namespace FastTalkerSkiaSharp
             }
         }
 
-        static CommunicationSettings _boardSettings;
-        public static CommunicationSettings BoardSettings
+        static Storage.CommunicationSettings _boardSettings;
+        public static Storage.CommunicationSettings BoardSettings
         {
             get
             {
@@ -66,19 +60,17 @@ namespace FastTalkerSkiaSharp
 
         public static Assembly MainAssembly;
 
-        public static UserInput UserInputInstance;
+        public static Helpers.UserInput UserInputInstance;
+        public static Helpers.ImageBuilder ImageBuilderInstance;
 
-        public static ImageBuilder ImageBuilderInstance;
+        public static Models.StoredIconContainerModel storedIcons { get; set; }
 
-        public static StoredIconContainerModel storedIcons { get; set; }
+        public static Pages.ModifyPage InstanceModificationPage;
+        public static Pages.SettingsPage InstanceSettingsPage;
+        public static Pages.StoredIconPopup InstanceStoredIconPage;
 
-		public static ModifyPage InstanceModificationPage = null;
-
-		public static SettingsPageViewModel InstanceSettingsPageViewModel;
-		public static SettingsPage InstanceSettingsPage;
-
-		public static StoredIconPopupViewModel InstanceStoredIconsViewModel;
-		public static StoredIconPopup InstanceStoredIconPage;
+        public static ViewModels.SettingsPageViewModel InstanceSettingsPageViewModel;
+        public static ViewModels.StoredIconPopupViewModel InstanceStoredIconsViewModel;
 
         public static NavigationPage BoardPage;
 
@@ -89,18 +81,13 @@ namespace FastTalkerSkiaSharp
             MainAssembly = GetType().GetTypeInfo().Assembly;
 
             Database.Init();
-<<<<<<< HEAD
 
-            BoardPage = new NavigationPage(new CommunicationBoardPage());
-=======
-            
-            BoardPage = new NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
->>>>>>> 410da5a... * FastTalkerSkiaSharp.iOS.csproj: * ImplementationSaveLoad.cs: Clean up language, unneccesary usings
+            BoardPage = new NavigationPage(new Pages.CommunicationBoardPage());
 
 			if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
             {
-                HasAdmin = DependencyService.Get<InterfaceAdministration>().IsAdmin();
-                DependencyService.Get<InterfaceAdministration>().RequestAdmin(HasAdmin);
+                HasAdmin = DependencyService.Get<Interfaces.InterfaceAdministration>().IsAdmin();
+                DependencyService.Get<Interfaces.InterfaceAdministration>().RequestAdmin(HasAdmin);
             }
 
 			if (Device.Idiom == TargetIdiom.Tablet)
@@ -109,7 +96,7 @@ namespace FastTalkerSkiaSharp
 				App.Current.Resources["dynamicFrameMargin"] = new Thickness(5, 25);
 			}
             
-			MainPage = new TitlePage();
+            MainPage = new Pages.TitlePage();
         }
 
         protected override void OnStart () { }

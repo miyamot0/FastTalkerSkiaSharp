@@ -15,6 +15,9 @@ using SkiaSharp.Elements;
 
 namespace FastTalkerSkiaSharp.Constants
 {
+    /// <summary>
+    /// This class is largely deprecated, in favor of pop-up windows over lists
+    /// </summary>
     public static class LanguageSettings
     {
         public const string ResourcePrefixPng = "FastTalkerSkiaSharp.Images.";
@@ -46,6 +49,11 @@ namespace FastTalkerSkiaSharp.Constants
         public const string EditTextCancel = "Cancel";
         public const string EditTextOK = "OK";
 
+        /// <summary>
+        /// DEPRECATED: settings option when originally as actionlist
+        /// </summary>
+        /// <returns>The menu.</returns>
+        /// <param name="controller">Controller.</param>
         public static string[] SettingsMenu(ElementsController controller)
         {
             return new string[] {
