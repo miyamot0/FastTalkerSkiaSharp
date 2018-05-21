@@ -11,10 +11,7 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using System;
-using Xamarin.Forms;
-
-[assembly: Dependency(typeof(FastTalkerSkiaSharp.iOS.Implementations.ImplementationSaveLoad))]
+[assembly: Xamarin.Forms.Dependency(typeof(FastTalkerSkiaSharp.iOS.Implementations.ImplementationSaveLoad))]
 namespace FastTalkerSkiaSharp.iOS.Implementations
 {
     public class ImplementationSaveLoad : FastTalkerSkiaSharp.Interfaces.InterfaceSaveLoad
@@ -26,7 +23,7 @@ namespace FastTalkerSkiaSharp.iOS.Implementations
         /// <param name="dbName">Db name.</param>
         public string GetDatabaseFilePath(string dbName)
         {
-            string docFolder = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            string docFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 
             return System.IO.Path.Combine(docFolder, dbName);
         }

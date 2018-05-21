@@ -11,55 +11,33 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using AVFoundation;
-using FastTalkerSkiaSharp.Interfaces;
-using FastTalkerSkiaSharp.iOS.Implementations;
-
-[assembly: Xamarin.Forms.Dependency(typeof(ImplementationSpeechOutput))]
+[assembly: Xamarin.Forms.Dependency(typeof(FastTalkerSkiaSharp.iOS.Implementations.ImplementationSpeechOutput))]
 namespace FastTalkerSkiaSharp.iOS.Implementations
 {
-    public class ImplementationSpeechOutput : InterfaceSpeechOutput
+    public class ImplementationSpeechOutput : FastTalkerSkiaSharp.Interfaces.InterfaceSpeechOutput
     {
-        private AVSpeechSynthesizer speechSynthesizer;
-
-        private AVSpeechUtterance speechUtterance;
-
-        private bool isThisCurrentlySpeaking = false;
-
-        public ImplementationSpeechOutput() { }
+        AVFoundation.AVSpeechSynthesizer speechSynthesizer;
+        AVFoundation.AVSpeechUtterance speechUtterance;
 
         public void SpeakText(string text)
         {
             if (speechSynthesizer == null)
             {
-                speechSynthesizer = new AVSpeechSynthesizer();
+                speechSynthesizer = new AVFoundation.AVSpeechSynthesizer();
             }
 
-            if (!isThisCurrentlySpeaking)
+            if (!speechSynthesizer.Speaking)
             {
-                isThisCurrentlySpeaking = true;
-
-                speechUtterance = new AVSpeechUtterance(text)
+                speechUtterance = new AVFoundation.AVSpeechUtterance(text)
                 {
-                    Rate = AVSpeechUtterance.MaximumSpeechRate / 3,
-                    Voice = AVSpeechSynthesisVoice.FromLanguage("en-US"),
+                    Rate = AVFoundation.AVSpeechUtterance.MaximumSpeechRate / 3,
+                    Voice = AVFoundation.AVSpeechSynthesisVoice.FromLanguage("en-US"),
                     Volume = 0.9f,
                     PitchMultiplier = 1.0f
                 };
-                speechSynthesizer.DidFinishSpeechUtterance += FinishedSpeaking;
-                speechSynthesizer.DidCancelSpeechUtterance += FinishedSpeaking;
+
                 speechSynthesizer.SpeakUtterance(speechUtterance);
             }
-        }
-
-        /// <summary>
-        /// Prevent relentless chains of text from being emitted
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        private void FinishedSpeaking(object sender, AVSpeechSynthesizerUteranceEventArgs e)
-        {
-            isThisCurrentlySpeaking = false;
         }
     }
 }

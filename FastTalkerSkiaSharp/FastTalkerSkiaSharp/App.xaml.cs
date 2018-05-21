@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright February 8, 2016 Shawn Gilroy
 
    This file is part of Fast Talker
@@ -89,10 +89,15 @@ namespace FastTalkerSkiaSharp
             MainAssembly = GetType().GetTypeInfo().Assembly;
 
             Database.Init();
+<<<<<<< HEAD
 
             BoardPage = new NavigationPage(new CommunicationBoardPage());
+=======
+            
+            BoardPage = new NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
+>>>>>>> 410da5a... * FastTalkerSkiaSharp.iOS.csproj: * ImplementationSaveLoad.cs: Clean up language, unneccesary usings
 
-            if (Device.RuntimePlatform == Device.Android)
+			if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
             {
                 HasAdmin = DependencyService.Get<InterfaceAdministration>().IsAdmin();
                 DependencyService.Get<InterfaceAdministration>().RequestAdmin(HasAdmin);
