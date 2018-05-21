@@ -11,21 +11,16 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using FastTalkerSkiaSharp.Controls;
-using FastTalkerSkiaSharp.iOS.Controls;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.iOS;
-
-[assembly: ExportRenderer(typeof(CustomScrollView), typeof(CustomScrollViewRenderer))]
+[assembly: Xamarin.Forms.ExportRenderer(typeof(FastTalkerSkiaSharp.Controls.CustomScrollView), typeof(FastTalkerSkiaSharp.iOS.Controls.CustomScrollViewRenderer))]
 namespace FastTalkerSkiaSharp.iOS.Controls
 {
-    public class CustomScrollViewRenderer : ScrollViewRenderer
+    public class CustomScrollViewRenderer : Xamarin.Forms.Platform.iOS.ScrollViewRenderer
     {
-        protected override void OnElementChanged(VisualElementChangedEventArgs e)
+        protected override void OnElementChanged(Xamarin.Forms.Platform.iOS.VisualElementChangedEventArgs e)
         {
             base.OnElementChanged(e);
 
-            var element = e.NewElement as CustomScrollView;
+            var element = e.NewElement as FastTalkerSkiaSharp.Controls.CustomScrollView;
             element?.Render();
         }
     }

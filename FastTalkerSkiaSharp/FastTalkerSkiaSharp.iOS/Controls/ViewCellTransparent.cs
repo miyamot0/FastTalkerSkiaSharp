@@ -11,24 +11,19 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using FastTalkerSkiaSharp.iOS.Controls;
-using UIKit;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.iOS;
-
-[assembly: ExportRenderer(typeof(ViewCell), typeof(ViewCellTransparent))]
+[assembly: Xamarin.Forms.ExportRenderer(typeof(Xamarin.Forms.ViewCell), typeof(FastTalkerSkiaSharp.iOS.Controls.ViewCellTransparent))]
 namespace FastTalkerSkiaSharp.iOS.Controls
 {
-    public class ViewCellTransparent : ViewCellRenderer
+    public class ViewCellTransparent : Xamarin.Forms.Platform.iOS.ViewCellRenderer
     {
-        public override UITableViewCell GetCell(Cell item, UITableViewCell reusableCell, UITableView tv)
+        public override UIKit.UITableViewCell GetCell(Xamarin.Forms.Cell item, UIKit.UITableViewCell reusableCell, UIKit.UITableView tv)
         {
             var cell = base.GetCell(item, reusableCell, tv);
             if (cell != null)
             {
-                // Disable native cell selection color style - set as *Transparent*
-                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+                cell.SelectionStyle = UIKit.UITableViewCellSelectionStyle.None;
             }
+
             return cell;
         }
     }
