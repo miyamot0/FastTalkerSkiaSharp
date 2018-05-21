@@ -15,7 +15,16 @@ namespace FastTalkerSkiaSharp.Interfaces
 {
     public interface InterfaceAdministration
     {
+        /// <summary>
+        /// Make call to screen lock methods
+        /// </summary>
+        /// <param name="status">If set to <c>true</c> status.</param>
         void RequestAdmin(bool status);
+
+        /// <summary>
+        /// Check if screen locking is possible
+        /// </summary>
+        /// <returns><c>true</c>, if admin was ised, <c>false</c> otherwise.</returns>
         bool IsAdmin();
     }
 }

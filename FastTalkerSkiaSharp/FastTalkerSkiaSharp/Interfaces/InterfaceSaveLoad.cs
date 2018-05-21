@@ -15,6 +15,11 @@ namespace FastTalkerSkiaSharp.Interfaces
 {
     public interface InterfaceSaveLoad
     {
+        /// <summary>
+        /// Get path to local, sandboxed storage
+        /// </summary>
+        /// <returns>The database file path.</returns>
+        /// <param name="dbName">Db name.</param>
         string GetDatabaseFilePath(string dbName);
     }
 }

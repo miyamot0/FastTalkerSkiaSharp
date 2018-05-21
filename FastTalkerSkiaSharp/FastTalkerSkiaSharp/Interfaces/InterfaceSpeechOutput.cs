@@ -15,6 +15,10 @@ namespace FastTalkerSkiaSharp.Interfaces
 {
     public interface InterfaceSpeechOutput
     {
+        /// <summary>
+        /// Output text
+        /// </summary>
+        /// <param name="text">Text.</param>
         void SpeakText(string text);
     }
 }

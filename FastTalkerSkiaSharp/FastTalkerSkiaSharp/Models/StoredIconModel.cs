@@ -11,16 +11,26 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using System.Collections.Generic;
-
 namespace FastTalkerSkiaSharp.Models
 {
     public class StoredIconModel
     {
+        /// <summary>
+        /// Text to be spoken
+        /// </summary>
+        /// <value>The name.</value>
         public string Name { get; set; }
-        public List<string> Tags { get; set; }
-        public int Mature { get; set; }
 
-        public StoredIconModel() { }
+        /// <summary>
+        /// Tags for each image
+        /// </summary>
+        /// <value>The tags.</value>
+        public System.Collections.Generic.List<string> Tags { get; set; }
+
+        /// <summary>
+        /// Is the icon mature?
+        /// </summary>
+        /// <value>The mature.</value>
+        public int Mature { get; set; }
     }
 }

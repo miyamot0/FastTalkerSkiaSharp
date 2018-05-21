@@ -11,12 +11,10 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using System.Collections.Generic;
-
 namespace FastTalkerSkiaSharp.Models
 {
     public class StoredIconContainerModel
     {
-        public List<StoredIconModel> StoredIcons { get; set; }
+        public System.Collections.Generic.List<StoredIconModel> StoredIcons { get; set; }
     }
 }

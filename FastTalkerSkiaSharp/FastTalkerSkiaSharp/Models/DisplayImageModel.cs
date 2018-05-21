@@ -17,8 +17,22 @@ namespace FastTalkerSkiaSharp.Models
 {
     public class DisplayImageModel
     {
+        /// <summary>
+        /// Name, which is displayed
+        /// </summary>
+        /// <value>The name.</value>
         public string Name { get; set; }
+
+        /// <summary>
+        /// ImageSource, location of image from embedded resource
+        /// </summary>
+        /// <value>The image.</value>
 		public ImageSource Image { get; set; }
+
+        /// <summary>
+        /// Rotation
+        /// </summary>
+        /// <value>The rotation.</value>
         public int Rotation { get; set; } = 0;
     }
 }
