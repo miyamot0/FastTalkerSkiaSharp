@@ -11,32 +11,18 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Acr.UserDialogs;
-using FastTalkerSkiaSharp.Constants;
-using FastTalkerSkiaSharp.Interfaces;
-using FastTalkerSkiaSharp.Pages;
-using Plugin.Media;
-using Plugin.Media.Abstractions;
-using Rg.Plugins.Popup.Extensions;
 using SkiaSharp;
-using SkiaSharp.Elements;
-using Xamarin.Forms;
-using FastTalkerSkiaSharp.ViewModels;
+using Rg.Plugins.Popup.Extensions;
 using Rg.Plugins.Popup.Services;
 
 namespace FastTalkerSkiaSharp.Helpers
 {
     public class UserInput
     {
-        CanvasView canvasRef = null;
+        SkiaSharp.Elements.CanvasView canvasRef = null;
 
-        public UserInput(CanvasView _canvasRef) 
+        public UserInput(SkiaSharp.Elements.CanvasView _canvasRef)
         {
             canvasRef = _canvasRef;
         }
@@ -44,31 +30,29 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <summary>
         /// Queries the user main settings async.
         /// </summary>
-        /// <param name="canvasView">Canvas view.</param>
-        /// <param name="saveSettingsAsync">Save settings async.</param>
         public async void QueryUserMainSettingsAsync()
         {
             if (AreModalsOpen()) return;
 
-			if (App.InstanceSettingsPageViewModel == null)
-			{
-				App.InstanceSettingsPageViewModel = new SettingsPageViewModel(canvasRef.Controller)
+            if (App.InstanceSettingsPageViewModel == null)
+            {
+                App.InstanceSettingsPageViewModel = new FastTalkerSkiaSharp.ViewModels.SettingsPageViewModel(canvasRef.Controller)
                 {
-                    Padding = new Thickness(50, 50, 50, 50),
+                    Padding = new Xamarin.Forms.Thickness(50, 50, 50, 50),
                     IsSystemPadding = false
                 };
 
-				App.InstanceSettingsPageViewModel.SaveCommunicationIconEvent += SettingsIconInteraction;
+                App.InstanceSettingsPageViewModel.SaveCommunicationIconEvent += SettingsIconInteraction;
                 App.InstanceSettingsPageViewModel.SaveCommunicationElementEvent += SettingsElementInteraction;
                 App.InstanceSettingsPageViewModel.SaveFolderEvent += SettingsFolderInteraction;
-			}
+            }
 
-			if (App.InstanceSettingsPage == null)
-			{
-				App.InstanceSettingsPage = new SettingsPage(canvasRef.Controller, App.InstanceSettingsPageViewModel);
-			}
+            if (App.InstanceSettingsPage == null)
+            {
+                App.InstanceSettingsPage = new FastTalkerSkiaSharp.Pages.SettingsPage(canvasRef.Controller, App.InstanceSettingsPageViewModel);
+            }
 
-			await App.Current.MainPage.Navigation.PushPopupAsync(App.InstanceSettingsPage);
+            await Xamarin.Forms.Application.Current.MainPage.Navigation.PushPopupAsync(App.InstanceSettingsPage);
         }
 
         /// <summary>
@@ -125,11 +109,10 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <summary>
         /// Confirms the remove icon, with some animation.
         /// </summary>
-        /// <param name="canvasView">Canvas view.</param>
         /// <param name="currentElement">Current element.</param>
         public async void ConfirmRemoveIcon(SkiaSharp.Elements.Element currentElement)
         {
-            var response = await UserDialogs.Instance.ConfirmAsync("Delete this icon?");
+            var response = await Acr.UserDialogs.UserDialogs.Instance.ConfirmAsync("Delete this icon?");
 
             if (response)
             {
@@ -137,14 +120,14 @@ namespace FastTalkerSkiaSharp.Helpers
                 {
                     currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
 
-                }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationShrinkMillis, finished: async (v2, c2) =>
+                }).Commit(Xamarin.Forms.Application.Current.MainPage, "Anim", length: FastTalkerSkiaSharp.Constants.DeviceLayout.AnimationShrinkMillis, finished: async (v2, c2) =>
                 {
                     canvasRef.Elements.Remove(currentElement);
                     canvasRef.Controller.PromptResave();
 
-                    #pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // Type or member is obsolete
                     await PopupNavigation.PopAsync();
-                    #pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore CS0618 // Type or member is obsolete
 
                 });
             }
@@ -154,10 +137,9 @@ namespace FastTalkerSkiaSharp.Helpers
         /// Delete folder and icons within
         /// </summary>
         /// <param name="currentElement"></param>
-        /// <param name="deleteButton"></param>
         public async void ConfirmDeleteFolder(SkiaSharp.Elements.Element currentElement)
         {
-            var response = await UserDialogs.Instance.ConfirmAsync("Delete this folder and the icons within?");
+            var response = await Acr.UserDialogs.UserDialogs.Instance.ConfirmAsync("Delete this folder and the icons within?");
 
             if (response && currentElement != null)
             {
@@ -169,9 +151,13 @@ namespace FastTalkerSkiaSharp.Helpers
                         {
                             currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
                         }
-                    } catch { }
+                    }
+                    catch (System.Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, e.ToString());
+                    }
 
-                }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationShrinkMillis, finished: async (v2, c2) =>
+                }).Commit(Xamarin.Forms.Application.Current.MainPage, "Anim", length: FastTalkerSkiaSharp.Constants.DeviceLayout.AnimationShrinkMillis, finished: async (v2, c2) =>
                 {
                     try
                     {
@@ -180,7 +166,7 @@ namespace FastTalkerSkiaSharp.Helpers
 
                         if (containedIconColl != null && containedIconColl.Any() && containedIconColl.Count() > 0)
                         {
-                            List<int> indicesToRemove = new List<int>();
+                            System.Collections.Generic.List<int> indicesToRemove = new System.Collections.Generic.List<int>();
 
                             // Build a list of items to remove
                             foreach (var storedIcon in containedIconColl)
@@ -203,13 +189,16 @@ namespace FastTalkerSkiaSharp.Helpers
                             canvasRef.Elements.Remove(currentElement);
                             canvasRef.Controller.PromptResave();
 
-                            #pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // Type or member is obsolete
                             await PopupNavigation.PopAsync();
-                            #pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore CS0618 // Type or member is obsolete
 
                         }
                     }
-                    catch { }
+                    catch (System.Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, e.ToString());
+                    }
                 });
             }
         }
@@ -219,11 +208,11 @@ namespace FastTalkerSkiaSharp.Helpers
         /// </summary>
         /// <param name="_currentElement"></param>
         /// <param name="folderOfInterest"></param>
-        public void InsertIntoFolder(SkiaSharp.Elements.Element _currentElement, IEnumerable<SkiaSharp.Elements.Element> folderOfInterest)
+        public void InsertIntoFolder(SkiaSharp.Elements.Element _currentElement, System.Collections.Generic.IEnumerable<SkiaSharp.Elements.Element> folderOfInterest)
         {
             if (folderOfInterest != null && _currentElement != null && folderOfInterest.Count() > 0)
             {
-                Debug.WriteLineIf(App.OutputVerbose, "In Completed: Insertable into folder: " + _currentElement.Tag);
+                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "In Completed: Insertable into folder: " + _currentElement.Tag);
 
                 var folderToInsertInto = folderOfInterest.First();
 
@@ -241,10 +230,13 @@ namespace FastTalkerSkiaSharp.Helpers
                             _currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
                                                                   (startPoint.Y) + (yDiff * (float)value));
                         }
-                        catch { }
+                        catch (System.Exception e)
+                        {
+                            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, e.ToString());
+                        }
                     }
 
-                }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationMoveMillis, finished: (v, c) =>
+                }).Commit(Xamarin.Forms.Application.Current.MainPage, "Anim", length: FastTalkerSkiaSharp.Constants.DeviceLayout.AnimationMoveMillis, finished: (v, c) =>
                 {
                     new Xamarin.Forms.Animation((value) =>
                     {
@@ -255,9 +247,12 @@ namespace FastTalkerSkiaSharp.Helpers
                                 _currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
                             }
                         }
-                        catch { }
+                        catch (System.Exception e)
+                        {
+                            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, e.ToString());
+                        }
 
-                    }).Commit(App.Current.MainPage, "Anim", length: DeviceLayout.AnimationShrinkMillis, finished: (v2, c2) =>
+                    }).Commit(Xamarin.Forms.Application.Current.MainPage, "Anim", length: FastTalkerSkiaSharp.Constants.DeviceLayout.AnimationShrinkMillis, finished: (v2, c2) =>
                     {
                         try
                         {
@@ -271,7 +266,10 @@ namespace FastTalkerSkiaSharp.Helpers
                                 canvasRef.Controller.PromptResave();
                             }
                         }
-                        catch { }
+                        catch (System.Exception e)
+                        { 
+                            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, e.ToString());
+                        }
                     });
                 });
             }
@@ -282,13 +280,13 @@ namespace FastTalkerSkiaSharp.Helpers
         /// </summary>
         /// <param name="prevText"></param>
         /// <returns></returns>
-        public async Task<string> ModifyIconTextAsync(string prevText)
+        public async System.Threading.Tasks.Task<string> ModifyIconTextAsync(string prevText)
         {
-            var text = await UserDialogs.Instance.PromptAsync("Enter name for image", 
-                title: LanguageSettings.EditTitle,
-                okText: LanguageSettings.EditTextOK,
-                cancelText: LanguageSettings.EditTextCancel,
-                placeholder: prevText);
+            var text = await Acr.UserDialogs.UserDialogs.Instance.PromptAsync("Enter name for image",
+                                                              title: FastTalkerSkiaSharp.Constants.LanguageSettings.EditTitle,
+                                                              okText: FastTalkerSkiaSharp.Constants.LanguageSettings.EditTextOK,
+                                                              cancelText: FastTalkerSkiaSharp.Constants.LanguageSettings.EditTextCancel,
+                                                              placeholder: prevText);
 
             return text.Text;
         }
@@ -297,20 +295,20 @@ namespace FastTalkerSkiaSharp.Helpers
         /// Make call to camera
         /// </summary>
         /// <returns></returns>
-        public async Task<string[]> GetImageFromCameraCallAsync()
+        public async System.Threading.Tasks.Task<string[]> GetImageFromCameraCallAsync()
         {
-            if (!(CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported))
+            if (!(Plugin.Media.CrossMedia.Current.IsCameraAvailable && Plugin.Media.CrossMedia.Current.IsTakePhotoSupported))
             {
                 // <!-- If photo taking isn't supported, return with blank array -->
-                await UserDialogs.Instance.AlertAsync("");                    
+                await Acr.UserDialogs.UserDialogs.Instance.AlertAsync("");
             }
 
             // <!-- Options related to image storage and formatting -->
-            StoreCameraMediaOptions mediaOptions = new StoreCameraMediaOptions
+            Plugin.Media.Abstractions.StoreCameraMediaOptions mediaOptions = new Plugin.Media.Abstractions.StoreCameraMediaOptions
             {
                 Directory = "SGDPhotos",
                 Name = $"{System.DateTime.UtcNow}.png",
-                PhotoSize = PhotoSize.Small,
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Small,
                 CompressionQuality = 50,
 
                 // <!-- These below largely have to be handled explicitly in Android
@@ -328,50 +326,52 @@ namespace FastTalkerSkiaSharp.Helpers
         /// </summary>
         /// <param name="mediaOptions"></param>
         /// <returns></returns>
-        public static async Task<string[]> GetImageAndCrop(StoreCameraMediaOptions mediaOptions)
+        public static async System.Threading.Tasks.Task<string[]> GetImageAndCrop(Plugin.Media.Abstractions.StoreCameraMediaOptions mediaOptions)
         {
             try
             {
-                using (MediaFile file = await CrossMedia.Current.TakePhotoAsync(mediaOptions))
+                using (Plugin.Media.Abstractions.MediaFile file = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(mediaOptions))
                 {
                     string newPath = "";
 
-                    Debug.WriteLineIf(App.OutputVerbose, "In Taker");
+                    System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "In Taker");
 
                     if (file == null || file.Path == null || file.Path == "")
                     {
                         return null;
                     }
-                    else if (File.Exists(@file.Path))
-                    {
-                        var path = Path.GetDirectoryName(@file.Path);
 
-                        if (Device.RuntimePlatform == Device.Android)
+                    if (System.IO.File.Exists(@file.Path))
+                    {
+                        var path = System.IO.Path.GetDirectoryName(@file.Path);
+
+                        if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
                         {
-                            newPath = Path.Combine(path, Path.GetFileNameWithoutExtension(@file.Path) + "crop.jpg");
+                            newPath = System.IO.Path.Combine(path, System.IO.Path.GetFileNameWithoutExtension(@file.Path) + "crop.jpg");
 
                             // <!-- Note: this crops an image to square, since not a default in Android -->
-                            DependencyService.Get<InterfaceBitmapResize>().ResizeBitmaps(@file.Path, @newPath);
+                            Xamarin.Forms.DependencyService.Get<FastTalkerSkiaSharp.Interfaces.InterfaceBitmapResize>().ResizeBitmaps(@file.Path, @newPath);
 
                         }
-                        else if (Device.RuntimePlatform == Device.iOS)
+                        else if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
                         {
                             // <!-- Note: iOS has a center crop option built in -->
-                            newPath = Path.Combine(path, Path.GetFileName(@file.Path));
+                            newPath = System.IO.Path.Combine(path, System.IO.Path.GetFileName(@file.Path));
                         }
 
-                        var getNamedImageInfo = await UserDialogs.Instance.PromptAsync("Name picture");
+                        var getNamedImageInfo = await Acr.UserDialogs.UserDialogs.Instance.PromptAsync("Name picture");
                         var getNamedImage = getNamedImageInfo.Text;
 
-                        byte[] imageArray = File.ReadAllBytes(@newPath);
-                        string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+                        byte[] imageArray = System.IO.File.ReadAllBytes(@newPath);
+
+                        string base64ImageRepresentation = System.Convert.ToBase64String(imageArray);
+
+                        imageArray = null;
 
                         return new string[] { getNamedImage, base64ImageRepresentation };
                     }
-                    else
-                    {
-                        return null;
-                    }
+
+                    return null;
                 }
             }
             catch

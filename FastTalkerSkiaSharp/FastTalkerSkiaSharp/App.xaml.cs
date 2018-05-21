@@ -19,7 +19,6 @@ namespace FastTalkerSkiaSharp
     public partial class App : Application
 	{
         public static bool OutputVerbose = false;
-
         public static bool HasAdmin = false;
 
         public static float DisplayScreenWidth;
@@ -87,7 +86,11 @@ namespace FastTalkerSkiaSharp
 			if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
             {
                 HasAdmin = DependencyService.Get<Interfaces.InterfaceAdministration>().IsAdmin();
-                DependencyService.Get<Interfaces.InterfaceAdministration>().RequestAdmin(HasAdmin);
+
+                if (HasAdmin)
+                {
+                    DependencyService.Get<Interfaces.InterfaceAdministration>().RequestAdmin(HasAdmin);
+                }
             }
 
 			if (Device.Idiom == TargetIdiom.Tablet)
