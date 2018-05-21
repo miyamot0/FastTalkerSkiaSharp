@@ -11,42 +11,35 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using Android.App;
-using Android.Content;
-using Android;
-using Android.AccessibilityServices;
-using Android.Views.Accessibility;
-using Java.Lang;
-
 namespace FastTalkerSkiaSharp.Droid
 {
-    [Service(Label = "Override Default Launcher with FastTalker", Permission = Manifest.Permission.BindAccessibilityService)]
-    [IntentFilter(new[] { "android.accessibilityservice.AccessibilityService" })]
-    public class BindLauncher : AccessibilityService
+    [Android.App.Service(Label = "Override Default Launcher with FastTalker", Permission = Android.Manifest.Permission.BindAccessibilityService)]
+    [Android.App.IntentFilter(new[] { "android.accessibilityservice.AccessibilityService" })]
+    public class BindLauncher : Android.AccessibilityServices.AccessibilityService
     {
-        private const int delay = 500;
+        const int delay = 500;
 
-        Intent intent = new Intent(Android.Content.Intent.ActionMain)
+        Android.Content.Intent intent = new Android.Content.Intent(Android.Content.Intent.ActionMain)
                             .AddCategory(Android.Content.Intent.CategoryHome)
                             .SetPackage("com.smallnstats.FastTalkerSkiaSharp")
-                            .AddFlags(ActivityFlags.NewTask |
-                                    ActivityFlags.ExcludeFromRecents |
-                                    ActivityFlags.ClearTop |
-                                    ActivityFlags.ReorderToFront);
+                            .AddFlags(Android.Content.ActivityFlags.NewTask |
+                                      Android.Content.ActivityFlags.ExcludeFromRecents |
+                                      Android.Content.ActivityFlags.ClearTop |
+                                      Android.Content.ActivityFlags.ReorderToFront);
 
-        public override void OnAccessibilityEvent(AccessibilityEvent e)
+        public override void OnAccessibilityEvent(Android.Views.Accessibility.AccessibilityEvent e)
         {
             if (e.PackageName.Contains("com.amazon.firelauncher"))
             {
-                PerformGlobalAction(GlobalAction.Recents);
+                PerformGlobalAction(Android.AccessibilityServices.GlobalAction.Recents);
 
                 try
                 {
-                    Thread.Sleep(delay);
+                    Java.Lang.Thread.Sleep(delay);
                 }
                 catch { }
 
-                PerformGlobalAction(GlobalAction.Back);
+                PerformGlobalAction(Android.AccessibilityServices.GlobalAction.Back);
                 StartActivity(intent);
             }
         }
@@ -61,23 +54,23 @@ namespace FastTalkerSkiaSharp.Droid
         {
             base.OnServiceConnected();
 
-            AccessibilityServiceInfo info = new AccessibilityServiceInfo();
-            info.Flags = AccessibilityServiceFlags.Default;
-            info.EventTypes = EventTypes.WindowStateChanged;
-            info.FeedbackType = FeedbackFlags.Generic;
+            Android.AccessibilityServices.AccessibilityServiceInfo info = new Android.AccessibilityServices.AccessibilityServiceInfo();
+            info.Flags = Android.AccessibilityServices.AccessibilityServiceFlags.Default;
+            info.EventTypes = Android.Views.Accessibility.EventTypes.WindowStateChanged;
+            info.FeedbackType = Android.AccessibilityServices.FeedbackFlags.Generic;
             info.PackageNames = new string[] { "com.amazon.firelauncher" };
 
             SetServiceInfo(info);
 
-            PerformGlobalAction(GlobalAction.Recents);
+            PerformGlobalAction(Android.AccessibilityServices.GlobalAction.Recents);
 
             try
             {
-                Thread.Sleep(delay);
+                Java.Lang.Thread.Sleep(delay);
             }
             catch { }
 
-            PerformGlobalAction(GlobalAction.Back);
+            PerformGlobalAction(Android.AccessibilityServices.GlobalAction.Back);
 
             StartActivity(intent);
         }

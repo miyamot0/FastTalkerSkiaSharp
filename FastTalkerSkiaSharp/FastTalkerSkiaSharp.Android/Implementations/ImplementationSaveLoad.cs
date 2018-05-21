@@ -11,9 +11,7 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using Xamarin.Forms;
-
-[assembly: Dependency(typeof(FastTalkerSkiaSharp.Droid.Implementations.ImplementationSaveLoad))]
+[assembly: Xamarin.Forms.Dependency(typeof(FastTalkerSkiaSharp.Droid.Implementations.ImplementationSaveLoad))]
 namespace FastTalkerSkiaSharp.Droid.Implementations
 {
     public class ImplementationSaveLoad : Interfaces.InterfaceSaveLoad

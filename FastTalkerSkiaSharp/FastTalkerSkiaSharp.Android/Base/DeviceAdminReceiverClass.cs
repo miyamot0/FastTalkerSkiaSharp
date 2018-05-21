@@ -11,18 +11,14 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using Android.App;
-using Android.App.Admin;
-using Android.Content;
-
 namespace FastTalkerSkiaSharp.Droid.Base
 {
     /// <summary>
     /// Device admin receiver class.
     /// </summary>
-    [BroadcastReceiver(Permission = "android.permission.BIND_DEVICE_ADMIN", 
-                       Name = "com.smallnstats.FastTalkerSkiaSharp.Base.DeviceAdminReceiverClass")]
-    [MetaData("android.app.device_admin", Resource = "@xml/admin")]
-    [IntentFilter(new[] { "android.app.action.DEVICE_ADMIN_ENABLED", Intent.ActionMain })]
-    public class DeviceAdminReceiverClass : DeviceAdminReceiver { }
+    [Android.Content.BroadcastReceiver(Permission = "android.permission.BIND_DEVICE_ADMIN", 
+                                       Name = "com.smallnstats.FastTalkerSkiaSharp.Base.DeviceAdminReceiverClass")]
+    [Android.App.MetaData("android.app.device_admin", Resource = "@xml/admin")]
+    [Android.App.IntentFilter(new[] { "android.app.action.DEVICE_ADMIN_ENABLED", Android.Content.Intent.ActionMain })]
+    public class DeviceAdminReceiverClass : Android.App.Admin.DeviceAdminReceiver { }
 }

@@ -9,6 +9,15 @@
    The Fast Talker is a tool to assist clinicans and researchers in the treatment of communication disorders.
 
    Email: shawn(dot)gilroy(at)temple.edu
+
+   =====================================================================================================
+
+   Based on LauncherHijack
+
+   Copyright (c) 2017 Ethan Nelson-Moore
+   https://github.com/parrotgeek1/LauncherHijack
+
+   You can do whatever you want with this code, but you have to credit me somewhere in your project, including a link to this repo. The modified version doesn't have to be open source. You have to send me a link to the modified version if it is ever public.
 */
 
 using Android.App;

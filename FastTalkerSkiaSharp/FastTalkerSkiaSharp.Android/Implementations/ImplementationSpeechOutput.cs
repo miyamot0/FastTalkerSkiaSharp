@@ -11,25 +11,15 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using System.Collections.Generic;
-using Android.Content;
-using Android.Media;
-using Android.OS;
-using Android.Speech.Tts;
-using FastTalkerSkiaSharp.Interfaces;
-using Xamarin.Forms;
-
-[assembly: Dependency(typeof(FastTalkerSkiaSharp.Droid.Implementations.ImplementationSpeechOutput))]
+[assembly: Xamarin.Forms.Dependency(typeof(FastTalkerSkiaSharp.Droid.Implementations.ImplementationSpeechOutput))]
 namespace FastTalkerSkiaSharp.Droid.Implementations
 {
 #pragma warning disable CS0618
-    public class ImplementationSpeechOutput : Java.Lang.Object, InterfaceSpeechOutput, TextToSpeech.IOnInitListener
+    public class ImplementationSpeechOutput : Java.Lang.Object, FastTalkerSkiaSharp.Interfaces.InterfaceSpeechOutput, Android.Speech.Tts.TextToSpeech.IOnInitListener
 #pragma warning restore CS0618 
     {
-        private TextToSpeech speaker;
-        private string toSpeak;
-
-        public ImplementationSpeechOutput() { }
+        Android.Speech.Tts.TextToSpeech speaker;
+        string toSpeak;
 
         public void SpeakText(string text)
         {
@@ -37,10 +27,10 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
 
             if (speaker == null)
             {
-                AudioManager am = (AudioManager)Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.GetSystemService(Context.AudioService);
+                Android.Media.AudioManager am = (Android.Media.AudioManager) Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.GetSystemService(Android.Content.Context.AudioService);
                 int amStreamMusicMaxVol = am.GetStreamMaxVolume(Android.Media.Stream.Music);
-                am.SetStreamVolume(Stream.Music, amStreamMusicMaxVol, 0);
-                speaker = new TextToSpeech(Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity, this);
+                am.SetStreamVolume(Android.Media.Stream.Music, amStreamMusicMaxVol, 0);
+                speaker = new Android.Speech.Tts.TextToSpeech(Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity, this);
             }
             else
             {
@@ -54,9 +44,9 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         /// After init, echo out speech
         /// </summary>
         /// <param name="status"></param>
-        public void OnInit(OperationResult status)
+        public void OnInit(Android.Speech.Tts.OperationResult status)
         {
-            if (status.Equals(OperationResult.Success))
+            if (status.Equals(Android.Speech.Tts.OperationResult.Success))
             {
                 SpeakRoute(toSpeak);
             }
@@ -72,7 +62,7 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         {
             if (speaker.IsSpeaking) return;
 
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop)
             {
                 ApiOver21(text);
             }
@@ -88,10 +78,10 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         /// <param name="text"></param>
         private void ApiUnder20(string text)
         {
-            Dictionary<string, string> map = new Dictionary<string, string>();
-            map.Add(TextToSpeech.Engine.KeyParamUtteranceId, "MessageId");
+            System.Collections.Generic.Dictionary<string, string> map = new System.Collections.Generic.Dictionary<string, string>();
+            map.Add(Android.Speech.Tts.TextToSpeech.Engine.KeyParamUtteranceId, "MessageId");
 #pragma warning disable CS0618 // Legacy support
-            speaker.Speak(text, QueueMode.Flush, map);
+            speaker.Speak(text, Android.Speech.Tts.QueueMode.Flush, map);
 #pragma warning restore  CS0618
         }
 
@@ -102,7 +92,7 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         private void ApiOver21(string text)
         {
             string utteranceId = this.GetHashCode() + "";
-            speaker.Speak(text, QueueMode.Flush, null, utteranceId);
+            speaker.Speak(text, Android.Speech.Tts.QueueMode.Flush, null, utteranceId);
         }
     }
 }

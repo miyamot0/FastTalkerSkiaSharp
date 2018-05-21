@@ -11,19 +11,14 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using FastTalkerSkiaSharp.Controls;
-using FastTalkerSkiaSharp.Droid.Controls;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.Android;
-
-[assembly: ExportRenderer(typeof(CustomScrollView), typeof(CustomScrollViewRenderer))]
+[assembly: Xamarin.Forms.ExportRenderer(typeof(FastTalkerSkiaSharp.Controls.CustomScrollView), typeof(FastTalkerSkiaSharp.Droid.Controls.CustomScrollViewRenderer))]
 namespace FastTalkerSkiaSharp.Droid.Controls
 {
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class CustomScrollViewRenderer : ScrollViewRenderer
+    public class CustomScrollViewRenderer : Xamarin.Forms.Platform.Android.ScrollViewRenderer
 #pragma warning restore CS0618 // Type or member is obsolete
     {
-        protected override void OnElementChanged(VisualElementChangedEventArgs e)
+        protected override void OnElementChanged(Xamarin.Forms.Platform.Android.VisualElementChangedEventArgs e)
         {
             base.OnElementChanged(e);
 

@@ -11,18 +11,10 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using FastTalkerSkiaSharp.Droid.Implementations;
-using FastTalkerSkiaSharp.Interfaces;
-using Xamarin.Forms;
-
-using Android.Graphics;
-using System.IO;
-using Android.Media;
-
-[assembly: Dependency(typeof(ImplementationBitmapResize))]
+[assembly: Xamarin.Forms.Dependency(typeof(FastTalkerSkiaSharp.Droid.Implementations.ImplementationBitmapResize))]
 namespace FastTalkerSkiaSharp.Droid.Implementations
 {
-    class ImplementationBitmapResize : InterfaceBitmapResize
+    class ImplementationBitmapResize : FastTalkerSkiaSharp.Interfaces.InterfaceBitmapResize
     {
         /// <summary>
         /// Resize image bitmap
@@ -31,14 +23,14 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         /// <param name="newPhotoPath"></param>
         public void ResizeBitmaps(string photoPath, string newPhotoPath)
         {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.InPreferredConfig = Bitmap.Config.Argb8888;
-            Bitmap bitmap = BitmapFactory.DecodeFile(photoPath, options);
-            Bitmap croppedBitmap = null;
+            Android.Graphics.BitmapFactory.Options options = new Android.Graphics.BitmapFactory.Options();
+            options.InPreferredConfig = Android.Graphics.Bitmap.Config.Argb8888;
+            Android.Graphics.Bitmap bitmap = Android.Graphics.BitmapFactory.DecodeFile(photoPath, options);
+            Android.Graphics.Bitmap croppedBitmap = null;
 
             if (bitmap.Width >= bitmap.Height)
             {
-                croppedBitmap = Bitmap.CreateBitmap(
+                croppedBitmap = Android.Graphics.Bitmap.CreateBitmap(
                    bitmap,
                    bitmap.Width / 2 - bitmap.Height / 2,
                    0,
@@ -47,7 +39,7 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
             }
             else
             {
-                croppedBitmap = Bitmap.CreateBitmap(
+                croppedBitmap = Android.Graphics.Bitmap.CreateBitmap(
                    bitmap,
                    0,
                    bitmap.Height / 2 - bitmap.Width / 2,
@@ -55,12 +47,12 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
                    bitmap.Width);
             }
 
-            FileStream stream = null;
+            System.IO.FileStream stream = null;
 
             try
             {
-                stream = new FileStream(newPhotoPath, FileMode.Create);
-                croppedBitmap.Compress(Bitmap.CompressFormat.Png, 100, stream);
+                stream = new System.IO.FileStream(newPhotoPath, System.IO.FileMode.Create);
+                croppedBitmap.Compress(Android.Graphics.Bitmap.CompressFormat.Png, 100, stream);
             }
             catch
             {
@@ -97,14 +89,14 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
         /// <returns></returns>
         public byte[] RotateImage(string photoPath)
         {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.InPreferredConfig = Bitmap.Config.Argb8888;
-            Bitmap bitmap = BitmapFactory.DecodeFile(photoPath, options);
+            Android.Graphics.BitmapFactory.Options options = new Android.Graphics.BitmapFactory.Options();
+            options.InPreferredConfig = Android.Graphics.Bitmap.Config.Argb8888;
+            Android.Graphics.Bitmap bitmap = Android.Graphics.BitmapFactory.DecodeFile(photoPath, options);
 
             try
             {
-                ExifInterface exifInterface = new ExifInterface(photoPath);
-                int orientation = exifInterface.GetAttributeInt(ExifInterface.TagOrientation, (int)Android.Media.Orientation.Normal);
+                Android.Media.ExifInterface exifInterface = new Android.Media.ExifInterface(photoPath);
+                int orientation = exifInterface.GetAttributeInt(Android.Media.ExifInterface.TagOrientation, (int)Android.Media.Orientation.Normal);
 
                 int rotate = 0;
 
@@ -131,16 +123,16 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
                         break;
                 }
 
-                using (var ms = new MemoryStream())
+                using (var ms = new System.IO.MemoryStream())
                 {
-                    Bitmap croppedBitmap = null;
+                    Android.Graphics.Bitmap croppedBitmap = null;
 
-                    Matrix mtx = new Matrix();
+                    Android.Graphics.Matrix mtx = new Android.Graphics.Matrix();
                     mtx.PreRotate(rotate);
 
                     if (bitmap.Width >= bitmap.Height)
                     {
-                        croppedBitmap = Bitmap.CreateBitmap(
+                        croppedBitmap = Android.Graphics.Bitmap.CreateBitmap(
                            bitmap,
                            bitmap.Width / 2 - bitmap.Height / 2,
                            0,
@@ -151,7 +143,7 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
                     }
                     else
                     {
-                        croppedBitmap = Bitmap.CreateBitmap(
+                        croppedBitmap = Android.Graphics.Bitmap.CreateBitmap(
                            bitmap,
                            0,
                            bitmap.Height / 2 - bitmap.Width / 2,
@@ -161,7 +153,7 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
                            false);
                     }
 
-                    croppedBitmap.Compress(Bitmap.CompressFormat.Png, 100, ms);
+                    croppedBitmap.Compress(Android.Graphics.Bitmap.CompressFormat.Png, 100, ms);
 
                     croppedBitmap.Recycle();
                     croppedBitmap.Dispose();

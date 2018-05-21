@@ -11,18 +11,12 @@
    Email: shawn(dot)gilroy(at)temple.edu
 */
 
-using Android.Content;
-using Android.Views;
-using FastTalkerSkiaSharp.Droid.Controls;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.Android;
-
-[assembly: ExportRenderer(typeof(ViewCell), typeof(ViewCellTransparent))]
+[assembly: Xamarin.Forms.ExportRenderer(typeof(Xamarin.Forms.ViewCell), typeof(FastTalkerSkiaSharp.Droid.Controls.ViewCellTransparent))]
 namespace FastTalkerSkiaSharp.Droid.Controls
 {
-    public class ViewCellTransparent : ViewCellRenderer
+    public class ViewCellTransparent : Xamarin.Forms.Platform.Android.ViewCellRenderer
     {
-        protected override Android.Views.View GetCellCore(Cell item, Android.Views.View convertView, ViewGroup parent, Context context)
+        protected override Android.Views.View GetCellCore(Xamarin.Forms.Cell item, Android.Views.View convertView, Android.Views.ViewGroup parent, Android.Content.Context context)
         {
             var cell = base.GetCellCore(item, convertView, parent, context);
 
