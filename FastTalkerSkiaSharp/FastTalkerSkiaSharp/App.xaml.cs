@@ -93,10 +93,45 @@ namespace FastTalkerSkiaSharp
                 }
             }
 
-            if (Device.Idiom == TargetIdiom.Tablet)
+            if (Device.RuntimePlatform == Device.iOS)
             {
-                Application.Current.Resources["dynamicTextSize"] = Device.GetNamedSize(NamedSize.Large, typeof(Button));
-                Application.Current.Resources["dynamicFrameMargin"] = new Thickness(5, 25);
+                if (Device.Idiom == TargetIdiom.Tablet)
+                {
+                    Application.Current.Resources["dynamicTextSize"] = Device.GetNamedSize(NamedSize.Large, typeof(Button));
+                    Application.Current.Resources["dynamicFrameMargin"] = new Thickness(5, 25);
+                }                
+            }
+            else if (Device.RuntimePlatform == Device.Android)
+            {
+                int size = DependencyService.Get<Interfaces.InterfaceScreenSize>().GetSizeIdentifier();
+
+                switch (size)
+                {
+                    case 1:
+                        Application.Current.Resources["dynamicTextSize"] = Device.GetNamedSize(NamedSize.Small, typeof(Button));
+                        Application.Current.Resources["dynamicFrameMargin"] = new Thickness(5, 5);
+
+                        break;
+
+                    case 2:
+                        Application.Current.Resources["dynamicTextSize"] = Device.GetNamedSize(NamedSize.Small, typeof(Button));
+                        Application.Current.Resources["dynamicFrameMargin"] = new Thickness(5, 15);
+
+                        break;
+
+                    case 3:
+                        Application.Current.Resources["dynamicTextSize"] = Device.GetNamedSize(NamedSize.Small, typeof(Button));
+                        Application.Current.Resources["dynamicFrameMargin"] = new Thickness(5, 15);
+
+                        break;
+
+                    case 4:
+                        Application.Current.Resources["dynamicTextSize"] = Device.GetNamedSize(NamedSize.Large, typeof(Button));
+                        Application.Current.Resources["dynamicFrameMargin"] = new Thickness(5, 25);
+
+                        break;
+                }
+
             }
 
             MainPage = new Pages.TitlePage();
