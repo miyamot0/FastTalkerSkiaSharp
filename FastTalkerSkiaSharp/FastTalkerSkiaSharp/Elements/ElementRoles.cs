@@ -22,7 +22,7 @@ namespace FastTalkerSkiaSharp.Elements
             Display,        // Aesthetic, for decoration
             Emitter,        // For speech
             SentenceFrame,  // For framed speech
-            Settings,       // Access settings
+            //Settings,       // Access settings
             Folder          // Folder icon
         }
 

@@ -123,27 +123,39 @@ namespace FastTalkerSkiaSharp.Pages
 
             await App.Database.InsertOrUpdateAsync(App.BoardSettings);
 
+            if (!canvas.Controller.InEditMode)
+            {
+                canvas.Elements.Remove(emitterReference);
+
+                emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: "FastTalkerSkiaSharp.Images.Speaker.png",
+                                                   xPercent: 2f,
+                                                   yPercent: 1.5f,
+                                                   tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+
+                canvas.Elements.Add(emitterReference);
+            }
+
             ClearIconsInPlay();
         }
 
         /// <summary>
         /// Gives the views time to size up
         /// </summary>
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            LoadingPrepAsync();
+            await LoadingPrepAsync();
         }
 
         /// <summary>
         /// Buy some time if android needs to inflate layouts
         /// </summary>
-        public async void LoadingPrepAsync()
+        public async System.Threading.Tasks.Task LoadingPrepAsync()
         {
             if (inInitialLoading)
             {
-                while (canvas.CanvasSize.Width == 0)
+                while ((int)canvas.CanvasSize.Width == 0)
                 {
                     await System.Threading.Tasks.Task.Delay(50);
                     System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "waiting...");
@@ -151,7 +163,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "GetSettingsAsync");
 
-                GetSettingsAsync();
+                await GetSettingsAsync();
 
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddStaticContent");
 
@@ -159,11 +171,11 @@ namespace FastTalkerSkiaSharp.Pages
 
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "GetIconsAsync");
 
-                GetIconsAsync();
+                await GetIconsAsync();
 
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Loading..");
 
-                CheckPermissions();
+                await CheckPermissions();
 
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Requesting permissions..");
 
@@ -176,7 +188,7 @@ namespace FastTalkerSkiaSharp.Pages
         /// <summary>
         /// Checks the permissions.
         /// </summary>
-        async void CheckPermissions()
+        async System.Threading.Tasks.Task CheckPermissions()
         {
             var cameraStatus = await Plugin.Permissions.CrossPermissions.Current.CheckPermissionStatusAsync(Plugin.Permissions.Abstractions.Permission.Camera);
             var storageStatus = await Plugin.Permissions.CrossPermissions.Current.CheckPermissionStatusAsync(Plugin.Permissions.Abstractions.Permission.Storage);
@@ -202,7 +214,7 @@ namespace FastTalkerSkiaSharp.Pages
         /// <summary>
         /// Gets the icons async.
         /// </summary>
-        async void GetIconsAsync()
+        async System.Threading.Tasks.Task GetIconsAsync()
         {
             var icons = await App.Database.GetIconsAsync();
 
@@ -250,7 +262,7 @@ namespace FastTalkerSkiaSharp.Pages
         /// <summary>
         /// Gets the settings async.
         /// </summary>
-        async void GetSettingsAsync()
+        async System.Threading.Tasks.Task GetSettingsAsync()
         {
             App.BoardSettings = await App.Database.GetSettingsAsync();
 
@@ -349,18 +361,19 @@ namespace FastTalkerSkiaSharp.Pages
                     return;
 
                 case (int)Elements.ElementRoles.Role.Emitter:
-                    System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Hit speech emitter");
-                    holdingEmitter = true;
-                    emitterPressTime = System.DateTime.Now;
 
-                    return;
-
-                case (int)Elements.ElementRoles.Role.Settings:
-                    System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Hit settings");
-
+                    // Serves as Settings button in edit mode
                     if (canvas.Controller.InEditMode)
                     {
+                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Hit settings (speech emitter)");
                         App.UserInputInstance.QueryUserMainSettingsAsync();
+                    }
+                    // Serves as speech emitter as normal
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Hit speech emitter");
+                        holdingEmitter = true;
+                        emitterPressTime = System.DateTime.Now;                        
                     }
 
                     return;
@@ -419,6 +432,8 @@ namespace FastTalkerSkiaSharp.Pages
         {
             // If out of scope, return
             if (_currentElement == null) return;
+
+            System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Moving Event: " + e.ToString());
 
             switch (_currentElement.Tag)
             {
@@ -688,6 +703,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                         System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Seconds held: " + (System.DateTime.Now - emitterPressTime).TotalSeconds.ToString());
 
+                        // Enter into Edit Mode
                         if ((System.DateTime.Now - emitterPressTime).Seconds >= thresholdAdmin && !canvas.Controller.InEditMode)
                         {
                             canvas.Controller.UpdateSettings(isEditing: !canvas.Controller.InEditMode,
@@ -697,8 +713,18 @@ namespace FastTalkerSkiaSharp.Pages
 
                             canvas.Controller.BackgroundColor = canvas.Controller.InEditMode ? SKColors.DarkOrange : SKColors.DimGray;
 
+                            canvas.Elements.Remove(emitterReference);
+
+                            emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: "FastTalkerSkiaSharp.Images.Settings.png",
+                                                               xPercent: 2f,
+                                                               yPercent: 1.5f,
+                                                               tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+                            canvas.Elements.Add(emitterReference);
+
                             ClearIconsInPlay();
+
                         }
+                        // TODO: Fix exit program (changed since emitter fx altered)
                         else if ((System.DateTime.Now - emitterPressTime).Seconds >= thresholdReset && canvas.Controller.InEditMode)
                         {
                             // TODO: Confirm message?
@@ -707,6 +733,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                             Xamarin.Forms.Application.Current.MainPage = new TitlePage();
                         }
+                        // Speak output
                         else
                         {
                             if (canvas.Controller.InFramedMode)
@@ -833,18 +860,6 @@ namespace FastTalkerSkiaSharp.Pages
                                                                            yPercent: 1.5f,
                                                                            tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
             canvas.Elements.Add(emitterReference);
-
-            // Settings
-            SkiaSharp.Elements.Element settingsElement = App.ImageBuilderInstance.BuildNamedIcon(resource: "FastTalkerSkiaSharp.Images.Settings.png",
-                                                                                                 text: "Settings",
-                                                                                                 x: canvas.CanvasSize.Width - Constants.DeviceLayout.Bezel,
-                                                                                                 y: canvas.CanvasSize.Height - Constants.DeviceLayout.Bezel,
-                                                                                                 tagCode: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Settings),
-                                                                                                 alignRight: true,
-                                                                                                 alignBottom: true,
-                                                                                                 opaqueBackground: true);
-
-            canvas.Elements.Add(settingsElement);
         }
     }
 }

@@ -65,9 +65,9 @@
     <WarningLevel>4</WarningLevel>
     <MtouchArch>ARM64</MtouchArch>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Developer: Shawn Gilroy (8F466XTP7N)</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <CodesignProvision>VS: com.smallnstats.FastTalkerSkiaSharp Development</CodesignProvision>
+    <CodesignProvision>Automatic:AppStore</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
     <DebugType>none</DebugType>
@@ -140,9 +140,11 @@
     <PackageReference Include="Xam.Plugin.Media">
       <Version>3.1.3</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
     <PackageReference Include="Xam.Plugins.Forms.KeyboardOverlap">
       <Version>1.0.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms">
+      <Version>2.5.1.527436</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

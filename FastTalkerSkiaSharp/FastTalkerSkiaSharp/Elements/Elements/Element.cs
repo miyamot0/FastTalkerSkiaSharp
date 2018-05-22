@@ -270,7 +270,8 @@ namespace SkiaSharp.Elements
         {
             if (this.IsStoredInAFolder) return;
 
-            if (Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Settings) && !ParentController.InEditMode) return;
+            // TODO: remove separate setting icon
+            //if (Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Settings) && !ParentController.InEditMode) return;
 
             if (Tag == ElementRoles.GetRoleInt(ElementRoles.Role.SentenceFrame) && !ParentController.InFramedMode) return;
 

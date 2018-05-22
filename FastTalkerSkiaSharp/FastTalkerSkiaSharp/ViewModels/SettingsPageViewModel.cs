@@ -407,7 +407,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// <returns>The toggle message.</returns>
         /// <param name="baseMessage">Base message.</param>
         /// <param name="value">If set to <c>true</c> value.</param>
-        private string GetToggleMessage(string baseMessage, bool value)
+        string GetToggleMessage(string baseMessage, bool value)
         {
             string valueString = value ? "true" : "false";
 
@@ -418,23 +418,22 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// Get string for ui
         /// </summary>
         /// <returns>The mode string.</returns>
-        private string GetModeString()
+        string GetModeString()
         {
             if (controller.InFramedMode)
             {
                 return "Sentence";
             }
+
+            if (controller.IconModeAuto)
+            {
+                return "Auto Icon";
+            }
             else
             {
-                if (controller.IconModeAuto)
-                {
-                    return "Auto Icon";
-                }
-                else
-                {
-                    return "Manual Icon";
-                }
+                return "Manual Icon";
             }
+
         }
 
         /// <summary>
