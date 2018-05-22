@@ -854,11 +854,21 @@ namespace FastTalkerSkiaSharp.Pages
 
             canvas.Elements.Add(stripReference);
 
-            // Speech Emitter
-            emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: "FastTalkerSkiaSharp.Images.Speaker.png",
-                                                                           xPercent: 2f,
-                                                                           yPercent: 1.5f,
-                                                                           tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+            if (canvas.Controller.InEditMode)
+            {
+                emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: "FastTalkerSkiaSharp.Images.Settings.png",
+                                                                               xPercent: 2f,
+                                                                               yPercent: 1.5f,
+                                                                               tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+            }
+            else
+            {
+                emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: "FastTalkerSkiaSharp.Images.Speaker.png",
+                                                                               xPercent: 2f,
+                                                                               yPercent: 1.5f,
+                                                                               tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+            }
+
             canvas.Elements.Add(emitterReference);
         }
     }
