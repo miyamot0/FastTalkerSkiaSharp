@@ -83,6 +83,7 @@ namespace FastTalkerSkiaSharp
 
             BoardPage = new NavigationPage(new Pages.CommunicationBoardPage());
 
+            // Lock if administrator
             if (Device.RuntimePlatform == Device.Android || Device.RuntimePlatform == Device.iOS)
             {
                 HasAdmin = DependencyService.Get<Interfaces.InterfaceAdministration>().IsAdmin();
@@ -93,6 +94,7 @@ namespace FastTalkerSkiaSharp
                 }
             }
 
+            // Dynamically shape UI
             if (Device.RuntimePlatform == Device.iOS)
             {
                 if (Device.Idiom == TargetIdiom.Tablet)

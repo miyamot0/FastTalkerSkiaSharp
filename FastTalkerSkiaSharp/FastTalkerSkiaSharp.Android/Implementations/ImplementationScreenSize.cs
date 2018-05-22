@@ -16,6 +16,10 @@ namespace FastTalkerSkiaSharp.Droid.Implementations
 {
     public class ImplementationScreenSize : Interfaces.InterfaceScreenSize
     {
+        /// <summary>
+        /// Screen layout information
+        /// </summary>
+        /// <returns>The size identifier.</returns>
         public int GetSizeIdentifier()
         {
             Android.Content.Res.ScreenLayout size = Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity.Resources.Configuration.ScreenLayout & 

@@ -15,6 +15,10 @@ namespace FastTalkerSkiaSharp.Interfaces
 {
     public interface InterfaceScreenSize
     {
+        /// <summary>
+        /// Get the screen size identifier
+        /// </summary>
+        /// <returns>The size identifier.</returns>
         int GetSizeIdentifier();
     }
 }
