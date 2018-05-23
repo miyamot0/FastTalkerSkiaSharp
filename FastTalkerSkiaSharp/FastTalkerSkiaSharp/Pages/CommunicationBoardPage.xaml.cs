@@ -114,8 +114,51 @@ namespace FastTalkerSkiaSharp.Pages
             {
                 App.BoardSettings.InIconModeAuto = false;
 
+                App.BoardSettings.IsBottomOriented = canvas.Controller.InFramedModeBottom;
+
+                string resource = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
+
+                if (App.BoardSettings.IsBottomOriented)
+                {
+                    canvas.Elements.Remove(emitterReference);
+                    emitterReference = App.ImageBuilderInstance.BuildStaticElementBottom(resource: resource,
+                                                       xPercent: 2f,
+                                                       yPercent: 1.5f,
+                                                       tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+                    canvas.Elements.Add(emitterReference);
+
+                    canvas.Elements.Remove(stripReference);
+                    stripReference = App.ImageBuilderInstance.BuildSentenceStripBottom();
+                    canvas.Elements.Add(stripReference);
+                }
+                else
+                {
+                    canvas.Elements.Remove(emitterReference);
+                    emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: resource,
+                                                       xPercent: 2f,
+                                                       yPercent: 1.5f,
+                                                       tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+                    canvas.Elements.Add(emitterReference);
+
+                    canvas.Elements.Remove(stripReference);
+                    stripReference = App.ImageBuilderInstance.BuildSentenceStrip();
+                    canvas.Elements.Add(stripReference);
+                }
+
                 canvas.InvalidateSurface();
             }
+            else
+            {
+                string resourceStr = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
+
+                canvas.Elements.Remove(emitterReference);
+                emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: resourceStr,
+                                                   xPercent: 2f,
+                                                   yPercent: 1.5f,
+                                                   tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+                canvas.Elements.Add(emitterReference);
+            }
+
 
             if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
             {
@@ -123,18 +166,6 @@ namespace FastTalkerSkiaSharp.Pages
             }
 
             await App.Database.InsertOrUpdateAsync(App.BoardSettings);
-
-            if (!canvas.Controller.InEditMode)
-            {
-                canvas.Elements.Remove(emitterReference);
-
-                emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: "FastTalkerSkiaSharp.Images.Speaker.png",
-                                                   xPercent: 2f,
-                                                   yPercent: 1.5f,
-                                                   tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
-
-                canvas.Elements.Add(emitterReference);
-            }
 
             ClearIconsInPlay();
         }
@@ -271,6 +302,7 @@ namespace FastTalkerSkiaSharp.Pages
 
             canvas.Controller.UpdateSettings(App.BoardSettings.InEditMode,
                                              App.BoardSettings.InFramedMode,
+                                             App.BoardSettings.IsBottomOriented,
                                              App.BoardSettings.RequireDeselect,
                                              App.BoardSettings.InIconModeAuto,
                                              overridePrompt: true);
@@ -717,24 +749,43 @@ namespace FastTalkerSkiaSharp.Pages
                         holdingEmitter = false;
 
                         System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Seconds held: " + (System.DateTime.Now - emitterPressTime).TotalSeconds.ToString());
+                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Bottom Oriented: " + canvas.Controller.InFramedModeBottom);
 
                         // Enter into Edit Mode
                         if ((System.DateTime.Now - emitterPressTime).Seconds >= thresholdAdmin && !canvas.Controller.InEditMode)
                         {
                             canvas.Controller.UpdateSettings(isEditing: !canvas.Controller.InEditMode,
                                                              isInFrame: canvas.Controller.InFramedMode,
+                                                             isFrameBottom: canvas.Controller.InFramedModeBottom,
                                                              isAutoDeselecting: canvas.Controller.RequireDeselect,
                                                              isInIconModeAuto: canvas.Controller.IconModeAuto);
 
                             canvas.Controller.BackgroundColor = canvas.Controller.InEditMode ? SKColors.DarkOrange : SKColors.DimGray;
 
+                            string resource = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
+
                             canvas.Elements.Remove(emitterReference);
 
-                            emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: "FastTalkerSkiaSharp.Images.Settings.png",
-                                                               xPercent: 2f,
-                                                               yPercent: 1.5f,
-                                                               tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
-                            canvas.Elements.Add(emitterReference);
+                            //TODO
+                            if (canvas.Controller.InFramedModeBottom && canvas.Controller.InFramedMode)
+                            {
+                                canvas.Elements.Remove(emitterReference);
+                                emitterReference = App.ImageBuilderInstance.BuildStaticElementBottom(resource: resource,
+                                                                   xPercent: 2f,
+                                                                   yPercent: 1.5f,
+                                                                   tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+                                canvas.Elements.Add(emitterReference);
+                            }
+                            else
+                            {
+                                canvas.Elements.Remove(emitterReference);
+                                emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: resource,
+                                                                   xPercent: 2f,
+                                                                   yPercent: 1.5f,
+                                                                   tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+                                canvas.Elements.Add(emitterReference);
+                            }
+
 
                             ClearIconsInPlay();
 
@@ -864,25 +915,32 @@ namespace FastTalkerSkiaSharp.Pages
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Layout Width: " + hackLayout.Width);
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Layout Height: " + hackLayout.Height);
 
-            // Sentence Strip
-            stripReference = App.ImageBuilderInstance.BuildSentenceStrip();
+            string resourceStr = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
 
-            canvas.Elements.Add(stripReference);
-
-            if (canvas.Controller.InEditMode)
+            if (canvas.Controller.InFramedModeBottom)
             {
-                emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: "FastTalkerSkiaSharp.Images.Settings.png",
-                                                                               xPercent: 2f,
-                                                                               yPercent: 1.5f,
-                                                                               tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+                stripReference = App.ImageBuilderInstance.BuildSentenceStripBottom();
+
+                canvas.Elements.Add(stripReference);
+
+                emitterReference = App.ImageBuilderInstance.BuildStaticElementBottom(resource: resourceStr,
+                                               xPercent: 2f,
+                                               yPercent: 1.5f,
+                                               tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
             }
             else
             {
-                emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: "FastTalkerSkiaSharp.Images.Speaker.png",
-                                                                               xPercent: 2f,
-                                                                               yPercent: 1.5f,
-                                                                               tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+                stripReference = App.ImageBuilderInstance.BuildSentenceStrip();
+
+                emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: resourceStr,
+                                                               xPercent: 2f,
+                                                               yPercent: 1.5f,
+                                                               tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+
+
             }
+
+            canvas.Elements.Add(stripReference);
 
             canvas.Elements.Add(emitterReference);
         }

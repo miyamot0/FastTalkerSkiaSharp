@@ -88,6 +88,19 @@ namespace SkiaSharp.Elements
             }
         }
 
+        private bool _inFramedModeBottom;
+        public bool InFramedModeBottom
+        {
+            get
+            {
+                return _inFramedModeBottom;
+            }
+            private set
+            {
+                _inFramedModeBottom = value;
+            }
+        }
+
         private bool _requireDeselect;
         public bool RequireDeselect
         {
@@ -238,12 +251,13 @@ namespace SkiaSharp.Elements
         /// <param name="isInFrame"></param>
         /// <param name="isAutoDeselecting"></param>
         /// <param name="overridePrompt"></param>
-        public void UpdateSettings(bool isEditing, bool isInFrame, 
+        public void UpdateSettings(bool isEditing, bool isInFrame, bool isFrameBottom,
                                    bool isAutoDeselecting, bool isInIconModeAuto, 
                                    bool overridePrompt = false)
         {
             _inEditMode = isEditing;
             _inFramedMode = isInFrame;
+            _inFramedModeBottom = isFrameBottom;
             _requireDeselect = isAutoDeselecting;
             _iconModeAuto = isInIconModeAuto;
 

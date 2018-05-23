@@ -63,6 +63,8 @@ namespace FastTalkerSkiaSharp.Storage
                 InEditMode = false,
                 InFramedMode = false,
                 RequireDeselect = false,
+                InIconModeAuto = false,
+                IsBottomOriented = false
             };
         }
 

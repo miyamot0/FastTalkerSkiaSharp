@@ -103,6 +103,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             controller.UpdateSettings(isEditing: false,
                                       isInFrame: controller.InFramedMode,
+                                      isFrameBottom: controller.InFramedModeBottom,
                                       isAutoDeselecting: controller.RequireDeselect,
                                       isInIconModeAuto: controller.IconModeAuto);
 
@@ -120,6 +121,7 @@ namespace FastTalkerSkiaSharp.ViewModels
             {
                 controller.UpdateSettings(isEditing: controller.InEditMode,
                                           isInFrame: controller.InFramedMode,
+                                          isFrameBottom: controller.InFramedModeBottom,
                                           isAutoDeselecting: true,
                                           isInIconModeAuto: controller.IconModeAuto);
             }
@@ -127,6 +129,7 @@ namespace FastTalkerSkiaSharp.ViewModels
             {
                 controller.UpdateSettings(isEditing: controller.InEditMode,
                                           isInFrame: controller.InFramedMode,
+                                          isFrameBottom: controller.InFramedModeBottom,
                                           isAutoDeselecting: false,
                                           isInIconModeAuto: controller.IconModeAuto);
             }
@@ -139,35 +142,49 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         void ChangeMode()
         {
-            if (controller.InFramedMode)
+            // Change to bottom frame
+            if (controller.InFramedMode && !controller.InFramedModeBottom)
+            {
+                // TODO:
+
+                controller.UpdateSettings(isEditing: controller.InEditMode,
+                                          isInFrame: true,
+                                          isFrameBottom: true,
+                                          isAutoDeselecting: controller.RequireDeselect,
+                                          isInIconModeAuto: true);
+
+                SettingsInteraction(SettingsAction.InvalidateBoardFrame);
+            }
+            // Change to Icon mode auto
+            else if (controller.InFramedMode && controller.InFramedModeBottom)
             {
                 controller.UpdateSettings(isEditing: controller.InEditMode,
                                           isInFrame: false,
+                                          isFrameBottom: false,
                                           isAutoDeselecting: controller.RequireDeselect,
                                           isInIconModeAuto: true);
 
                 SettingsInteraction(SettingsAction.InvalidateBoardIcon);
             }
+            else if (controller.IconModeAuto)
+            {
+                controller.UpdateSettings(isEditing: controller.InEditMode,
+                                          isInFrame: false,
+                                          isFrameBottom: false,
+                                          isAutoDeselecting: controller.RequireDeselect,
+                                          isInIconModeAuto: false);
+
+                SettingsInteraction(SettingsAction.InvalidateBoardIcon);
+            }
             else
             {
-                if (controller.IconModeAuto)
-                {
-                    controller.UpdateSettings(isEditing: controller.InEditMode,
-                                              isInFrame: false,
-                                              isAutoDeselecting: controller.RequireDeselect,
-                                              isInIconModeAuto: false);
+                controller.UpdateSettings(isEditing: controller.InEditMode,
+                                          isInFrame: true,
+                                          isFrameBottom: false,
+                                          isAutoDeselecting: controller.RequireDeselect,
+                                          isInIconModeAuto: true);
 
-                    SettingsInteraction(SettingsAction.InvalidateBoardIcon);
-                }
-                else
-                {
-                    controller.UpdateSettings(isEditing: controller.InEditMode,
-                                              isInFrame: true,
-                                              isAutoDeselecting: controller.RequireDeselect,
-                                              isInIconModeAuto: true);
-
-                    SettingsInteraction(SettingsAction.InvalidateBoardFrame);
-                }
+                SettingsInteraction(SettingsAction.InvalidateBoardFrame);
             }
 
             RefreshSettingsStatus();
@@ -422,7 +439,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             if (controller.InFramedMode)
             {
-                return "Sentence";
+                return controller.InFramedModeBottom ? "Sentence (B)" : "Sentence (U)";
             }
 
             if (controller.IconModeAuto)
@@ -440,7 +457,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// Settings interaction.
         /// </summary>
         /// <param name="obj">Object.</param>
-        private void SettingsInteraction(SettingsAction obj)
+        void SettingsInteraction(SettingsAction obj)
         {
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, obj);
 

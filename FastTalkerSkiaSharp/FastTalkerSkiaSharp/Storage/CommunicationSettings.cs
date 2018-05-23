@@ -44,5 +44,11 @@ namespace FastTalkerSkiaSharp.Storage
         /// </summary>
         /// <value><c>true</c> if in icon mode auto; otherwise, <c>false</c>.</value>
         public bool InIconModeAuto { get; set; }
+
+        /// <summary>
+        /// Is the board top oriented, in strip mode?
+        /// </summary>
+        /// <value><c>true</c> if is top oriented; otherwise, <c>false</c>.</value>
+        public bool IsBottomOriented { get; set; }
     }
 }

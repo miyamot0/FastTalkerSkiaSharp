@@ -55,6 +55,28 @@ namespace FastTalkerSkiaSharp.Helpers
             };
         }
 
+        public SkiaSharp.Elements.Rectangle BuildSentenceStripBottom()
+        {
+            SKSize sizeOfStrip = Constants.DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
+                                                                                          Constants.DeviceLayout.StripWidth,
+                                                                                          Constants.DeviceLayout.StripHeight);
+
+            return new SkiaSharp.Elements.Rectangle(SKRect.Create(Constants.DeviceLayout.Bezel,
+                                                                  canvasReference.CanvasSize.Height - sizeOfStrip.Height - Constants.DeviceLayout.Bezel,
+                                                                  sizeOfStrip.Width,
+                                                                  sizeOfStrip.Height))
+            {
+                FillColor = new SKColor(SKColors.White.Red,
+                                                  SKColors.White.Green,
+                                                  SKColors.White.Blue, 200),
+                BorderColor = new SKColor(SKColors.Black.Red,
+                                                    SKColors.Black.Green,
+                                                    SKColors.Black.Blue, 200),
+                Tag = Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.SentenceFrame),
+                IsStoredInAFolder = false,
+            };
+        }
+
         /// <summary>
         /// Construct the display-related content
         /// </summary>
@@ -86,6 +108,46 @@ namespace FastTalkerSkiaSharp.Helpers
             }
         }
 
+        /// <summary>
+        /// Build bottom-oriented static element
+        /// </summary>
+        /// <returns>The static element bottom.</returns>
+        /// <param name="resource">Resource.</param>
+        /// <param name="xPercent">X percent.</param>
+        /// <param name="yPercent">Y percent.</param>
+        /// <param name="tag">Tag.</param>
+        public SkiaSharp.Elements.Image BuildStaticElementBottom(string resource, float xPercent, float yPercent, int tag)
+        {
+            using (var stream = App.MainAssembly.GetManifestResourceStream(resource))
+            {
+
+                SKSize sizeOfEmitter = Constants.DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, xPercent, yPercent);
+
+                SkiaSharp.Elements.Image emitterReference = new SkiaSharp.Elements.Image(SkiaSharp.SKBitmap.Decode(stream))
+                {
+                    Tag = tag
+                };
+
+                SKPoint centerPoint = Constants.DeviceLayout.GetEmitterPoint(canvasReference.CanvasSize, sizeOfEmitter);
+
+                emitterReference.Bounds = SKRect.Create(centerPoint.X,
+                                                        canvasReference.CanvasSize.Height - sizeOfEmitter.Height - centerPoint.Y,
+                                                        sizeOfEmitter.Height,
+                                                        sizeOfEmitter.Height);
+
+                return emitterReference;
+            }
+        }
+
+        /// <summary>
+        /// DEPRECATED
+        /// </summary>
+        /// <returns>The static element.</returns>
+        /// <param name="resource">Resource.</param>
+        /// <param name="xPercent">X percent.</param>
+        /// <param name="yPercent">Y percent.</param>
+        /// <param name="tag">Tag.</param>
+        /// <param name="degrees">Degrees.</param>
         public SkiaSharp.Elements.Image BuildStaticElement(string resource, float xPercent, float yPercent, int tag, float degrees)
         {
             using (var stream = App.MainAssembly.GetManifestResourceStream(resource))
