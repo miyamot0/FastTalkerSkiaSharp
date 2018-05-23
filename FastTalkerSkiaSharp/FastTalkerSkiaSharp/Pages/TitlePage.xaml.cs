@@ -17,8 +17,6 @@ namespace FastTalkerSkiaSharp.Pages
 {
     public partial class TitlePage : Xamarin.Forms.ContentPage
     {
-        public System.Collections.Generic.List<SKImage> ImageCollection;
-
         SKPaint iconBackground;
         SKPaint IconBackground
         {
@@ -82,11 +80,13 @@ namespace FastTalkerSkiaSharp.Pages
         float xPos;
 
         SKSize sizeOfStrip;
+        SKSize sizeOfPanel;
 
         float textSize = 28f;
         float btnTextSize = 56f;
 
         SkiaSharp.Elements.Element _currentElement;
+        SkiaSharp.Elements.Image tempImage;
 
         uint animationLength = 300;
 
@@ -107,7 +107,7 @@ namespace FastTalkerSkiaSharp.Pages
             // Only animate once
             if (!isDrawing) return;
 
-            while (canvasTitle.CanvasSize.Width == 0)
+            while ((int) canvasTitle.CanvasSize.Width == 0)
             {
                 await System.Threading.Tasks.Task.Delay(50);
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "waiting...");
@@ -119,10 +119,8 @@ namespace FastTalkerSkiaSharp.Pages
 
             string[] title = { "F", "A", "S", "T", "", "T", "A", "L", "K", "E", "R" };
 
-            SkiaSharp.Elements.Image tempImage;
-
             sizeOfStrip = Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 0.05f, 5.0f);
-            SKSize sizeOfPanel = Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 10f);
+            sizeOfPanel = Constants.DeviceLayout.GetSizeByGrid(canvasTitle.CanvasSize, 10f, 10f);
 
             xPos = sizeOfStrip.Width;
 
@@ -135,8 +133,8 @@ namespace FastTalkerSkiaSharp.Pages
                                                                       yPercent: 1f,
                                                                       tag: -1);
 
-                    tempImage.X = canvasTitle.CanvasSize.Width / 2f - tempImage.Width / 2f;
-                    tempImage.Y = canvasTitle.CanvasSize.Height / 2f - tempImage.Height / 2f;
+                    tempImage.X = canvasTitle.CanvasSize.Width / 2f - tempImage.Width / 2f - (float)(Rng.Next(0, jitterSpan) - jitterSpan / 2);
+                    tempImage.Y = canvasTitle.CanvasSize.Height / 2f - tempImage.Height / 2f - (float)(Rng.Next(0, jitterSpan) - jitterSpan / 2);
 
                     tempImage.BorderColor = SKColors.Black;
                     tempImage.BorderWidth = 2f;
@@ -148,6 +146,31 @@ namespace FastTalkerSkiaSharp.Pages
             Animater(canvasTitle.Controller.Elements[currentItem],
                      xPos - (float)(Rng.Next(0, jitterSpanSide) - jitterSpanSide / 2),
                      (sizeOfStrip.Height / 3f) - (float)(Rng.Next(0, jitterSpan) - jitterSpan / 2));
+        }
+
+        /// <summary>
+        /// Clean up
+        /// </summary>
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            IconBackground.Dispose();
+            iconBackground = null;
+
+            IconOutline.Dispose();
+            iconOutline = null;
+
+            _currentElement = null;
+
+            tempImage.Bitmap.Dispose();
+            tempImage = null;
+
+            rng = null;
+
+            Instance = null;
+
+            canvasTitle.Elements.Clear();
         }
 
         /// <summary>
@@ -167,7 +190,6 @@ namespace FastTalkerSkiaSharp.Pages
             {
                 item.Location = new SKPoint(oldCenter.Left - (deltaX * (float)value),
                                             oldCenter.Top - (deltaY * (float)value));
-
             })
             .Commit(this, "Anim", length: animationLength, easing: Xamarin.Forms.Easing.SpringOut, finished: (e, i) =>
             {
@@ -307,7 +329,7 @@ namespace FastTalkerSkiaSharp.Pages
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Canvas_Touch(object sender, SkiaSharp.Views.Forms.SKTouchEventArgs e)
+        void Canvas_Touch(object sender, SkiaSharp.Views.Forms.SKTouchEventArgs e)
         {
             if (e.ActionType == SkiaSharp.Views.Forms.SKTouchAction.Pressed)
             {
