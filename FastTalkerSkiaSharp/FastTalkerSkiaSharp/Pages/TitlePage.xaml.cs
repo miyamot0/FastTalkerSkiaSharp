@@ -74,7 +74,7 @@ namespace FastTalkerSkiaSharp.Pages
         bool isDrawing = true;
 
         int currentItem = 0;
-        int jitterSpan = 80;
+        int jitterSpan = 120;
         int jitterSpanSide = 20;
 
         float xPos;
@@ -100,18 +100,13 @@ namespace FastTalkerSkiaSharp.Pages
         /// <summary>
         /// Fire event once layout is inflated
         /// </summary>
-        protected async override void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            // Only animate once
             if (!isDrawing) return;
 
-            while ((int) canvasTitle.CanvasSize.Width == 0)
-            {
-                await System.Threading.Tasks.Task.Delay(50);
-                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "waiting...");
-            }
+            Waiter();
 
             Instance = new Helpers.ImageBuilder(canvasTitle);
 
@@ -171,6 +166,15 @@ namespace FastTalkerSkiaSharp.Pages
             Instance = null;
 
             canvasTitle.Elements.Clear();
+        }
+
+        void Waiter()
+        {
+            while ((int) canvasTitle.CanvasSize.Width == 0)
+            {
+                System.Threading.Tasks.Task.Delay(50).RunSynchronously();
+                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "waiting...");
+            }
         }
 
         /// <summary>
@@ -322,6 +326,24 @@ namespace FastTalkerSkiaSharp.Pages
             canvasTitle.Controller.Elements.Add(btnText);
 
             #endregion
+
+            // Cleanup 
+            topText.Dispose();
+            topText = null;
+
+            subText.Dispose();
+            subText = null;
+
+            iconsText.Dispose();
+            iconsText = null;
+
+            iconsText2.Dispose();
+            iconsText2 = null;
+
+            button = null;
+
+            btnText.Dispose();
+            btnText = null;
         }
 
         /// <summary>
