@@ -116,7 +116,7 @@ namespace SkiaSharp.Elements
                     {
                         if (IsPressed)
                         {
-                            paint.ColorFilter = SKColorFilter.CreateLighting(SKColors.Black, SKColors.LightSlateGray);
+                            paint.ColorFilter = SKColorFilter.CreateLighting(SKColors.Black, SKColors.GreenYellow);
                         }
 
                         DrawBitmap(canvas, paint);
