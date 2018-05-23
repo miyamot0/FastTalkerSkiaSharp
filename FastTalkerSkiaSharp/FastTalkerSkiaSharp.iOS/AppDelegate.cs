@@ -12,6 +12,8 @@
 */
 
 using Foundation;
+using KeyboardOverlap.Forms.Plugin.iOSUnified;
+using Rg.Plugins.Popup;
 using UIKit;
 
 namespace FastTalkerSkiaSharp.iOS
@@ -21,7 +23,7 @@ namespace FastTalkerSkiaSharp.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            Rg.Plugins.Popup.Popup.Init();
+            Popup.Init();
 
             global::Xamarin.Forms.Forms.Init();
 
@@ -29,9 +31,9 @@ namespace FastTalkerSkiaSharp.iOS
             App.DisplayScreenHeight = (float)UIScreen.MainScreen.Bounds.Height;
             App.DisplayScaleFactor = (float)UIScreen.MainScreen.Scale;
 
-            LoadApplication(new App());
+            KeyboardOverlapRenderer.Init();
 
-			KeyboardOverlap.Forms.Plugin.iOSUnified.KeyboardOverlapRenderer.Init();
+            LoadApplication(new App());
 
             UIApplication.SharedApplication.SetStatusBarHidden(true, true);
             UIApplication.SharedApplication.StatusBarHidden = true;

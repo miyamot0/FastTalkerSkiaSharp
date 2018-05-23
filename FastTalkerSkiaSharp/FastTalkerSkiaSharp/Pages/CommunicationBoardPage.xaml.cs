@@ -35,6 +35,8 @@ namespace FastTalkerSkiaSharp.Pages
         int thresholdAdmin = 3;
         int thresholdReset = 10;
 
+        string resource;
+
         Interfaces.InterfaceSpeechOutput commInterface;
 
         public CommunicationBoardPage()
@@ -54,18 +56,29 @@ namespace FastTalkerSkiaSharp.Pages
         }
 
         /// <summary>
+        /// Gives the views time to size up
+        /// </summary>
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            await LoadingPrepAsync();
+        }
+
+        #region Save Methods
+
+        /// <summary>
         /// Saves the current board.
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">E.</param>
         async void SaveCurrentBoard(object sender, System.EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Saving (event-based)");
+            OutputDebug("Saving (event-based)");
 
             System.Collections.Generic.List<Storage.CommunicationIcon> toInsert = new System.Collections.Generic.List<Storage.CommunicationIcon>();
 
-            var currentItems = canvas.Elements?.Where(elem => elem.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication) ||
-                                                      elem.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder));
+            var currentItems = GetIconsUserInteractable();
 
             if (currentItems != null)
             {
@@ -92,7 +105,13 @@ namespace FastTalkerSkiaSharp.Pages
 
                 int saveResult = await App.Database.InsertOrUpdateAsync(toInsert);
 
-                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Results: Saved " + saveResult + " icons to db");
+                OutputDebug("Results: Saved " + saveResult + " icons to db");
+
+                toInsert.Clear();
+                toInsert = null;
+
+                currentItems.Clear();
+                currentItems = null;
             }
         }
 
@@ -103,20 +122,15 @@ namespace FastTalkerSkiaSharp.Pages
         /// <param name="e">E.</param>
         async void SaveCurrentSettings(object sender, System.EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Saving settings (event-based)");
+            OutputDebug("Saving settings (event-based)");
 
-            App.BoardSettings.InEditMode = canvas.Controller.InEditMode;
-            App.BoardSettings.InFramedMode = canvas.Controller.InFramedMode;
-            App.BoardSettings.RequireDeselect = canvas.Controller.RequireDeselect;
-            App.BoardSettings.InIconModeAuto = canvas.Controller.IconModeAuto;
+            CopySettingsFromController();
 
             if (App.BoardSettings.InFramedMode)
             {
                 App.BoardSettings.InIconModeAuto = false;
 
-                App.BoardSettings.IsBottomOriented = canvas.Controller.InFramedModeBottom;
-
-                string resource = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
+                resource = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
 
                 if (App.BoardSettings.IsBottomOriented)
                 {
@@ -152,10 +166,10 @@ namespace FastTalkerSkiaSharp.Pages
             }
             else
             {
-                string resourceStr = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
+                resource = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
 
                 canvas.Elements.Remove(emitterReference);
-                emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: resourceStr,
+                emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: resource,
                                                    xPercent: 2f,
                                                    yPercent: 1.5f,
                                                    tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
@@ -172,18 +186,18 @@ namespace FastTalkerSkiaSharp.Pages
 
             await App.Database.InsertOrUpdateAsync(App.BoardSettings);
 
+            if (canvas.Elements[canvas.Elements.IndexOf(emitterReference)].IsPressed)
+            {
+                canvas.Elements[canvas.Elements.IndexOf(emitterReference)].IsPressed = false;
+                canvas.InvalidateSurface();
+            }
+
             ClearIconsInPlay();
         }
 
-        /// <summary>
-        /// Gives the views time to size up
-        /// </summary>
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
+        #endregion
 
-            await LoadingPrepAsync();
-        }
+        #region Loading Methods
 
         /// <summary>
         /// Buy some time if android needs to inflate layouts
@@ -198,53 +212,21 @@ namespace FastTalkerSkiaSharp.Pages
                     System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "waiting...");
                 }
 
-                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "GetSettingsAsync");
-
+                OutputDebug("GetSettingsAsync");
                 await GetSettingsAsync();
 
-                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddStaticContent");
-
+                OutputDebug("AddStaticContent");
                 AddStaticContent();
 
-                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "GetIconsAsync");
-
+                OutputDebug("GetIconsAsync");
                 await GetIconsAsync();
 
-                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Loading..");
-
+                OutputDebug("Requesting permissions..");
                 await CheckPermissions();
-
-                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Requesting permissions..");
 
                 inInitialLoading = false;
 
                 await Xamarin.Forms.Application.Current.MainPage.Navigation.PushPopupAsync(new HelpPopup());
-            }
-        }
-
-        /// <summary>
-        /// Checks the permissions.
-        /// </summary>
-        async System.Threading.Tasks.Task CheckPermissions()
-        {
-            var cameraStatus = await Plugin.Permissions.CrossPermissions.Current.CheckPermissionStatusAsync(Plugin.Permissions.Abstractions.Permission.Camera);
-            var storageStatus = await Plugin.Permissions.CrossPermissions.Current.CheckPermissionStatusAsync(Plugin.Permissions.Abstractions.Permission.Storage);
-
-            if (cameraStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted || storageStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
-            {
-                var results = await Plugin.Permissions.CrossPermissions.Current.RequestPermissionsAsync(new[]
-                {
-                    Plugin.Permissions.Abstractions.Permission.Camera,
-                    Plugin.Permissions.Abstractions.Permission.Storage
-                });
-
-                cameraStatus = results[Plugin.Permissions.Abstractions.Permission.Camera];
-                storageStatus = results[Plugin.Permissions.Abstractions.Permission.Storage];
-            }
-
-            if (cameraStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted || storageStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
-            {
-                await Acr.UserDialogs.UserDialogs.Instance.AlertAsync("Permissions Denied", "Unable to take photos.");
             }
         }
 
@@ -261,14 +243,13 @@ namespace FastTalkerSkiaSharp.Pages
 
                 foreach (var icon in icons)
                 {
-                    System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose,
-                                    "Tag: " + icon.Tag +
-                                    " Name: " + icon.Text +
-                                    " Scale: " + icon.Scale +
-                                    " Local: " + icon.Local +
-                                    " Stored Bool: " + icon.IsStoredInFolder +
-                                    " Base64: " + icon.Base64 +
-                                    " FolderTag: " + icon.FolderContainingIcon);
+                    OutputDebug("Tag: " + icon.Tag +
+                                " Name: " + icon.Text +
+                                " Scale: " + icon.Scale +
+                                " Local: " + icon.Local +
+                                " Stored Bool: " + icon.IsStoredInFolder +
+                                " Base64: " + icon.Base64 +
+                                " FolderTag: " + icon.FolderContainingIcon);
 
                     if (icon.Local && icon.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication))
                     {
@@ -286,11 +267,11 @@ namespace FastTalkerSkiaSharp.Pages
             }
             else if (icons != null && icons.Count == 0)
             {
-                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "No icons");
+                OutputDebug("No icons");
             }
             else
             {
-                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Null");
+                OutputDebug("Null");
             }
 
             ClearIconsInPlay();
@@ -312,6 +293,55 @@ namespace FastTalkerSkiaSharp.Pages
                                              App.BoardSettings.InIconModeAuto,
                                              overridePrompt: true);
         }
+
+        #endregion
+
+        #region Element Building
+
+        /// <summary>
+        /// Adds the content of the static.
+        /// </summary>
+        void AddStaticContent()
+        {
+            OutputDebug("Adding Static Content");
+            OutputDebug("Width: " + canvas.CanvasSize.Width);
+            OutputDebug("Height: " + canvas.CanvasSize.Height);
+            OutputDebug("Layout Width: " + hackLayout.Width);
+            OutputDebug("Layout Height: " + hackLayout.Height);
+
+            resource = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
+
+            if (canvas.Controller.InFramedModeBottom)
+            {
+                stripReference = App.ImageBuilderInstance.BuildSentenceStripBottom();
+
+                emitterReference = App.ImageBuilderInstance.BuildStaticElementBottom(resource: resource,
+                                               xPercent: 2f,
+                                               yPercent: 1.5f,
+                                               tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+            }
+            else
+            {
+                stripReference = App.ImageBuilderInstance.BuildSentenceStrip();
+
+                emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: resource,
+                                                               xPercent: 2f,
+                                                               yPercent: 1.5f,
+                                                               tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
+
+
+            }
+
+            canvas.Elements.Add(stripReference);
+            canvas.Elements.SendToBack(stripReference);
+
+            canvas.Elements.Add(emitterReference);
+            canvas.Elements.SendToBack(emitterReference);
+        }
+
+        #endregion
+
+        #region Touch Interaction
 
         /// <summary>
         /// Keep icon within bounds of canvas
@@ -340,7 +370,7 @@ namespace FastTalkerSkiaSharp.Pages
         }
 
         /// <summary>
-        /// Canvases the touch.
+        /// Initial routing method
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="e">E.</param>
@@ -348,8 +378,8 @@ namespace FastTalkerSkiaSharp.Pages
         {
             e.Handled = true;
 
-            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "e.ActionType = " + e.ActionType.ToString());
-            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "e.InContact = " + e.InContact.ToString());
+            OutputDebug("e.ActionType = " + e.ActionType.ToString());
+            OutputDebug("e.InContact = " + e.InContact.ToString());
 
             switch (e.ActionType)
             {
@@ -394,7 +424,7 @@ namespace FastTalkerSkiaSharp.Pages
             switch (_currentElement.Tag)
             {
                 case (int)Elements.ElementRoles.Role.SentenceFrame:
-                    System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Hit sentence frame");
+                    OutputDebug("Hit sentence frame");
 
                     return;
 
@@ -404,11 +434,11 @@ namespace FastTalkerSkiaSharp.Pages
                     if (canvas.Controller.InEditMode)
                     {
                         canvas.Elements[canvas.Elements.IndexOf(emitterReference)].IsPressed = true;
-
                         canvas.InvalidateSurface();
 
-                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Hit settings (speech emitter)");
+                        OutputDebug("Hit settings (speech emitter)");
                         App.UserInputInstance.QueryUserMainSettingsAsync();
+
                     }
                     // Serves as speech emitter as normal
                     else
@@ -417,22 +447,22 @@ namespace FastTalkerSkiaSharp.Pages
 
                         canvas.InvalidateSurface();
 
-                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Hit speech emitter");
+                        OutputDebug("Hit speech emitter");
                         holdingEmitter = true;
-                        emitterPressTime = System.DateTime.Now;                        
+                        emitterPressTime = System.DateTime.Now;
                     }
 
                     return;
 
                 case (int)Elements.ElementRoles.Role.Folder:
-                    System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Hit Folder");
+                    OutputDebug("Hit Folder");
                     ClearIconsInPlay();
                     canvas.Elements.BringToFront(_currentElement);
 
                     return;
 
                 default:
-                    System.Diagnostics.Debug.WriteLineIf(outputVerbose, "In Default Hit");
+                    OutputDebug("In Default Hit");
                     ClearIconsInPlay();
                     canvas.Elements.BringToFront(_currentElement);
 
@@ -451,12 +481,12 @@ namespace FastTalkerSkiaSharp.Pages
                         e.Handled = true;
                     }
                     /* Pinned icons in sentence mode */
-                    else if (canvas.Controller.InFramedMode && 
+                    else if (canvas.Controller.InFramedMode &&
                              !canvas.Controller.InEditMode &&
-                             _currentElement.IsPinnedToSpot && 
+                             _currentElement.IsPinnedToSpot &&
                              !stripReference.Bounds.IntersectsWith(_currentElement.Bounds))
                     {
-                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Hit a pinned icon in sentence mode, outside of frame");
+                        OutputDebug("Hit a pinned icon in sentence mode, outside of frame");
 
                         e.Handled = true;
 
@@ -479,7 +509,7 @@ namespace FastTalkerSkiaSharp.Pages
             // If out of scope, return
             if (_currentElement == null) return;
 
-            System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Moving Event: " + e.ToString());
+            OutputDebug("Moving Event: " + e.ToString());
 
             switch (_currentElement.Tag)
             {
@@ -568,7 +598,7 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         if (App.UserInputInstance.AreModalsOpen()) return;
 
-                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Completed icon tap");
+                        OutputDebug("Completed icon tap");
 
                         if (App.InstanceModificationPage == null)
                         {
@@ -587,7 +617,7 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         if (App.UserInputInstance.AreModalsOpen()) return;
 
-                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Completed icon held > 3s");
+                        OutputDebug("Completed icon held > 3s");
 
                         if (App.InstanceModificationPage == null)
                         {
@@ -602,7 +632,7 @@ namespace FastTalkerSkiaSharp.Pages
                     }
                     else if (hasMoved && _currentElement.IsInsertableIntoFolder)
                     {
-                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Icon completed, has moved");
+                        OutputDebug("Icon completed, has moved");
 
                         System.Collections.Generic.IEnumerable<SkiaSharp.Elements.Element> folderOfInterest = canvas.Elements
                             .Where(elem => elem.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder) && !elem.IsStoredInAFolder)
@@ -621,7 +651,7 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         if (App.UserInputInstance.AreModalsOpen()) return;
 
-                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Completed folder tap");
+                        OutputDebug("Completed folder tap");
 
                         if (App.InstanceModificationPage == null)
                         {
@@ -640,7 +670,7 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         if (App.UserInputInstance.AreModalsOpen()) return;
 
-                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Completed folder hold");
+                        OutputDebug("Completed folder hold");
 
                         if (App.InstanceModificationPage == null)
                         {
@@ -660,7 +690,7 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         if (App.UserInputInstance.AreModalsOpen()) return;
 
-                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Hit a folder, in user mode: " + _currentElement.Text);
+                        OutputDebug("Hit a folder, in user mode: " + _currentElement.Text);
 
                         // This is where the current item is the folder in question
                         System.Collections.Generic.List<SkiaSharp.Elements.Element> itemsMatching = canvas.Controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == _currentElement.Text).ToList();
@@ -704,7 +734,7 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         if (App.UserInputInstance.AreModalsOpen()) return;
 
-                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Held a folder, in user mode: " + _currentElement.Text);
+                        OutputDebug("Held a folder, in user mode: " + _currentElement.Text);
 
                         // This is where the current item is the folder in question
                         System.Collections.Generic.List<SkiaSharp.Elements.Element> itemsMatching = canvas.Controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == _currentElement.Text).ToList();
@@ -753,8 +783,8 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         holdingEmitter = false;
 
-                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Seconds held: " + (System.DateTime.Now - emitterPressTime).TotalSeconds.ToString());
-                        System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Bottom Oriented: " + canvas.Controller.InFramedModeBottom);
+                        OutputDebug("Seconds held: " + (System.DateTime.Now - emitterPressTime).TotalSeconds.ToString());
+                        OutputDebug("Bottom Oriented: " + canvas.Controller.InFramedModeBottom);
 
                         // Enter into Edit Mode
                         if ((System.DateTime.Now - emitterPressTime).Seconds >= thresholdAdmin && !canvas.Controller.InEditMode)
@@ -767,11 +797,10 @@ namespace FastTalkerSkiaSharp.Pages
 
                             canvas.Controller.BackgroundColor = canvas.Controller.InEditMode ? SKColors.DarkOrange : SKColors.DimGray;
 
-                            string resource = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
+                            resource = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
 
                             canvas.Elements.Remove(emitterReference);
 
-                            //TODO
                             if (canvas.Controller.InFramedModeBottom && canvas.Controller.InFramedMode)
                             {
                                 canvas.Elements.Remove(emitterReference);
@@ -802,7 +831,7 @@ namespace FastTalkerSkiaSharp.Pages
                         {
                             // TODO: Confirm message?
 
-                            System.Diagnostics.Debug.WriteLineIf(outputVerbose, "In reset hook, returning to home");
+                            OutputDebug("In reset hook, returning to home");
 
                             Xamarin.Forms.Application.Current.MainPage = new TitlePage();
                         }
@@ -820,7 +849,7 @@ namespace FastTalkerSkiaSharp.Pages
                                 {
                                     var output = System.String.Join(" ", mIntersectingElements);
 
-                                    System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Verbal output (Frame): " + output);
+                                    OutputDebug("Verbal output (Frame): " + output);
 
                                     commInterface.SpeakText(text: output);
                                 }
@@ -834,7 +863,7 @@ namespace FastTalkerSkiaSharp.Pages
 
                                 if (selectedElements != null)
                                 {
-                                    System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Verbal output (Icon): " + selectedElements);
+                                    OutputDebug("Verbal output (Icon): " + selectedElements);
 
                                     commInterface.SpeakText(text: selectedElements);
                                 }
@@ -854,14 +883,64 @@ namespace FastTalkerSkiaSharp.Pages
             }
         }
 
+        #endregion
+
+        #region Helper Methods
+
+        /// <summary>
+        /// Simpler output in code
+        /// </summary>
+        /// <param name="msg">Message.</param>
+        void OutputDebug(string msg)
+        {
+            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, msg);
+        }
+
+        /// <summary>
+        /// Pull from controller into static container
+        /// </summary>
+        void CopySettingsFromController()
+        {
+            App.BoardSettings.InEditMode = canvas.Controller.InEditMode;
+            App.BoardSettings.InFramedMode = canvas.Controller.InFramedMode;
+            App.BoardSettings.RequireDeselect = canvas.Controller.RequireDeselect;
+            App.BoardSettings.InIconModeAuto = canvas.Controller.IconModeAuto;
+            App.BoardSettings.IsBottomOriented = canvas.Controller.InFramedModeBottom;            
+        }
+
+        /// <summary>
+        /// Checks the permissions.
+        /// </summary>
+        async System.Threading.Tasks.Task CheckPermissions()
+        {
+            var cameraStatus = await Plugin.Permissions.CrossPermissions.Current.CheckPermissionStatusAsync(Plugin.Permissions.Abstractions.Permission.Camera);
+            var storageStatus = await Plugin.Permissions.CrossPermissions.Current.CheckPermissionStatusAsync(Plugin.Permissions.Abstractions.Permission.Storage);
+
+            if (cameraStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted || storageStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
+            {
+                var results = await Plugin.Permissions.CrossPermissions.Current.RequestPermissionsAsync(new[]
+                {
+                    Plugin.Permissions.Abstractions.Permission.Camera,
+                    Plugin.Permissions.Abstractions.Permission.Storage
+                });
+
+                cameraStatus = results[Plugin.Permissions.Abstractions.Permission.Camera];
+                storageStatus = results[Plugin.Permissions.Abstractions.Permission.Storage];
+            }
+
+            if (cameraStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted || storageStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
+            {
+                await Acr.UserDialogs.UserDialogs.Instance.AlertAsync("Permissions Denied", "Unable to take photos.");
+            }
+        }
+
         /// <summary>
         /// Restores the icon.
         /// </summary>
         /// <param name="obj">Object.</param>
         void RestoreIcon(Helpers.ArgsSelectedIcon obj)
         {
-            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "RestoreIcon(ArgsSelectedIcon obj) Name: " + obj.Name +
-                                                " ImageSourceResource: " + obj.ImageSource);
+            OutputDebug("RestoreIcon(ArgsSelectedIcon obj) Name: " + obj.Name + " ImageSourceResource: " + obj.ImageSource);
 
             bool check = canvas.Elements.Where(elem => elem.IsStoredInAFolder && elem.Text == obj.Name).Any();
 
@@ -869,13 +948,12 @@ namespace FastTalkerSkiaSharp.Pages
             {
                 SkiaSharp.Elements.Element item = canvas?.Elements.Where(elem => elem.IsStoredInAFolder && elem.Text == obj.Name).First();
 
-                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Pass check? " + check + " Text: " + item.Text);
+                OutputDebug("Pass check? " + check + " Text: " + item.Text);
 
                 item.IsInsertableIntoFolder = false;
                 item.IsStoredInAFolder = false;
                 item.StoredFolderTag = "";
-                item.Location = Constants.DeviceLayout.GetCenterPointWithJitter(deviceSize: canvas.CanvasSize,
-                                                                      iconReference: item.Size);
+                item.Location = Constants.DeviceLayout.GetCenterPointWithJitter(deviceSize: canvas.CanvasSize, iconReference: item.Size);
 
                 canvas.Elements.BringToFront(item);
 
@@ -911,54 +989,25 @@ namespace FastTalkerSkiaSharp.Pages
         }
 
         /// <summary>
-        /// Adds the content of the static.
-        /// </summary>
-        void AddStaticContent()
-        {
-            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Adding Static Content");
-            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Width: " + canvas.CanvasSize.Width);
-            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Height: " + canvas.CanvasSize.Height);
-
-            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Layout Width: " + hackLayout.Width);
-            System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Layout Height: " + hackLayout.Height);
-
-            string resourceStr = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
-
-            if (canvas.Controller.InFramedModeBottom)
-            {
-                stripReference = App.ImageBuilderInstance.BuildSentenceStripBottom();
-
-                emitterReference = App.ImageBuilderInstance.BuildStaticElementBottom(resource: resourceStr,
-                                               xPercent: 2f,
-                                               yPercent: 1.5f,
-                                               tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
-            }
-            else
-            {
-                stripReference = App.ImageBuilderInstance.BuildSentenceStrip();
-
-                emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: resourceStr,
-                                                               xPercent: 2f,
-                                                               yPercent: 1.5f,
-                                                               tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
-
-
-            }
-
-            canvas.Elements.Add(stripReference);
-            canvas.Elements.SendToBack(stripReference);
-
-            canvas.Elements.Add(emitterReference);
-            canvas.Elements.SendToBack(emitterReference);
-        }
-
-        /// <summary>
         /// Method for sending a referenced element to the back
         /// </summary>
         /// <param name="item">Item.</param>
         void SendReferenceToBack(SkiaSharp.Elements.Element item)
         {
-            canvas.Elements.SendToBack(canvas.Elements.ElementAt(canvas.Elements.IndexOf(item)));            
+            canvas.Elements.SendToBack(canvas.Elements.ElementAt(canvas.Elements.IndexOf(item)));
         }
+
+        /// <summary>
+        /// Get icons that are useful from storage
+        /// </summary>
+        /// <returns>The icons user interactable.</returns>
+        System.Collections.Generic.List<SkiaSharp.Elements.Element> GetIconsUserInteractable()
+        {
+            return canvas.Elements?.Where(elem => elem.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication) ||
+                                          elem.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder)).ToList();
+        }
+
+        #endregion
+
     }
 }
