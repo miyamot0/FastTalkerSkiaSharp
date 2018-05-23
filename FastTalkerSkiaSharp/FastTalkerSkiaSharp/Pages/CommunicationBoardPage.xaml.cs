@@ -22,7 +22,8 @@ namespace FastTalkerSkiaSharp.Pages
         SkiaSharp.Elements.Element _currentElement;
         SKPoint? _startLocation;
 
-        SkiaSharp.Elements.Element emitterReference, stripReference;
+        SkiaSharp.Elements.Element stripReference;
+        SkiaSharp.Elements.Image emitterReference;
 
         System.DateTime emitterPressTime;
         System.DateTime itemPressTime;
@@ -365,12 +366,20 @@ namespace FastTalkerSkiaSharp.Pages
                     // Serves as Settings button in edit mode
                     if (canvas.Controller.InEditMode)
                     {
+                        canvas.Elements[canvas.Elements.IndexOf(emitterReference)].IsPressed = true;
+
+                        canvas.InvalidateSurface();
+
                         System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Hit settings (speech emitter)");
                         App.UserInputInstance.QueryUserMainSettingsAsync();
                     }
                     // Serves as speech emitter as normal
                     else
                     {
+                        canvas.Elements[canvas.Elements.IndexOf(emitterReference)].IsPressed = true;
+
+                        canvas.InvalidateSurface();
+
                         System.Diagnostics.Debug.WriteLineIf(outputVerbose, "Hit speech emitter");
                         holdingEmitter = true;
                         emitterPressTime = System.DateTime.Now;                        
@@ -506,6 +515,12 @@ namespace FastTalkerSkiaSharp.Pages
         /// <param name="outputVerbose"></param>
         async void ProcessCompletedTouchEvent(SkiaSharp.Views.Forms.SKTouchEventArgs e, bool outputVerbose = false)
         {
+            if (canvas.Elements[canvas.Elements.IndexOf(emitterReference)].IsPressed)
+            {
+                canvas.Elements[canvas.Elements.IndexOf(emitterReference)].IsPressed = false;
+                canvas.InvalidateSurface();
+            }
+
             // If out of scope, return
             if (_currentElement == null) return;
 

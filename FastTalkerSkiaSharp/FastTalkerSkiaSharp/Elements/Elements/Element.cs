@@ -204,6 +204,16 @@ namespace SkiaSharp.Elements
                 Invalidate();
             }
         }
+
+        bool _isPressed = false;
+        public bool IsPressed
+        {
+            get => _isPressed;
+            set
+            {
+                _isPressed = value;
+            }
+        }
         
         public virtual bool EnableDrag { get; set; }
 
@@ -270,9 +280,6 @@ namespace SkiaSharp.Elements
         {
             if (this.IsStoredInAFolder) return;
 
-            // TODO: remove separate setting icon
-            //if (Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Settings) && !ParentController.InEditMode) return;
-
             if (Tag == ElementRoles.GetRoleInt(ElementRoles.Role.SentenceFrame) && !ParentController.InFramedMode) return;
 
             if (Transformation != null)
@@ -286,6 +293,7 @@ namespace SkiaSharp.Elements
             // This is the communication tag, w/o access to the other projects
             if (this.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication))
             {
+                // Draws highlight
                 if (ParentController.InFramedMode)
                 {
                     if (IsSpeakable)
@@ -317,6 +325,7 @@ namespace SkiaSharp.Elements
                     }
                 }
 
+                // Draws to specified location
                 if (IsPinnedToSpot)
                 {
                     var cirleWidth = _bounds.Width * 0.1f;
