@@ -634,12 +634,9 @@ namespace FastTalkerSkiaSharp.Pages
                     {
                         OutputDebug("Icon completed, has moved");
 
-                        System.Collections.Generic.IEnumerable<SkiaSharp.Elements.Element> folderOfInterest = canvas.Elements
-                            .Where(elem => elem.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder) && !elem.IsStoredInAFolder)
-                                      .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds));
+                        var folderOfInterest = GetFoldersOfInterest();
 
-                        App.UserInputInstance.InsertIntoFolder(_currentElement: _currentElement,
-                                                               folderOfInterest: folderOfInterest);
+                        App.UserInputInstance.InsertIntoFolder(_currentElement: _currentElement, folderOfInterest: folderOfInterest);
                     }
 
                     e.Handled = true;
@@ -693,7 +690,7 @@ namespace FastTalkerSkiaSharp.Pages
                         OutputDebug("Hit a folder, in user mode: " + _currentElement.Text);
 
                         // This is where the current item is the folder in question
-                        System.Collections.Generic.List<SkiaSharp.Elements.Element> itemsMatching = canvas.Controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == _currentElement.Text).ToList();
+                        var itemsMatching = GetItemsMatching();
 
                         // Leave if empty
                         if (itemsMatching == null)
@@ -737,7 +734,7 @@ namespace FastTalkerSkiaSharp.Pages
                         OutputDebug("Held a folder, in user mode: " + _currentElement.Text);
 
                         // This is where the current item is the folder in question
-                        System.Collections.Generic.List<SkiaSharp.Elements.Element> itemsMatching = canvas.Controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == _currentElement.Text).ToList();
+                        var itemsMatching = GetItemsMatching();
 
                         // Leave if empty
                         if (itemsMatching == null)
@@ -822,7 +819,6 @@ namespace FastTalkerSkiaSharp.Pages
 
                             SendReferenceToBack(emitterReference);
 
-
                             ClearIconsInPlay();
 
                         }
@@ -840,10 +836,7 @@ namespace FastTalkerSkiaSharp.Pages
                         {
                             if (canvas.Controller.InFramedMode)
                             {
-                                var mIntersectingElements = canvas?.Elements
-                                                                   .Where(elem => elem.IsSpeakable && elem.Tag != Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder))
-                                                                   .OrderBy(elem => elem.Left)
-                                                                   .Select(elem => elem.Text);
+                                var mIntersectingElements = GetSentenceContent();
 
                                 if (mIntersectingElements != null && mIntersectingElements.Count() > 0)
                                 {
@@ -856,10 +849,7 @@ namespace FastTalkerSkiaSharp.Pages
                             }
                             else if (!canvas.Controller.IconModeAuto)
                             {
-                                var selectedElements = canvas?.Elements
-                                                              .Where(elem => elem.IsMainIconInPlay && elem.Tag != Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder))
-                                                              .Select(elem => elem.Text)
-                                                              .FirstOrDefault();
+                                var selectedElements = GetMainIconInPlay();
 
                                 if (selectedElements != null)
                                 {
@@ -1005,6 +995,32 @@ namespace FastTalkerSkiaSharp.Pages
         {
             return canvas.Elements?.Where(elem => elem.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication) ||
                                           elem.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder)).ToList();
+        }
+
+        System.Collections.Generic.IEnumerable<SkiaSharp.Elements.Element> GetFoldersOfInterest()
+        {
+            return canvas.Elements.Where(elem => elem.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder) && !elem.IsStoredInAFolder)
+                                  .Where(folder => folder.Bounds.IntersectsWith(_currentElement.Bounds));            
+        }
+
+        System.Collections.Generic.List<SkiaSharp.Elements.Element> GetItemsMatching()
+        {
+            return canvas.Controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == _currentElement.Text).ToList();
+        }
+
+        System.Collections.Generic.IEnumerable<string> GetSentenceContent()
+        {
+            return canvas?.Elements.Where(elem => elem.IsSpeakable && elem.Tag != Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder))
+                          .OrderBy(elem => elem.Left)
+                          .Select(elem => elem.Text);
+        }
+
+        string GetMainIconInPlay()
+        {
+            return canvas?.Elements
+                          .Where(elem => elem.IsMainIconInPlay && elem.Tag != Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder))
+                          .Select(elem => elem.Text)
+                          .FirstOrDefault();
         }
 
         #endregion
