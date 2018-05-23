@@ -145,6 +145,9 @@ namespace FastTalkerSkiaSharp.Pages
                     canvas.Elements.Add(stripReference);
                 }
 
+                SendReferenceToBack(stripReference);
+                SendReferenceToBack(emitterReference);
+
                 canvas.InvalidateSurface();
             }
             else
@@ -157,6 +160,8 @@ namespace FastTalkerSkiaSharp.Pages
                                                    yPercent: 1.5f,
                                                    tag: Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter));
                 canvas.Elements.Add(emitterReference);
+
+                SendReferenceToBack(emitterReference);
             }
 
 
@@ -786,6 +791,8 @@ namespace FastTalkerSkiaSharp.Pages
                                 canvas.Elements.Add(emitterReference);
                             }
 
+                            SendReferenceToBack(emitterReference);
+
 
                             ClearIconsInPlay();
 
@@ -921,8 +928,6 @@ namespace FastTalkerSkiaSharp.Pages
             {
                 stripReference = App.ImageBuilderInstance.BuildSentenceStripBottom();
 
-                canvas.Elements.Add(stripReference);
-
                 emitterReference = App.ImageBuilderInstance.BuildStaticElementBottom(resource: resourceStr,
                                                xPercent: 2f,
                                                yPercent: 1.5f,
@@ -941,8 +946,19 @@ namespace FastTalkerSkiaSharp.Pages
             }
 
             canvas.Elements.Add(stripReference);
+            canvas.Elements.SendToBack(stripReference);
 
             canvas.Elements.Add(emitterReference);
+            canvas.Elements.SendToBack(emitterReference);
+        }
+
+        /// <summary>
+        /// Method for sending a referenced element to the back
+        /// </summary>
+        /// <param name="item">Item.</param>
+        void SendReferenceToBack(SkiaSharp.Elements.Element item)
+        {
+            canvas.Elements.SendToBack(canvas.Elements.ElementAt(canvas.Elements.IndexOf(item)));            
         }
     }
 }
