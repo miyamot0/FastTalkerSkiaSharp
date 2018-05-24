@@ -105,8 +105,10 @@ namespace SkiaSharp.Elements
         // What folder is this stored in?
         public string StoredFolderTag { get; set; }
 
+        // Is this icon kept in a constant space?
         public bool IsPinnedToSpot { get; set; }
 
+        // Current scale of icon
         public float CurrentScale { get; set; }
 
         ElementsController _parentController = null;

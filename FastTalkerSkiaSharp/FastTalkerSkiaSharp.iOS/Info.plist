@@ -22,8 +22,6 @@
 	<string>FastTalker</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.smallnstats.FastTalkerSkiaSharp</string>
-	<key>CFBundleVersion</key>
-	<string>1.0.0.8</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
@@ -46,7 +44,9 @@
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>CFBundleVersion</key>
+	<string>1.0.0.9</string>
 	<key>CFBundleShortVersionString</key>
-	<string>8</string>
+	<string>9</string>
 </dict>
 </plist>

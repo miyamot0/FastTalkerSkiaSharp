@@ -222,9 +222,20 @@ namespace FastTalkerSkiaSharp.Pages
             var centerX = canvasTitle.CanvasSize.Width / 2f;
             var centerY = canvasTitle.CanvasSize.Height / 2f;
 
+            string versionString = "";
+
+            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
+            {
+                versionString = Xamarin.Forms.DependencyService.Get<Interfaces.InterfaceVersioning>().GetBuildString();
+            }
+            else if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+            {
+                versionString = Xamarin.Forms.DependencyService.Get<Interfaces.InterfaceVersioning>().GetVersionString();
+            }
+
             #region Upper Text
 
-            var topText = new SkiaSharp.Elements.Text("Developed by Shawn Gilroy (C) 2017")
+            var topText = new SkiaSharp.Elements.Text("Developed by Shawn Gilroy (C) 2017 " + string.Format("({0})", versionString))
             {
                 Size = new SKSize(canvasTitle.CanvasSize.Width, canvasTitle.CanvasSize.Height / 10f),
                 ForeColor = SKColors.White,
