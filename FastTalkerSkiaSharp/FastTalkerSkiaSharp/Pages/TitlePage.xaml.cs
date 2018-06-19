@@ -100,13 +100,13 @@ namespace FastTalkerSkiaSharp.Pages
         /// <summary>
         /// Fire event once layout is inflated
         /// </summary>
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
 
             if (!isDrawing) return;
 
-            await WaiterAsync();
+            Waiter();
 
             Instance = new Helpers.ImageBuilder(canvasTitle);
 
@@ -168,11 +168,11 @@ namespace FastTalkerSkiaSharp.Pages
             canvasTitle.Elements.Clear();
         }
 
-        async System.Threading.Tasks.Task WaiterAsync()
+        void Waiter()
         {
             while ((int) canvasTitle.CanvasSize.Width == 0)
             {
-                await System.Threading.Tasks.Task.Delay(50);
+                System.Threading.Tasks.Task.Delay(50).RunSynchronously();
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "waiting...");
             }
         }
