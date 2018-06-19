@@ -65,6 +65,16 @@ namespace FastTalkerSkiaSharp.Pages
             await LoadingPrepAsync();
         }
 
+        /// <summary>
+        /// Override back button
+        /// </summary>
+        /// <returns></returns>
+        protected override bool OnBackButtonPressed()
+        {
+            base.OnBackButtonPressed();
+            return true;
+        }
+
         #region Save Methods
 
         /// <summary>
@@ -204,26 +214,26 @@ namespace FastTalkerSkiaSharp.Pages
         /// </summary>
         public async System.Threading.Tasks.Task LoadingPrepAsync()
         {
+            while ((int)canvas.CanvasSize.Width == 0)
+            {
+                await System.Threading.Tasks.Task.Delay(50);
+                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "waiting...");
+            }
+
+            OutputDebug("GetSettingsAsync");
+            await GetSettingsAsync();
+
+            OutputDebug("AddStaticContent");
+            AddStaticContent();
+
+            OutputDebug("GetIconsAsync");
+            await GetIconsAsync();
+
+            OutputDebug("Requesting permissions..");
+            await CheckPermissions();
+
             if (inInitialLoading)
             {
-                while ((int)canvas.CanvasSize.Width == 0)
-                {
-                    await System.Threading.Tasks.Task.Delay(50);
-                    System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "waiting...");
-                }
-
-                OutputDebug("GetSettingsAsync");
-                await GetSettingsAsync();
-
-                OutputDebug("AddStaticContent");
-                AddStaticContent();
-
-                OutputDebug("GetIconsAsync");
-                await GetIconsAsync();
-
-                OutputDebug("Requesting permissions..");
-                await CheckPermissions();
-
                 inInitialLoading = false;
 
                 await Xamarin.Forms.Application.Current.MainPage.Navigation.PushPopupAsync(new HelpPopup());
@@ -906,7 +916,8 @@ namespace FastTalkerSkiaSharp.Pages
             var cameraStatus = await Plugin.Permissions.CrossPermissions.Current.CheckPermissionStatusAsync(Plugin.Permissions.Abstractions.Permission.Camera);
             var storageStatus = await Plugin.Permissions.CrossPermissions.Current.CheckPermissionStatusAsync(Plugin.Permissions.Abstractions.Permission.Storage);
 
-            if (cameraStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted || storageStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
+            if (cameraStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted || 
+                storageStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
             {
                 var results = await Plugin.Permissions.CrossPermissions.Current.RequestPermissionsAsync(new[]
                 {
@@ -918,7 +929,9 @@ namespace FastTalkerSkiaSharp.Pages
                 storageStatus = results[Plugin.Permissions.Abstractions.Permission.Storage];
             }
 
-            if (cameraStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted || storageStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
+            // 
+            if (cameraStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted || 
+                storageStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
             {
                 await Acr.UserDialogs.UserDialogs.Instance.AlertAsync("Permissions Denied", "Unable to take photos.");
             }
