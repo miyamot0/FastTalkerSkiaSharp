@@ -220,20 +220,20 @@ namespace FastTalkerSkiaSharp.Pages
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "waiting...");
             }
 
-            OutputDebug("GetSettingsAsync");
-            await GetSettingsAsync();
-
-            OutputDebug("AddStaticContent");
-            AddStaticContent();
-
-            OutputDebug("GetIconsAsync");
-            await GetIconsAsync();
-
-            OutputDebug("Requesting permissions..");
-            await CheckPermissions();
-
             if (inInitialLoading)
             {
+                OutputDebug("GetSettingsAsync");
+                await GetSettingsAsync();
+
+                OutputDebug("AddStaticContent");
+                AddStaticContent();
+
+                OutputDebug("GetIconsAsync");
+                await GetIconsAsync();
+
+                OutputDebug("Requesting permissions..");
+                await CheckPermissions();
+
                 inInitialLoading = false;
 
                 await Xamarin.Forms.Application.Current.MainPage.Navigation.PushPopupAsync(new HelpPopup());
@@ -313,11 +313,10 @@ namespace FastTalkerSkiaSharp.Pages
         /// </summary>
         void AddStaticContent()
         {
-            OutputDebug("Adding Static Content");
-            OutputDebug("Width: " + canvas.CanvasSize.Width);
-            OutputDebug("Height: " + canvas.CanvasSize.Height);
-            OutputDebug("Layout Width: " + hackLayout.Width);
-            OutputDebug("Layout Height: " + hackLayout.Height);
+            OutputDebug("Adding Static Content" +
+                        " Width: " + canvas.CanvasSize.Width + " Height: " + canvas.CanvasSize.Height +
+                        " Layout Width: " + hackLayout.Width +
+                        " Layout Height: " + hackLayout.Height);
 
             resource = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
 
@@ -388,8 +387,9 @@ namespace FastTalkerSkiaSharp.Pages
         {
             e.Handled = true;
 
-            OutputDebug("e.ActionType = " + e.ActionType.ToString());
-            OutputDebug("e.InContact = " + e.InContact.ToString());
+            OutputDebug(" e.ActionType = " + e.ActionType.ToString() + 
+                        " e.InContact = " + e.InContact.ToString() +
+                        " Icons: " + canvas.Elements.Count);
 
             switch (e.ActionType)
             {

@@ -59,7 +59,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// Add icon from local
         /// </summary>
         /// <param name="obj">Object.</param>
-        private void SettingsIconInteraction(ArgsSelectedIcon obj)
+        void SettingsIconInteraction(ArgsSelectedIcon obj)
         {
             canvasRef.Elements.Add(App.ImageBuilderInstance.BuildCommunicationIconLocal(obj));
 
