@@ -806,11 +806,15 @@ namespace FastTalkerSkiaSharp.Pages
 
                             resource = App.BoardSettings.InEditMode ? "FastTalkerSkiaSharp.Images.Settings.png" : "FastTalkerSkiaSharp.Images.Speaker.png";
 
-                            canvas.Elements.Remove(emitterReference);
-
                             if (canvas.Controller.InFramedModeBottom && canvas.Controller.InFramedMode)
                             {
-                                canvas.Elements.Remove(emitterReference);
+                                var list = canvas.Elements.Where(elem => elem.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter)).ToList();
+
+                                foreach (var icon in list)
+                                {
+                                    canvas.Elements.Remove(icon);
+                                }
+
                                 emitterReference = App.ImageBuilderInstance.BuildStaticElementBottom(resource: resource,
                                                                    xPercent: 2f,
                                                                    yPercent: 1.5f,
@@ -819,7 +823,13 @@ namespace FastTalkerSkiaSharp.Pages
                             }
                             else
                             {
-                                canvas.Elements.Remove(emitterReference);
+                                var list = canvas.Elements.Where(elem => elem.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Emitter)).ToList();
+
+                                foreach (var icon in list)
+                                {
+                                    canvas.Elements.Remove(icon);
+                                }
+
                                 emitterReference = App.ImageBuilderInstance.BuildStaticElement(resource: resource,
                                                                    xPercent: 2f,
                                                                    yPercent: 1.5f,
@@ -929,7 +939,6 @@ namespace FastTalkerSkiaSharp.Pages
                 storageStatus = results[Plugin.Permissions.Abstractions.Permission.Storage];
             }
 
-            // 
             if (cameraStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted || 
                 storageStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
             {
