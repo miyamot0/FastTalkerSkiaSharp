@@ -79,4 +79,4 @@ This is currently under active development and evaluation.
 
 ### License
 ----
-Fast Talker (Skia port) - Copyright Shawn Gilroy, Shawn P. Gilroy. MPL Version 2.0
+Fast Talker (Skia port) - Copyright Shawn Gilroy, Shawn P. Gilroy. MIT
