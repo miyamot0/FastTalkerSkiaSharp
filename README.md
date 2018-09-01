@@ -35,8 +35,8 @@ Fast Talker (Skia port) is a native extension of earlier work to establish a fre
 
 ### Derivative Works
 Fast Talker is a derivative work of an earlier project and uses licensed software:
-* [Fast Talker](https://github.com/miyamot0/FastTalker) - [MPL-2.0](https://opensource.org/licenses/MPL-2.0) - Copyright 2016-2018 Shawn Gilroy. [www.smallnstats.com](http://www.smallnstats.com)
-* [Cross-Platform-Communication-App](https://github.com/miyamot0/Cross-Platform-Communication-App) - [MPL-2.0](https://opensource.org/licenses/MPL-2.0) - Copyright 2016-2017 Shawn Gilroy. [www.smallnstats.com](http://www.smallnstats.com)
+* [Fast Talker](https://github.com/miyamot0/FastTalker) - MIT - Copyright 2016-2018 Shawn Gilroy.
+* [Cross-Platform-Communication-App](https://github.com/miyamot0/Cross-Platform-Communication-App) - MIT - Copyright 2016-2017 Shawn Gilroy. [www.smallnstats.com](http://www.smallnstats.com)
 
 Fast Talker uses licensed visual images in order to operate:
 * [Mulberry Symbols](https://github.com/straight-street/mulberry-symbols) - [CC-BY-SA 2.0.](http://creativecommons.org/licenses/by-sa/2.0/uk/) - Copyright 2008-2012 Garry Paxton. [www.straight-street-.com](http://straight-street.com/)
