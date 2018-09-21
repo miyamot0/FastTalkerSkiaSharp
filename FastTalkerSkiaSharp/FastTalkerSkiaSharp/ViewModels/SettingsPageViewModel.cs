@@ -1,24 +1,36 @@
-﻿/*
-   Copyright February 8, 2016 Shawn Gilroy
+﻿/* 
+    The MIT License
 
-   This file is part of Fast Talker
-  
-   This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL 
-   was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+    Copyright February 8, 2016 Shawn Gilroy. http://www.smallnstats.com
 
-   The Fast Talker is a tool to assist clinicans and researchers in the treatment of communication disorders.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-   Email: shawn(dot)gilroy(at)temple.edu
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
 */
 
 using System.Linq;
+using FastTalkerSkiaSharp.Controls;
 using Rg.Plugins.Popup.Extensions;
 
 namespace FastTalkerSkiaSharp.ViewModels
 {
     public class SettingsPageViewModel : PopupUpViewModel
     {
-        SkiaSharp.Elements.ElementsController controller;
+        FieldControl controller;
 
         public System.Windows.Input.ICommand CommandSaveBoard { get; set; }
         public System.Windows.Input.ICommand CommandDeselecting { get; set; }
@@ -32,9 +44,9 @@ namespace FastTalkerSkiaSharp.ViewModels
 
         public System.Windows.Input.ICommand CommandClose { get; set; }
 
-        public event System.Action<Helpers.ArgsSelectedIcon> SaveCommunicationIconEvent = delegate { };
+        public event System.Action<Helpers.ArgsSelectedIcon> SaveCommunicationSelectionEvent = delegate { };
         public event System.Action<Helpers.ArgsSelectedIcon> SaveFolderEvent = delegate { };
-        public event System.Action<SkiaSharp.Elements.Element> SaveCommunicationElementEvent = delegate { };
+        public event System.Action<Icon> SaveCommunicationIconEvent = delegate { };
 
         public enum SettingsAction
         {
@@ -76,7 +88,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// Set up VM
         /// </summary>
         /// <param name="_controller">Controller.</param>
-        public SettingsPageViewModel(SkiaSharp.Elements.ElementsController _controller)
+        public SettingsPageViewModel(FieldControl _controller)
         {
             controller = _controller;
 
@@ -202,7 +214,7 @@ namespace FastTalkerSkiaSharp.ViewModels
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "AddIconLocal() post");
 
             CommunicationIconPickerViewModel viewModel = new CommunicationIconPickerViewModel();
-            viewModel.IconConstructed += SaveCommunicationIconEvent;
+            viewModel.IconConstructed += SaveCommunicationSelectionEvent;
 
             Pages.CommunicationIconPicker newCommunicationPage = new Pages.CommunicationIconPicker()
             {
@@ -231,7 +243,7 @@ namespace FastTalkerSkiaSharp.ViewModels
 
             Storage.CommunicationIcon dynamicIcon = new Storage.CommunicationIcon()
             {
-                Tag = Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication),
+                Tag = IconRoles.GetRoleInt(IconRoles.Role.Communication),
                 Text = base64[0],
                 Local = false,
                 IsStoredInFolder = false,
@@ -242,7 +254,7 @@ namespace FastTalkerSkiaSharp.ViewModels
                 Y = -1
             };
 
-            SkiaSharp.Elements.Image testImage = null;
+            IconImage testImage = null;
 
             try
             {
@@ -253,7 +265,7 @@ namespace FastTalkerSkiaSharp.ViewModels
                 return;
             }
 
-            SaveCommunicationElementEvent(testImage);
+            SaveCommunicationIconEvent(testImage);
         }
 
         /// <summary>
@@ -316,7 +328,7 @@ namespace FastTalkerSkiaSharp.ViewModels
 
                     Storage.CommunicationIcon dynamicIcon = new Storage.CommunicationIcon()
                     {
-                        Tag = Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication),
+                        Tag = IconRoles.GetRoleInt(IconRoles.Role.Communication),
                         Text = userInput.Text,
                         Local = false,
                         IsStoredInFolder = false,
@@ -327,7 +339,7 @@ namespace FastTalkerSkiaSharp.ViewModels
                         Y = -1
                     };
 
-                    SkiaSharp.Elements.Image testImage = null;
+                    IconImage testImage = null;
 
                     try
                     {
@@ -338,7 +350,7 @@ namespace FastTalkerSkiaSharp.ViewModels
                         return;
                     }
 
-                    SaveCommunicationElementEvent(testImage);
+                    SaveCommunicationIconEvent(testImage);
                 }
             }
             else if (status != Plugin.Permissions.Abstractions.PermissionStatus.Unknown)
@@ -354,7 +366,7 @@ namespace FastTalkerSkiaSharp.ViewModels
         {
             await Xamarin.Forms.Application.Current.MainPage.Navigation.PopAllPopupAsync();
 
-            System.Collections.Generic.IEnumerable<SkiaSharp.Elements.Element> foldersInField = controller.Elements.Where(elem => elem.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder));
+            System.Collections.Generic.IEnumerable<Icon> foldersInField = controller.Icons.Where(elem => elem.Tag == IconRoles.GetRoleInt(IconRoles.Role.Folder));
 
             FolderIconPickerViewModel viewModel = new FolderIconPickerViewModel(foldersInField);
             viewModel.FolderConstructed += SaveFolderEvent;
@@ -469,9 +481,9 @@ namespace FastTalkerSkiaSharp.ViewModels
                     break;
 
                 case SettingsAction.InvalidateBoardIcon:
-                    for (int i = 0; i < controller.Elements.Count; i++)
+                    for (int i = 0; i < controller.Icons.Count; i++)
                     {
-                        controller.Elements[i].IsMainIconInPlay = false;
+                        controller.Icons[i].IsMainIconInPlay = false;
                     }
 
                     controller.Invalidate();
@@ -479,9 +491,9 @@ namespace FastTalkerSkiaSharp.ViewModels
                     break;
 
                 case SettingsAction.InvalidateBoardFrame:
-                    for (int i = 0; i < controller.Elements.Count; i++)
+                    for (int i = 0; i < controller.Icons.Count; i++)
                     {
-                        controller.Elements[i].IsMainIconInPlay = false;
+                        controller.Icons[i].IsMainIconInPlay = false;
                     }
 
                     controller.Invalidate();

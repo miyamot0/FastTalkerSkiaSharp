@@ -22,28 +22,22 @@
     THE SOFTWARE.
 */
 
-using Xamarin.Forms;
+using FastTalkerSkiaSharp.Controls;
 
-namespace FastTalkerSkiaSharp.Models
+namespace FastTalkerSkiaSharp.Interfaces
 {
-    public class DisplayImageModel
+    public interface InterfaceRedraw
     {
-        /// <summary>
-        /// Name, which is displayed
-        /// </summary>
-        /// <value>The name.</value>
-        public string Name { get; set; }
+        void Invalidate();
+    }
 
-        /// <summary>
-        /// ImageSource, location of image from embedded resource
-        /// </summary>
-        /// <value>The image.</value>
-		public ImageSource Image { get; set; }
+    public interface IconContainer : InterfaceRedraw
+    {
 
-        /// <summary>
-        /// Rotation
-        /// </summary>
-        /// <value>The rotation.</value>
-        public int Rotation { get; set; } = 0;
+    }
+
+    public interface IconsCollection : IconContainer
+    {
+        IconCollection Icons { get; }
     }
 }

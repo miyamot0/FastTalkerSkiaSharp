@@ -1,34 +1,37 @@
-﻿/*
-   Copyright February 8, 2016 Shawn Gilroy
+﻿/* 
+    The MIT License
 
-   This file is part of Fast Talker
-  
-   This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL 
-   was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+    Copyright February 8, 2016 Shawn Gilroy. http://www.smallnstats.com
 
-   The Fast Talker is a tool to assist clinicans and researchers in the treatment of communication disorders.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-   Email: shawn(dot)gilroy(at)temple.edu
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
 
-   =========================================================================================================
-   
-   Based on SkiaSharp.Elements
-   Felipe Nicoletto
-   https://github.com/FelipeNicoletto/SkiaSharp.Elements
-
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
 */
 
-using FastTalkerSkiaSharp.Elements;
-using SkiaSharp.Elements.Extensions;
-using SkiaSharp.Elements.Interfaces;
+using FastTalkerSkiaSharp.Interfaces;
+using SkiaSharp;
 
-namespace SkiaSharp.Elements
+namespace FastTalkerSkiaSharp.Controls
 {
-    public abstract class Element : IInvalidatable
+    public abstract class Icon : InterfaceRedraw
     {
         #region Constructors
 
-        public Element()
+        public Icon()
         {
             _transformationPivot = new SKPoint(.5f, .5f);
 
@@ -39,9 +42,7 @@ namespace SkiaSharp.Elements
 
         #region Properties
 
-        private SKMatrix? _appliedTransformation;
-
-        internal IElementContainer Parent { get; set; }
+        internal IconsCollection Parent { get; set; }
 
         public SKPoint Location
         {
@@ -111,8 +112,8 @@ namespace SkiaSharp.Elements
         // Current scale of icon
         public float CurrentScale { get; set; }
 
-        ElementsController _parentController = null;
-        ElementsController ParentController
+        FieldControl _parentController = null;
+        FieldControl ParentController
         {
             get
             {
@@ -216,7 +217,7 @@ namespace SkiaSharp.Elements
                 _isPressed = value;
             }
         }
-        
+
         public virtual bool EnableDrag { get; set; }
 
         #endregion Properties
@@ -239,12 +240,6 @@ namespace SkiaSharp.Elements
 
         public virtual bool IsPointInside(SKPoint point)
         {
-            var transformation = GetTransformation(true);
-            if (transformation.HasValue && transformation.Value.TryInvert(out var invert))
-            {
-                point = invert.MapPoint(point);
-            }
-            
             return Bounds.Contains(point);
         }
 
@@ -253,19 +248,18 @@ namespace SkiaSharp.Elements
         /// </summary>
         public void BringToFront()
         {
-            //var collector = Parent as IElementsCollector;
-            var parentElement = Parent as Element;
+            var parentIcon = Parent as Icon;
 
-            if (ParentController != null || parentElement != null)
+            if (ParentController != null || parentIcon != null)
             {
                 if (ParentController != null)
                 {
-                    ParentController.Elements.BringToFront(this);
+                    ParentController.Icons.BringToFront(this);
                 }
 
-                if (parentElement != null)
+                if (parentIcon != null)
                 {
-                    parentElement.BringToFront();
+                    parentIcon.BringToFront();
                 }
             }
         }
@@ -282,18 +276,10 @@ namespace SkiaSharp.Elements
         {
             if (this.IsStoredInAFolder) return;
 
-            if (Tag == ElementRoles.GetRoleInt(ElementRoles.Role.SentenceFrame) && !ParentController.InFramedMode) return;
-
-            if (Transformation != null)
-            {
-                var transformation = GetTransformation(false).Value;
-
-                canvas.Concat(ref transformation);
-                _appliedTransformation = transformation;
-            }
+            if (Tag == IconRoles.GetRoleInt(IconRoles.Role.SentenceFrame) && !ParentController.InFramedMode) return;
 
             // This is the communication tag, w/o access to the other projects
-            if (this.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication))
+            if (this.Tag == IconRoles.GetRoleInt(IconRoles.Role.Communication))
             {
                 // Draws highlight
                 if (ParentController.InFramedMode)
@@ -304,7 +290,7 @@ namespace SkiaSharp.Elements
                     }
                     else if (IsInsertableIntoFolder)
                     {
-                        canvas.DrawRect(_bounds, ParentController.PaintOrange);                                
+                        canvas.DrawRect(_bounds, ParentController.PaintOrange);
                     }
                     else
                     {
@@ -345,73 +331,34 @@ namespace SkiaSharp.Elements
                                         ParentController.PaintBlackStroke);
                 }
             }
-            else if (this.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Folder))
+            else if (this.Tag == IconRoles.GetRoleInt(IconRoles.Role.Folder))
             {
                 canvas.DrawRect(_bounds, ParentController.PaintWhite);
             }
         }
 
-        internal SKMatrix? GetTransformation(bool concatParents)
-        {
-            SKMatrix? transformation = null;
-            if (Transformation.HasValue)
-            {
-                var bounds = Bounds;
-
-                var tx = bounds.Left + (bounds.Width * _transformationPivot.X);
-                var ty = bounds.Top + (bounds.Height * _transformationPivot.Y);
-
-                var anchor = SKMatrix.MakeTranslation(tx, ty);
-                var anchorN = SKMatrix.MakeTranslation(-tx, -ty);
-                
-                transformation = anchor.Concat(Transformation.Value)
-                                       .Concat(anchorN);
-            }
-            
-            if (concatParents)
-            {
-                var parent = Parent as Element;
-                if (parent != null)
-                {
-                    var t = parent.GetTransformation(true);
-
-                    if (t.HasValue)
-                    {
-                        if(!transformation.HasValue)
-                        {
-                            transformation = SKMatrix.MakeIdentity();
-                        }
-
-                        transformation = t.Value.Concat(transformation.Value);
-                    }
-                }
-            }
-            
-            return transformation;
-        }
-        
         #endregion Protected/Internal methods
 
         #region Private methods
 
-        private ElementsController GetController()
+        private FieldControl GetController()
         {
-            var controller = Parent as ElementsController;
+            var controller = Parent as FieldControl;
             if (controller != null)
             {
                 return controller;
             }
-            var parent = Parent as Element;
+            var parent = Parent as Icon;
 
-            while(parent != null)
+            while (parent != null)
             {
-                controller = parent.Parent as ElementsController;
+                controller = parent.Parent as FieldControl;
                 if (controller != null)
                 {
                     return controller;
                 }
 
-                parent = parent.Parent as Element;
+                parent = parent.Parent as Icon;
             }
 
             return null;

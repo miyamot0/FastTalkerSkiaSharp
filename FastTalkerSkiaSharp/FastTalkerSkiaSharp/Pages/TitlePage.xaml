@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:elements="clr-namespace:SkiaSharp.Elements;assembly=FastTalkerSkiaSharp"
+             xmlns:controls="clr-namespace:FastTalkerSkiaSharp.Controls;assembly=FastTalkerSkiaSharp" 
              x:Class="FastTalkerSkiaSharp.Pages.TitlePage"
              Title="Title Page">
     <StackLayout x:Name="hackLayoutTitle"
                  HorizontalOptions="FillAndExpand"
                  VerticalOptions="FillAndExpand">
-        <elements:CanvasView x:Name="canvasTitle" 
-                             Touch="Canvas_Touch" 
-                             HorizontalOptions="FillAndExpand"
-                             VerticalOptions="FillAndExpand"
-                             BackgroundColor="Gray"
-                             EnableTouchEvents="True" />
+        <controls:FieldView x:Name="canvasTitle" 
+                            Touch="Canvas_Touch" 
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"
+                            BackgroundColor="Gray"
+                            EnableTouchEvents="True" />
     </StackLayout>
 </ContentPage>

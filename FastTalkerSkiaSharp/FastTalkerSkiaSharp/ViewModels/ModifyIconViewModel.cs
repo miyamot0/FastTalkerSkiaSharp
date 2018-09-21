@@ -1,24 +1,36 @@
-﻿/*
-   Copyright February 8, 2016 Shawn Gilroy
+﻿/* 
+    The MIT License
 
-   This file is part of Fast Talker
-  
-   This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL 
-   was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+    Copyright February 8, 2016 Shawn Gilroy. http://www.smallnstats.com
 
-   The Fast Talker is a tool to assist clinicans and researchers in the treatment of communication disorders.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-   Email: shawn(dot)gilroy(at)temple.edu
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
 */
 
+using FastTalkerSkiaSharp.Controls;
 using System.Linq;
 
 namespace FastTalkerSkiaSharp.ViewModels
 {
     public class ModifyIconViewModel : PopupUpViewModel
     {
-        SkiaSharp.Elements.Element currentElement;
-        SkiaSharp.Elements.ElementsController controller;
+        Icon currentIcon;
+        FieldControl controller;
 
         public System.Windows.Input.ICommand ButtonResetSize { get; set; }
         public System.Windows.Input.ICommand ButtonIncreaseSize { get; set; }
@@ -29,9 +41,9 @@ namespace FastTalkerSkiaSharp.ViewModels
         public System.Windows.Input.ICommand ButtonPinning { get; set; }
         public System.Windows.Input.ICommand ButtonDelete { get; set; }
 
-        public ModifyIconViewModel(SkiaSharp.Elements.Element _currentElement, SkiaSharp.Elements.ElementsController _controller)
+        public ModifyIconViewModel(Icon _currentIcon, FieldControl _controller)
         {
-            currentElement = _currentElement;
+            currentIcon = _currentIcon;
             controller = _controller;
 
             ButtonResetSize = new Xamarin.Forms.Command(ResetSizeOfButton);
@@ -53,9 +65,9 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// <param name="feedbackOption">Feedback option.</param>
         async void UpdateIconInController(string feedbackOption)
         {
-            int index = controller.Elements.IndexOf(currentElement);
+            int index = controller.Icons.IndexOf(currentIcon);
 
-            SkiaSharp.Elements.Element item = await App.ImageBuilderInstance.AmendIconImage(currentElement, feedbackOption);
+            Icon item = await App.ImageBuilderInstance.AmendIconImage(currentIcon, feedbackOption);
 
             System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "Index: " + index);
 
@@ -65,29 +77,29 @@ namespace FastTalkerSkiaSharp.ViewModels
             }
             else
             {
-                if (currentElement.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder))
+                if (currentIcon.Tag == IconRoles.GetRoleInt(IconRoles.Role.Folder))
                 {
-                    string oldFolderTitle = currentElement.Text;
+                    string oldFolderTitle = currentIcon.Text;
 
-                    if (controller.Elements.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == oldFolderTitle).Any())
+                    if (controller.Icons.Where(elem => elem.IsStoredInAFolder && elem.StoredFolderTag == oldFolderTitle).Any())
                     {
                         // Modify dated tags
-                        for (int i = 0; i < controller.Elements.Count; i++)
+                        for (int i = 0; i < controller.Icons.Count; i++)
                         {
-                            controller.Elements[i].StoredFolderTag = (controller.Elements[i].IsStoredInAFolder &&
-                                                                      controller.Elements[i].Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication) &&
-                                                                      controller.Elements[i].StoredFolderTag == oldFolderTitle) ? item.Text : controller.Elements[i].StoredFolderTag;
+                            controller.Icons[i].StoredFolderTag = (controller.Icons[i].IsStoredInAFolder &&
+                                                                      controller.Icons[i].Tag == IconRoles.GetRoleInt(IconRoles.Role.Communication) &&
+                                                                      controller.Icons[i].StoredFolderTag == oldFolderTitle) ? item.Text : controller.Icons[i].StoredFolderTag;
                         }
                     }
                 }
 
-                controller.Elements[index] = item;
+                controller.Icons[index] = item;
 
                 controller.Invalidate();
 
                 controller.PromptResave();
 
-                currentElement = controller.Elements[index];
+                currentIcon = controller.Icons[index];
             }
         }
 
@@ -166,17 +178,17 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// </summary>
         void DeleteIcon()
         {
-            if (currentElement == null) return;
+            if (currentIcon == null) return;
 
-            switch (currentElement.Tag)
+            switch (currentIcon.Tag)
             {
-                case (int)Elements.ElementRoles.Role.Folder:
-                    App.UserInputInstance.ConfirmDeleteFolder(currentElement);
+                case (int)IconRoles.Role.Folder:
+                    App.UserInputInstance.ConfirmDeleteFolder(currentIcon);
 
                     break;
 
-                case (int)Elements.ElementRoles.Role.Communication:
-                    App.UserInputInstance.ConfirmRemoveIcon(currentElement);
+                case (int)IconRoles.Role.Communication:
+                    App.UserInputInstance.ConfirmRemoveIcon(currentIcon);
 
                     break;
             }
@@ -185,10 +197,10 @@ namespace FastTalkerSkiaSharp.ViewModels
         /// <summary>
         /// Update current icon
         /// </summary>
-        /// <param name="_currentElement">Current element.</param>
-        public void UpdateIcon(SkiaSharp.Elements.Element _currentElement)
+        /// <param name="_currentIcon">Current element.</param>
+        public void UpdateIcon(Icon _currentIcon)
         {
-            currentElement = _currentElement;
+            currentIcon = _currentIcon;
         }
     }
 }

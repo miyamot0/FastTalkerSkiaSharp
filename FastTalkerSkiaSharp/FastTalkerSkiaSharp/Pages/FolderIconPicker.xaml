@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FastTalkerSkiaSharp.Pages.FolderIconPicker"
-             x:local="clr-namespace:FastTalkerSkiaSharp;assembly=FastTalkerSkiaSharp"
              x:Name="FolderIconPickerPage"
              xmlns:controls="clr-namespace:FastTalkerSkiaSharp.Controls;assembly=FastTalkerSkiaSharp" 
              Title="Add New Folder">

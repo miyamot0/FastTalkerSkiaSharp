@@ -2,8 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FastTalkerSkiaSharp.Pages.CommunicationIconPicker"
-             x:local="clr-namespace:FastTalkerSkiaSharp;assembly=FastTalkerSkiaSharp"
-             xmlns:controls="clr-namespace:FastTalkerSkiaSharp.Controls;assembly=FastTalkerSkiaSharp" 
+             xmlns:field="clr-namespace:FastTalkerSkiaSharp.Controls;assembly=FastTalkerSkiaSharp"
              x:Name="StoredIconPickerPage"
              Title="Add New Icon">
 
@@ -39,14 +38,14 @@
                 <ColumnDefinition Width="75*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <controls:CustomScrollView x:Name="customScrollView"
+            <field:CustomScrollView x:Name="customScrollView"
                                    Orientation="Horizontal" 
                                    VerticalOptions="FillAndExpand"
                                    ItemsSource="{Binding Images}"
                                    Grid.Row="0"
                                    Grid.Column="0"
                                    Grid.ColumnSpan="2">
-                <controls:CustomScrollView.ItemTemplate>
+                <field:CustomScrollView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout Padding="5">
@@ -73,8 +72,8 @@
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
-                </controls:CustomScrollView.ItemTemplate>
-            </controls:CustomScrollView>
+                </field:CustomScrollView.ItemTemplate>
+            </field:CustomScrollView>
 
             <Image x:Name="previewCurrent"
                Grid.Row="1"

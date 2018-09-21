@@ -1,43 +1,48 @@
-﻿/*
-   Copyright February 8, 2016 Shawn Gilroy
+﻿/* 
+    The MIT License
 
-   This file is part of Fast Talker
-  
-   This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL 
-   was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+    Copyright February 8, 2016 Shawn Gilroy. http://www.smallnstats.com
 
-   The Fast Talker is a tool to assist clinicans and researchers in the treatment of communication disorders.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-   Email: shawn(dot)gilroy(at)temple.edu
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
 
-   =========================================================================================================
-   
-   Based on SkiaSharp.Elements
-   Felipe Nicoletto
-   https://github.com/FelipeNicoletto/SkiaSharp.Elements
-
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
 */
 
-using SkiaSharp.Elements.Interfaces;
+using FastTalkerSkiaSharp.Interfaces;
+using SkiaSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SkiaSharp.Elements.Collections
+namespace FastTalkerSkiaSharp.Controls
 {
-    public class ElementsCollection : ICollection<Element>, IList<Element>
+    public class IconCollection : ICollection<Icon>, IList<Icon>
     {
-        private List<Element> _items;
-        private IElementContainer _container;
+        private List<Icon> _items;
+        private IconsCollection _container;
 
-        internal ElementsCollection(IElementContainer container)
+        internal IconCollection(IconsCollection container)
         {
             _container = container;
-            _items = new List<Element>();
+            _items = new List<Icon>();
         }
 
-        public Element this[int index]
+        public Icon this[int index]
         {
             get { return _items[index]; }
             set
@@ -47,19 +52,19 @@ namespace SkiaSharp.Elements.Collections
                 Invalidate();
             }
         }
-        
+
         public int Count => _items.Count;
 
         public bool IsReadOnly => false;
-        
-        public void Add(Element item)
+
+        public void Add(Icon item)
         {
             _items.Add(item);
             SetParent(item);
             Invalidate();
         }
-        
-        public void AddRange(Element[] items)
+
+        public void AddRange(Icon[] items)
         {
             _items.AddRange(items);
             SetParent(items);
@@ -73,34 +78,34 @@ namespace SkiaSharp.Elements.Collections
             Invalidate();
         }
 
-        public bool Contains(Element item)
+        public bool Contains(Icon item)
         {
             return _items.Contains(item);
         }
-        
-        public void CopyTo(Element[] array, int arrayIndex)
+
+        public void CopyTo(Icon[] array, int arrayIndex)
         {
             _items.CopyTo(array, arrayIndex);
         }
-        
-        public IEnumerator<Element> GetEnumerator()
+
+        public IEnumerator<Icon> GetEnumerator()
         {
             return _items.GetEnumerator();
         }
 
-        public int IndexOf(Element item)
+        public int IndexOf(Icon item)
         {
             return _items.IndexOf(item);
         }
 
-        public void Insert(int index, Element item)
+        public void Insert(int index, Icon item)
         {
             _items.Insert(index, item);
             SetParent(item);
             Invalidate();
         }
-        
-        public bool Remove(Element item)
+
+        public bool Remove(Icon item)
         {
             if (_items.Remove(item))
             {
@@ -110,7 +115,7 @@ namespace SkiaSharp.Elements.Collections
             }
             return false;
         }
-        
+
         public void RemoveAt(int index)
         {
             RemoveParent(_items[index]);
@@ -118,7 +123,7 @@ namespace SkiaSharp.Elements.Collections
             Invalidate();
         }
 
-        public void BringToFront(Element item)
+        public void BringToFront(Icon item)
         {
             if (_items.Remove(item))
             {
@@ -127,7 +132,7 @@ namespace SkiaSharp.Elements.Collections
             }
         }
 
-        public void SendToBack(Element item)
+        public void SendToBack(Icon item)
         {
             if (_items.Remove(item))
             {
@@ -141,20 +146,20 @@ namespace SkiaSharp.Elements.Collections
             return _items.GetEnumerator();
         }
 
-        private void SetParent(Element[] items)
+        private void SetParent(Icon[] items)
         {
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 SetParent(item);
             }
         }
 
-        private void SetParent(Element item)
+        private void SetParent(Icon item)
         {
             item.Parent = _container;
         }
 
-        private void RemoveParent(IList<Element> items)
+        private void RemoveParent(IList<Icon> items)
         {
             foreach (var item in items)
             {
@@ -162,7 +167,7 @@ namespace SkiaSharp.Elements.Collections
             }
         }
 
-        private void RemoveParent(Element item)
+        private void RemoveParent(Icon item)
         {
             item.Parent = null;
         }
@@ -172,17 +177,16 @@ namespace SkiaSharp.Elements.Collections
             _container?.Invalidate();
         }
 
-        public Element GetElementAtPoint(SKPoint point)
+        public Icon GetIconAtPoint(SKPoint point)
         {
-            return GetElementAtPoint(point, null);
+            return GetIconAtPoint(point, null);
         }
 
-        public Element GetElementAtPoint(SKPoint point, Func<Element, bool> predicate)
+        public Icon GetIconAtPoint(SKPoint point, Func<Icon, bool> predicate)
         {
-            List<Element> items;
+            List<Icon> items;
             if (predicate != null)
             {
-                //items = _items.Where(predicate).ToList();
                 items = _items.Where(predicate)
                               .Where(i => !i.IsStoredInAFolder).ToList();
             }
@@ -191,23 +195,23 @@ namespace SkiaSharp.Elements.Collections
                 items = _items;
             }
 
-            for(var e = items.Count - 1; e >= 0; e--)
+            for (var e = items.Count - 1; e >= 0; e--)
             {
-                var element = items[e];
-                if (element.IsPointInside(point) && !element.IsStoredInAFolder)
+                var icon = items[e];
+                if (icon.IsPointInside(point) && !icon.IsStoredInAFolder)
                 {
-                    var collector = element as IElementsCollector;
+                    var collector = icon as IconsCollection;
                     if (collector != null)
                     {
-                        var subElement = collector.Elements.GetElementAtPoint(point);
-                        if (subElement != null)
+                        var subIcon = collector.Icons.GetIconAtPoint(point);
+                        if (subIcon != null)
                         {
-                            return subElement;
+                            return subIcon;
                         }
                     }
                     else
                     {
-                        return element;
+                        return icon;
                     }
                 }
             }

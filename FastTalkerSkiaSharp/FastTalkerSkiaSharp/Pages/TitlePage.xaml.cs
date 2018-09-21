@@ -1,16 +1,28 @@
-﻿/*
-   Copyright February 8, 2016 Shawn Gilroy
+﻿/* 
+    The MIT License
 
-   This file is part of Fast Talker
-  
-   This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL 
-   was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+    Copyright February 8, 2016 Shawn Gilroy. http://www.smallnstats.com
 
-   The Fast Talker is a tool to assist clinicans and researchers in the treatment of communication disorders.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-   Email: shawn(dot)gilroy(at)temple.edu
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
 */
 
+using FastTalkerSkiaSharp.Controls;
 using SkiaSharp;
 
 namespace FastTalkerSkiaSharp.Pages
@@ -85,8 +97,8 @@ namespace FastTalkerSkiaSharp.Pages
         float textSize = 28f;
         float btnTextSize = 56f;
 
-        SkiaSharp.Elements.Element _currentElement;
-        SkiaSharp.Elements.Image tempImage;
+        Icon _currentIcon;
+        IconImage tempImage;
 
         uint animationLength = 300;
 
@@ -123,7 +135,7 @@ namespace FastTalkerSkiaSharp.Pages
             {
                 if (letter != "")
                 {
-                    tempImage = App.ImageBuilderInstance.BuildStaticElement(resource: "FastTalkerSkiaSharp.DisplayImages." + letter + ".png",
+                    tempImage = App.ImageBuilderInstance.BuildStaticIcon(resource: "FastTalkerSkiaSharp.DisplayImages." + letter + ".png",
                                                                       xPercent: 0.9f,
                                                                       yPercent: 1f,
                                                                       tag: -1);
@@ -134,11 +146,11 @@ namespace FastTalkerSkiaSharp.Pages
                     tempImage.BorderColor = SKColors.Black;
                     tempImage.BorderWidth = 2f;
 
-                    canvasTitle.Controller.Elements.Add(tempImage);
+                    canvasTitle.Controller.Icons.Add(tempImage);
                 }
             }
 
-            Animater(canvasTitle.Controller.Elements[currentItem],
+            Animater(canvasTitle.Controller.Icons[currentItem],
                      xPos - (float)(Rng.Next(0, jitterSpanSide) - jitterSpanSide / 2),
                      (sizeOfStrip.Height / 3f) - (float)(Rng.Next(0, jitterSpan) - jitterSpan / 2));
         }
@@ -156,7 +168,7 @@ namespace FastTalkerSkiaSharp.Pages
             IconOutline.Dispose();
             iconOutline = null;
 
-            _currentElement = null;
+            _currentIcon = null;
 
             tempImage.Bitmap.Dispose();
             tempImage = null;
@@ -165,7 +177,7 @@ namespace FastTalkerSkiaSharp.Pages
 
             Instance = null;
 
-            canvasTitle.Elements.Clear();
+            canvasTitle.Icons.Clear();
         }
 
         async System.Threading.Tasks.Task Waiter()
@@ -183,7 +195,7 @@ namespace FastTalkerSkiaSharp.Pages
         /// <param name="item"></param>
         /// <param name="xEnd"></param>
         /// <param name="yEnd"></param>
-        void Animater(SkiaSharp.Elements.Element item, float xEnd, float yEnd)
+        void Animater(Icon item, float xEnd, float yEnd)
         {
             SKRect oldCenter = item.Bounds;
 
@@ -199,13 +211,13 @@ namespace FastTalkerSkiaSharp.Pages
             {
                 currentItem = currentItem + 1;
 
-                if (currentItem < canvasTitle.Controller.Elements.Count)
+                if (currentItem < canvasTitle.Controller.Icons.Count)
                 {
-                    Animater(canvasTitle.Controller.Elements[currentItem],
-                             xPos + canvasTitle.Controller.Elements[currentItem].Width * (float)currentItem - (float)(Rng.Next(0, jitterSpanSide) - jitterSpanSide / 2),
+                    Animater(canvasTitle.Controller.Icons[currentItem],
+                             xPos + canvasTitle.Controller.Icons[currentItem].Width * (float)currentItem - (float)(Rng.Next(0, jitterSpanSide) - jitterSpanSide / 2),
                              (sizeOfStrip.Height / 3f) - (float)(Rng.Next(0, jitterSpan) - jitterSpan / 2));
                 }
-                else if (currentItem == canvasTitle.Controller.Elements.Count)
+                else if (currentItem == canvasTitle.Controller.Icons.Count)
                 {
                     DrawText();
 
@@ -235,61 +247,57 @@ namespace FastTalkerSkiaSharp.Pages
 
             #region Upper Text
 
-            var topText = new SkiaSharp.Elements.Text("Developed by Shawn Gilroy (C) 2017 " + string.Format("({0})", versionString))
+            var topText = new IconText("Developed by Shawn Gilroy (C) 2017 " + string.Format("({0})", versionString))
             {
                 Size = new SKSize(canvasTitle.CanvasSize.Width, canvasTitle.CanvasSize.Height / 10f),
                 ForeColor = SKColors.White,
-                AutoSize = true,
                 FontSize = textSize,
             };
 
             topText.X = centerX - topText.Width / 2f;
             topText.Y = topText.Height / 2f;
 
-            canvasTitle.Controller.Elements.Add(topText);
+            canvasTitle.Controller.Icons.Add(topText);
 
-            var subText = new SkiaSharp.Elements.Text("Released under the Mozilla Public License, Version 2.0")
+            var subText = new IconText("Released under the Mozilla Public License, Version 2.0")
             {
                 Size = new SKSize(canvasTitle.CanvasSize.Width, canvasTitle.CanvasSize.Height / 10f),
                 ForeColor = SKColors.White,
-                AutoSize = true,
                 FontSize = textSize,
             };
 
             subText.X = centerX - subText.Width / 2f;
             subText.Y = topText.Bottom + subText.Height / 2f;
 
-            canvasTitle.Controller.Elements.Add(subText);
+            canvasTitle.Controller.Icons.Add(subText);
 
             #endregion
 
             #region Lower Text
 
-            var iconsText = new SkiaSharp.Elements.Text("Copyright 2008-2012 Garry Paxton (CC-BY-SA 2.0). http://straight-street.com")
+            var iconsText = new IconText("Copyright 2008-2012 Garry Paxton (CC-BY-SA 2.0). http://straight-street.com")
             {
                 Size = new SKSize(canvasTitle.CanvasSize.Width, canvasTitle.CanvasSize.Height / 10f),
                 ForeColor = SKColors.White,
-                AutoSize = true,
                 FontSize = textSize,
             };
 
             iconsText.X = centerX - iconsText.Width / 2f;
             iconsText.Y = canvasTitle.CanvasSize.Height - iconsText.Height;
 
-            canvasTitle.Controller.Elements.Add(iconsText);
+            canvasTitle.Controller.Icons.Add(iconsText);
 
-            var iconsText2 = new SkiaSharp.Elements.Text("Visual symbols from \"Mulberry Symbol Set\"")
+            var iconsText2 = new IconText("Visual symbols from \"Mulberry Symbol Set\"")
             {
                 Size = new SKSize(canvasTitle.CanvasSize.Width, canvasTitle.CanvasSize.Height / 10f),
                 ForeColor = SKColors.White,
-                AutoSize = true,
                 FontSize = textSize,
             };
 
             iconsText2.X = centerX - iconsText2.Width / 2f;
             iconsText2.Y = iconsText.Top - (iconsText2.Height + 5f);
 
-            canvasTitle.Controller.Elements.Add(iconsText2);
+            canvasTitle.Controller.Icons.Add(iconsText2);
 
             #endregion
 
@@ -304,7 +312,7 @@ namespace FastTalkerSkiaSharp.Pages
                                      sizeBtn.Width + xOffset,
                                      sizeBtn.Height / 2f);
 
-            var button = new SkiaSharp.Elements.RoundRectangle(rect)
+            var button = new IconSquareRounded(rect)
             {
                 BorderColor = SKColors.Black,
                 FillColor = SKColors.IndianRed,
@@ -316,17 +324,16 @@ namespace FastTalkerSkiaSharp.Pages
             button.Height = sizeBtn.Height / 2f;
             button.Y = ((canvasTitle.CanvasSize.Height / 2f) + (iconsText2.Top)) / 2f - button.Height / 2f;
 
-            canvasTitle.Controller.Elements.Add(button);
+            canvasTitle.Controller.Icons.Add(button);
 
             #endregion
 
             #region Button Text
 
-            var btnText = new SkiaSharp.Elements.Text("Load Communication Board")
+            var btnText = new IconText("Load Communication Board")
             {
                 Size = new SKSize(button.Width, button.Height),
                 ForeColor = SKColors.White,
-                AutoSize = true,
                 FontSize = btnTextSize,
                 Tag = 999
             };
@@ -334,7 +341,7 @@ namespace FastTalkerSkiaSharp.Pages
             btnText.X = centerX - btnText.Width / 2f;
             btnText.Y = button.Top + (button.Height / 2f) - (btnText.Height / 2f) + 10;
 
-            canvasTitle.Controller.Elements.Add(btnText);
+            canvasTitle.Controller.Icons.Add(btnText);
 
             #endregion
 
@@ -366,9 +373,9 @@ namespace FastTalkerSkiaSharp.Pages
         {
             if (e.ActionType == SkiaSharp.Views.Forms.SKTouchAction.Pressed)
             {
-                _currentElement = canvasTitle.GetElementAtPoint(e.Location);
+                _currentIcon = canvasTitle.GetIconAtPoint(e.Location);
 
-                if (_currentElement != null && _currentElement.Tag == 999)
+                if (_currentIcon != null && _currentIcon.Tag == 999)
                 {
                     App.BoardPage = new Xamarin.Forms.NavigationPage(new FastTalkerSkiaSharp.Pages.CommunicationBoardPage());
 

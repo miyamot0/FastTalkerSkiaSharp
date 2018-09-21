@@ -22,28 +22,24 @@
     THE SOFTWARE.
 */
 
-using Xamarin.Forms;
-
-namespace FastTalkerSkiaSharp.Models
+namespace FastTalkerSkiaSharp.Controls
 {
-    public class DisplayImageModel
+    static class IconRoles
     {
-        /// <summary>
-        /// Name, which is displayed
-        /// </summary>
-        /// <value>The name.</value>
-        public string Name { get; set; }
+        public enum Role
+        {
+            Control,        // Fixed, user behavior
+            Communication,  // Dynamic, based on settings
+            Display,        // Aesthetic, for decoration
+            Emitter,        // For speech
+            SentenceFrame,  // For framed speech
+            //Settings,       // Access settings
+            Folder          // Folder icon
+        }
 
-        /// <summary>
-        /// ImageSource, location of image from embedded resource
-        /// </summary>
-        /// <value>The image.</value>
-		public ImageSource Image { get; set; }
-
-        /// <summary>
-        /// Rotation
-        /// </summary>
-        /// <value>The rotation.</value>
-        public int Rotation { get; set; } = 0;
+        public static int GetRoleInt(Role role)
+        {
+            return (int)role;
+        }
     }
 }

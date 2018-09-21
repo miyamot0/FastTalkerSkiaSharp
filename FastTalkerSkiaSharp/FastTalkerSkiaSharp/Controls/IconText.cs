@@ -1,41 +1,45 @@
-﻿/*
-   Copyright February 8, 2016 Shawn Gilroy
+﻿/* 
+    The MIT License
 
-   This file is part of Fast Talker
-  
-   This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL 
-   was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+    Copyright February 8, 2016 Shawn Gilroy. http://www.smallnstats.com
 
-   The Fast Talker is a tool to assist clinicans and researchers in the treatment of communication disorders.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-   Email: shawn(dot)gilroy(at)temple.edu
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
 
-   =========================================================================================================
-   
-   Based on SkiaSharp.Elements
-   Felipe Nicoletto
-   https://github.com/FelipeNicoletto/SkiaSharp.Elements
-
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
 */
 
+using SkiaSharp;
 using System;
 
-namespace SkiaSharp.Elements
+namespace FastTalkerSkiaSharp.Controls
 {
-    public class Text : Rectangle, IDisposable
+    public class IconText : IconSquare, IDisposable
     {
         #region Constructors
 
-        public Text(string content) : this()
+        public IconText(string content) : this()
         {
             _content = content;
         }
 
-        private Text() : base(new SKRect())
+        private IconText() : base(new SKRect())
         {
             _foreColor = SKColors.Black;
             _fontSize = 15f;
-            _autoSize = true;
         }
 
         #endregion Constructors
@@ -43,7 +47,7 @@ namespace SkiaSharp.Elements
         #region Properties
 
         private static SKTypeface _defaultFont;
-        public static SKTypeface DefaultFont { get => _defaultFont = _defaultFont ?? SKTypeface.FromFamilyName("Verdana"); }
+        public static SKTypeface DefaultFont { get => _defaultFont = _defaultFont ?? SKTypeface.FromFamilyName("Helvetica"); }
 
         private string _content;
         public string Content
@@ -106,20 +110,6 @@ namespace SkiaSharp.Elements
             }
         }
 
-        private bool _autoSize;
-        public bool AutoSize
-        {
-            get => _autoSize;
-            set
-            {
-                if (value && _autoSize != value)
-                {
-                    _bounds = null;
-                }
-                _autoSize = value;
-            }
-        }
-
         private SKPoint _location;
         private SKRect? _bounds;
         public override SKRect Bounds
@@ -140,14 +130,8 @@ namespace SkiaSharp.Elements
             set
             {
                 _location = value.Location;
-                if (AutoSize)
-                {
-                    _bounds = null;
-                }
-                else
-                {
-                    _bounds = value;
-                }
+                _bounds = null;
+
                 Invalidate();
             }
         }
@@ -160,10 +144,6 @@ namespace SkiaSharp.Elements
         {
             DrawBefore(canvas);
 
-            //SuspendDrawBeforeAfter();
-            //base.Draw(canvas);
-            //ResumeDrawBeforeAfter();
-
             if (!string.IsNullOrWhiteSpace(Content))
             {
                 using (var paint = CreatePaint())
@@ -171,8 +151,6 @@ namespace SkiaSharp.Elements
                     canvas.DrawText(Content, _location.X, _location.Y + Bounds.Height - paint.FontMetrics.Descent, paint);
                 }
             }
-
-            //DrawAfter(canvas);
         }
 
         public void Dispose()

@@ -1,16 +1,28 @@
-﻿/*
-   Copyright February 8, 2016 Shawn Gilroy
+﻿/* 
+    The MIT License
 
-   This file is part of Fast Talker
-  
-   This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL 
-   was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+    Copyright February 8, 2016 Shawn Gilroy. http://www.smallnstats.com
 
-   The Fast Talker is a tool to assist clinicans and researchers in the treatment of communication disorders.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-   Email: shawn(dot)gilroy(at)temple.edu
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
 */
 
+using FastTalkerSkiaSharp.Controls;
 using SkiaSharp;
 using System.Linq;
 
@@ -18,13 +30,13 @@ namespace FastTalkerSkiaSharp.Helpers
 {
     public class ImageBuilder
     {
-        static SkiaSharp.Elements.CanvasView canvasReference;
+        static FieldView canvasReference;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:FastTalkerSkia.Helpers.ImageBuilder"/> class.
         /// </summary>
         /// <param name="_canvas">Canvas.</param>
-        public ImageBuilder(SkiaSharp.Elements.CanvasView _canvas)
+        public ImageBuilder(FieldView _canvas)
         {
             canvasReference = _canvas;
         }
@@ -33,16 +45,16 @@ namespace FastTalkerSkiaSharp.Helpers
         /// Builds the sentence strip.
         /// </summary>
         /// <returns>The sentence strip.</returns>
-        public SkiaSharp.Elements.Rectangle BuildSentenceStrip()
+        public IconSquare BuildSentenceStrip()
         {
             SKSize sizeOfStrip = Constants.DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
                                                                                           Constants.DeviceLayout.StripWidth,
                                                                                           Constants.DeviceLayout.StripHeight);
 
-            return new SkiaSharp.Elements.Rectangle(SKRect.Create(Constants.DeviceLayout.Bezel,
-                                                                            Constants.DeviceLayout.Bezel,
-                                                                            sizeOfStrip.Width,
-                                                                            sizeOfStrip.Height))
+            return new IconSquare(SKRect.Create(Constants.DeviceLayout.Bezel,
+                                  Constants.DeviceLayout.Bezel,
+                                  sizeOfStrip.Width,
+                                  sizeOfStrip.Height))
             {
                 FillColor = new SKColor(SKColors.White.Red,
                                                   SKColors.White.Green,
@@ -50,21 +62,21 @@ namespace FastTalkerSkiaSharp.Helpers
                 BorderColor = new SKColor(SKColors.Black.Red,
                                                     SKColors.Black.Green,
                                                     SKColors.Black.Blue, 200),
-                Tag = Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.SentenceFrame),
+                Tag = IconRoles.GetRoleInt(IconRoles.Role.SentenceFrame),
                 IsStoredInAFolder = false,
             };
         }
 
-        public SkiaSharp.Elements.Rectangle BuildSentenceStripBottom()
+        public IconSquare BuildSentenceStripBottom()
         {
             SKSize sizeOfStrip = Constants.DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize,
                                                                                           Constants.DeviceLayout.StripWidth,
                                                                                           Constants.DeviceLayout.StripHeight);
 
-            return new SkiaSharp.Elements.Rectangle(SKRect.Create(Constants.DeviceLayout.Bezel,
-                                                                  canvasReference.CanvasSize.Height - sizeOfStrip.Height - Constants.DeviceLayout.Bezel,
-                                                                  sizeOfStrip.Width,
-                                                                  sizeOfStrip.Height))
+            return new IconSquare(SKRect.Create(Constants.DeviceLayout.Bezel,
+                                  canvasReference.CanvasSize.Height - sizeOfStrip.Height - Constants.DeviceLayout.Bezel,
+                                  sizeOfStrip.Width,
+                                  sizeOfStrip.Height))
             {
                 FillColor = new SKColor(SKColors.White.Red,
                                                   SKColors.White.Green,
@@ -72,7 +84,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 BorderColor = new SKColor(SKColors.Black.Red,
                                                     SKColors.Black.Green,
                                                     SKColors.Black.Blue, 200),
-                Tag = Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.SentenceFrame),
+                Tag = IconRoles.GetRoleInt(IconRoles.Role.SentenceFrame),
                 IsStoredInAFolder = false,
             };
         }
@@ -85,14 +97,14 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="xPercent">X percent.</param>
         /// <param name="yPercent">Y percent.</param>
         /// <param name="tag">Tag.</param>
-        public SkiaSharp.Elements.Image BuildStaticElement(string resource, float xPercent, float yPercent, int tag)
+        public IconImage BuildStaticIcon(string resource, float xPercent, float yPercent, int tag)
         {
             using (var stream = App.MainAssembly.GetManifestResourceStream(resource))
             {
 
                 SKSize sizeOfEmitter = Constants.DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, xPercent, yPercent);
 
-                SkiaSharp.Elements.Image emitterReference = new SkiaSharp.Elements.Image(SkiaSharp.SKBitmap.Decode(stream))
+                IconImage emitterReference = new IconImage(SkiaSharp.SKBitmap.Decode(stream))
                 {
                     Tag = tag
                 };
@@ -116,14 +128,14 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="xPercent">X percent.</param>
         /// <param name="yPercent">Y percent.</param>
         /// <param name="tag">Tag.</param>
-        public SkiaSharp.Elements.Image BuildStaticElementBottom(string resource, float xPercent, float yPercent, int tag)
+        public IconImage BuildStaticIconBottom(string resource, float xPercent, float yPercent, int tag)
         {
             using (var stream = App.MainAssembly.GetManifestResourceStream(resource))
             {
 
                 SKSize sizeOfEmitter = Constants.DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, xPercent, yPercent);
 
-                SkiaSharp.Elements.Image emitterReference = new SkiaSharp.Elements.Image(SkiaSharp.SKBitmap.Decode(stream))
+                IconImage emitterReference = new IconImage(SkiaSharp.SKBitmap.Decode(stream))
                 {
                     Tag = tag
                 };
@@ -148,7 +160,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="yPercent">Y percent.</param>
         /// <param name="tag">Tag.</param>
         /// <param name="degrees">Degrees.</param>
-        public SkiaSharp.Elements.Image BuildStaticElement(string resource, float xPercent, float yPercent, int tag, float degrees)
+        public IconImage BuildStaticIcon(string resource, float xPercent, float yPercent, int tag, float degrees)
         {
             using (var stream = App.MainAssembly.GetManifestResourceStream(resource))
             {
@@ -157,7 +169,7 @@ namespace FastTalkerSkiaSharp.Helpers
 
                 SKPoint centerPoint = Constants.DeviceLayout.GetEmitterPoint(canvasReference.CanvasSize, size);
 
-                SkiaSharp.Elements.Image emitterReference = new SkiaSharp.Elements.Image(SkiaSharp.SKBitmap.Decode(stream))
+                IconImage emitterReference = new IconImage(SkiaSharp.SKBitmap.Decode(stream))
                 {
                     Tag = tag,
                     Transformation = SKMatrix.MakeRotationDegrees(degrees)
@@ -184,12 +196,12 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="alignRight">If set to <c>true</c> align right.</param>
         /// <param name="alignBottom">If set to <c>true</c> align bottom.</param>
         /// <param name="opaqueBackground">If set to <c>true</c> opaque background.</param>
-        public SkiaSharp.Elements.Image BuildNamedIcon(string resource, string text, float x, float y, int tagCode,
+        public IconImage BuildNamedIcon(string resource, string text, float x, float y, int tagCode,
                                                        bool alignRight = false,
                                                        bool alignBottom = false,
                                                        bool opaqueBackground = false)
         {
-            SkiaSharp.Elements.Image image = null;
+            IconImage image = null;
 
             SKSize loadedSize = Constants.DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, 1f, 1f);
 
@@ -264,7 +276,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     }
 
 
-                    image = new SkiaSharp.Elements.Image(returnBitmap)
+                    image = new IconImage(returnBitmap)
                     {
                         Tag = tagCode,
                         Text = text,
@@ -287,9 +299,9 @@ namespace FastTalkerSkiaSharp.Helpers
         /// </summary>
         /// <returns>The communication icon local.</returns>
         /// <param name="icon">Icon.</param>
-        public SkiaSharp.Elements.Image BuildCommunicationIconLocal(Storage.CommunicationIcon icon)
+        public IconImage BuildCommunicationIconLocal(Storage.CommunicationIcon icon)
         {
-            SkiaSharp.Elements.Image image = null;
+            IconImage image = null;
 
             SKSize loadedSize = Constants.DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, icon.Scale, icon.Scale);
 
@@ -344,7 +356,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     settingsPoint = new SKPoint(icon.X, icon.Y);
                 }
 
-                image = new SkiaSharp.Elements.Image(returnBitmap)
+                image = new IconImage(returnBitmap)
                 {
                     Tag = icon.Tag,
                     Text = icon.Text,
@@ -369,9 +381,9 @@ namespace FastTalkerSkiaSharp.Helpers
         /// </summary>
         /// <returns>The communication icon local.</returns>
         /// <param name="icon">Icon.</param>
-        public SkiaSharp.Elements.Image BuildCommunicationIconDynamic(Storage.CommunicationIcon icon)
+        public IconImage BuildCommunicationIconDynamic(Storage.CommunicationIcon icon)
         {
-            SkiaSharp.Elements.Image image = null;
+            IconImage image = null;
 
             byte[] data = System.Convert.FromBase64String(icon.Base64);
 
@@ -428,7 +440,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     settingsPoint = new SKPoint(icon.X, icon.Y);
                 }
 
-                image = new SkiaSharp.Elements.Image(returnBitmap)
+                image = new IconImage(returnBitmap)
                 {
                     Tag = icon.Tag,
                     Text = icon.Text,
@@ -455,11 +467,11 @@ namespace FastTalkerSkiaSharp.Helpers
         /// </summary>
         /// <returns>The communication icon local.</returns>
         /// <param name="selectedIconArgs">Selected icon arguments.</param>
-        public SkiaSharp.Elements.Image BuildCommunicationIconLocal(ArgsSelectedIcon selectedIconArgs)
+        public IconImage BuildCommunicationIconLocal(ArgsSelectedIcon selectedIconArgs)
         {
             var item = new Storage.CommunicationIcon()
             {
-                Tag = Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication),
+                Tag = IconRoles.GetRoleInt(IconRoles.Role.Communication),
                 Text = selectedIconArgs.Name,
                 Local = true,
                 IsStoredInFolder = false,
@@ -479,9 +491,9 @@ namespace FastTalkerSkiaSharp.Helpers
         /// </summary>
         /// <returns>The communication folder local.</returns>
         /// <param name="icon">Icon.</param>
-        public SkiaSharp.Elements.Image BuildCommunicationFolderLocal(Storage.CommunicationIcon icon)
+        public IconImage BuildCommunicationFolderLocal(Storage.CommunicationIcon icon)
         {
-            SkiaSharp.Elements.Image image = null;
+            IconImage image = null;
 
             SKSize loadedSize = Constants.DeviceLayout.GetSizeByGrid(canvasReference.CanvasSize, icon.Scale, icon.Scale);
 
@@ -536,7 +548,7 @@ namespace FastTalkerSkiaSharp.Helpers
                     settingsPoint = new SKPoint(icon.X, icon.Y);
                 }
 
-                image = new SkiaSharp.Elements.Image(returnBitmap)
+                image = new IconImage(returnBitmap)
                 {
                     Tag = icon.Tag,
                     Text = icon.Text,
@@ -561,11 +573,11 @@ namespace FastTalkerSkiaSharp.Helpers
         /// </summary>
         /// <returns>The communication folder local.</returns>
         /// <param name="selectedIconArgs">Selected icon arguments.</param>
-        public SkiaSharp.Elements.Image BuildCommunicationFolderLocal(ArgsSelectedIcon selectedIconArgs)
+        public IconImage BuildCommunicationFolderLocal(ArgsSelectedIcon selectedIconArgs)
         {
             var item = new Storage.CommunicationIcon()
             {
-                Tag = Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder),
+                Tag = IconRoles.GetRoleInt(IconRoles.Role.Folder),
                 Text = selectedIconArgs.Name,
                 Local = true,
                 IsStoredInFolder = false,
@@ -584,9 +596,9 @@ namespace FastTalkerSkiaSharp.Helpers
         /// Amends the icon image.
         /// </summary>
         /// <returns>The icon image.</returns>
-        /// <param name="element">Element.</param>
+        /// <param name="element">Icon.</param>
         /// <param name="changeActions">Change actions.</param>
-        public async System.Threading.Tasks.Task<SkiaSharp.Elements.Element> AmendIconImage(SkiaSharp.Elements.Element element, string changeActions)
+        public async System.Threading.Tasks.Task<Icon> AmendIconImage(Icon element, string changeActions)
         {
             float newScale = element.CurrentScale;
             string newText = element.Text;
@@ -617,8 +629,8 @@ namespace FastTalkerSkiaSharp.Helpers
                 case Constants.LanguageSettings.EditText:
                     newText = await App.UserInputInstance.ModifyIconTextAsync(newText);
 
-                    if (element.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder) &&
-                        canvasReference.Elements.Where(elem => elem.Text == newText).Any())
+                    if (element.Tag == IconRoles.GetRoleInt(IconRoles.Role.Folder) &&
+                        canvasReference.Icons.Where(elem => elem.Text == newText).Any())
                     {
                         await Acr.UserDialogs.UserDialogs.Instance.AlertAsync("Please select a different name for the folder.", title: "Cannot rename folder.");
 
@@ -658,19 +670,19 @@ namespace FastTalkerSkiaSharp.Helpers
                 HashCode = element.GetHashCode()
             };
 
-            if (element.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication) && icon.Local)
+            if (element.Tag == IconRoles.GetRoleInt(IconRoles.Role.Communication) && icon.Local)
             {
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "CanvasView.Role.Communication && icon.Local");
 
                 return BuildCommunicationIconLocal(icon);
             }
-            else if (element.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Communication) && !icon.Local)
+            else if (element.Tag == IconRoles.GetRoleInt(IconRoles.Role.Communication) && !icon.Local)
             {
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "CanvasView.Role.Communication && !icon.Local");
 
                 return BuildCommunicationIconDynamic(icon);
             }
-            else if (element.Tag == Elements.ElementRoles.GetRoleInt(Elements.ElementRoles.Role.Folder))
+            else if (element.Tag == IconRoles.GetRoleInt(IconRoles.Role.Folder))
             {
                 System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "CanvasView.Role.Folder");
 

@@ -22,28 +22,44 @@
     THE SOFTWARE.
 */
 
-using Xamarin.Forms;
+using SkiaSharp;
+using SkiaSharp.Views.Forms;
+using System;
 
-namespace FastTalkerSkiaSharp.Models
+namespace FastTalkerSkiaSharp.Controls
 {
-    public class DisplayImageModel
+    public class FieldView : SKCanvasView
     {
-        /// <summary>
-        /// Name, which is displayed
-        /// </summary>
-        /// <value>The name.</value>
-        public string Name { get; set; }
+        public FieldView()
+        {
+            _controller = new FieldControl();
+            _controller.OnInvalidate += delegate (object sender, EventArgs e)
+            {
+                InvalidateSurface();
+            };
+        }
 
-        /// <summary>
-        /// ImageSource, location of image from embedded resource
-        /// </summary>
-        /// <value>The image.</value>
-		public ImageSource Image { get; set; }
+        private FieldControl _controller;
+        public FieldControl Controller { get => _controller; }
 
-        /// <summary>
-        /// Rotation
-        /// </summary>
-        /// <value>The rotation.</value>
-        public int Rotation { get; set; } = 0;
+        public IconCollection Icons => _controller.Icons;
+
+        public Icon GetIconAtPoint(SKPoint point)
+        {
+            return Icons.GetIconAtPoint(point);
+        }
+
+        public void SuspendLayout() => _controller.SuspendLayout();
+
+        public void ResumeLayout(bool invalidate = false) => _controller.ResumeLayout(invalidate);
+
+        protected override void OnPaintSurface(SKPaintSurfaceEventArgs e)
+        {
+            _controller.Clear(e.Surface.Canvas);
+
+            base.OnPaintSurface(e);
+
+            _controller.Draw(e.Surface.Canvas);
+        }
     }
 }

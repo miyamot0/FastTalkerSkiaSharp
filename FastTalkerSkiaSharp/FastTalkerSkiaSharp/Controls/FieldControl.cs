@@ -1,37 +1,40 @@
-﻿/*
-   Copyright February 8, 2016 Shawn Gilroy
+﻿/* 
+    The MIT License
 
-   This file is part of Fast Talker
-  
-   This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL 
-   was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+    Copyright February 8, 2016 Shawn Gilroy. http://www.smallnstats.com
 
-   The Fast Talker is a tool to assist clinicans and researchers in the treatment of communication disorders.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-   Email: shawn(dot)gilroy(at)temple.edu
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
 
-   =========================================================================================================
-   
-   Based on SkiaSharp.Elements
-   Felipe Nicoletto
-   https://github.com/FelipeNicoletto/SkiaSharp.Elements
-
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
 */
 
-using FastTalkerSkiaSharp.Elements;
-using SkiaSharp.Elements.Collections;
-using SkiaSharp.Elements.Interfaces;
+using FastTalkerSkiaSharp.Interfaces;
+using SkiaSharp;
 using System;
 
-namespace SkiaSharp.Elements
+namespace FastTalkerSkiaSharp.Controls
 {
-    public class ElementsController : IElementsCollector
+    public class FieldControl : IconsCollection
     {
         #region Events
 
         public event EventHandler OnInvalidate;
 
-        public event EventHandler OnElementsChanged;
+        public event EventHandler OnIconsChanged;
 
         public event EventHandler OnSettingsChanged;
 
@@ -39,15 +42,17 @@ namespace SkiaSharp.Elements
 
         #region Constructors
 
-        public ElementsController()
+        public FieldControl()
         {
-            Elements = new ElementsCollection(this);
+            Icons = new IconCollection(this);
             BackgroundColor = SKColors.White;
         }
 
         #endregion Constructors
 
         #region Properties
+
+        public IconCollection Icons { get; }
 
         private int _suspendLayout;
 
@@ -117,7 +122,7 @@ namespace SkiaSharp.Elements
         private bool _iconModeAuto;
         public bool IconModeAuto
         {
-            get 
+            get
             {
                 return _iconModeAuto;
             }
@@ -126,8 +131,6 @@ namespace SkiaSharp.Elements
                 _iconModeAuto = value;
             }
         }
-
-        public ElementsCollection Elements { get; }
 
         #endregion Properties
 
@@ -241,7 +244,7 @@ namespace SkiaSharp.Elements
         /// </summary>
         public void PromptResave()
         {
-            OnElementsChanged?.Invoke(this, EventArgs.Empty);
+            OnIconsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -252,7 +255,7 @@ namespace SkiaSharp.Elements
         /// <param name="isAutoDeselecting"></param>
         /// <param name="overridePrompt"></param>
         public void UpdateSettings(bool isEditing, bool isInFrame, bool isFrameBottom,
-                                   bool isAutoDeselecting, bool isInIconModeAuto, 
+                                   bool isAutoDeselecting, bool isInIconModeAuto,
                                    bool overridePrompt = false)
         {
             _inEditMode = isEditing;
@@ -266,7 +269,7 @@ namespace SkiaSharp.Elements
                 return;
             }
 
-            OnSettingsChanged?.Invoke(this, EventArgs.Empty);            
+            OnSettingsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -284,24 +287,15 @@ namespace SkiaSharp.Elements
         /// <param name="canvas"></param>
         public void Draw(SKCanvas canvas)
         {
-            foreach (var element in Elements)
+            foreach (var element in Icons)
             {
-                // TODO: remove separate settings icon
-                //if (element.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Settings) && !InEditMode)
-                //{
-                    // Pass if not needed
-
-                //    continue;
-                //}
-                //else 
-                
-                if (element.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.SentenceFrame) && !InFramedMode)
+                if (element.Tag == IconRoles.GetRoleInt(IconRoles.Role.SentenceFrame) && !InFramedMode)
                 {
                     // Pass if not needed
 
                     continue;
                 }
-                else if (element.Tag == ElementRoles.GetRoleInt(ElementRoles.Role.Communication) && element.IsStoredInAFolder)
+                else if (element.Tag == IconRoles.GetRoleInt(IconRoles.Role.Communication) && element.IsStoredInAFolder)
                 {
                     // Pass if not needed
 

@@ -1,28 +1,40 @@
-﻿/*
-   Copyright February 8, 2016 Shawn Gilroy
+﻿/* 
+    The MIT License
 
-   This file is part of Fast Talker
-  
-   This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL 
-   was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+    Copyright February 8, 2016 Shawn Gilroy. http://www.smallnstats.com
 
-   The Fast Talker is a tool to assist clinicans and researchers in the treatment of communication disorders.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-   Email: shawn(dot)gilroy(at)temple.edu
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
 */
 
 using System.Linq;
 using SkiaSharp;
 using Rg.Plugins.Popup.Extensions;
 using Rg.Plugins.Popup.Services;
+using FastTalkerSkiaSharp.Controls;
 
 namespace FastTalkerSkiaSharp.Helpers
 {
     public class UserInput
     {
-        SkiaSharp.Elements.CanvasView canvasRef = null;
+        FieldView canvasRef = null;
 
-        public UserInput(SkiaSharp.Elements.CanvasView _canvasRef)
+        public UserInput(FieldView _canvasRef)
         {
             canvasRef = _canvasRef;
         }
@@ -43,7 +55,7 @@ namespace FastTalkerSkiaSharp.Helpers
                 };
 
                 App.InstanceSettingsPageViewModel.SaveCommunicationIconEvent += SettingsIconInteraction;
-                App.InstanceSettingsPageViewModel.SaveCommunicationElementEvent += SettingsElementInteraction;
+                App.InstanceSettingsPageViewModel.SaveCommunicationSelectionEvent += SettingsSelectInteraction;
                 App.InstanceSettingsPageViewModel.SaveFolderEvent += SettingsFolderInteraction;
             }
 
@@ -59,9 +71,9 @@ namespace FastTalkerSkiaSharp.Helpers
         /// Add icon from local
         /// </summary>
         /// <param name="obj">Object.</param>
-        void SettingsIconInteraction(ArgsSelectedIcon obj)
+        void SettingsSelectInteraction(ArgsSelectedIcon obj)
         {
-            canvasRef.Elements.Add(App.ImageBuilderInstance.BuildCommunicationIconLocal(obj));
+            canvasRef.Icons.Add(App.ImageBuilderInstance.BuildCommunicationIconLocal(obj));
 
             canvasRef.Controller.PromptResave();
         }
@@ -70,11 +82,11 @@ namespace FastTalkerSkiaSharp.Helpers
         /// Add icon from image/base64
         /// </summary>
         /// <param name="obj">Object.</param>
-        private void SettingsElementInteraction(SkiaSharp.Elements.Element obj)
+        private void SettingsIconInteraction(Icon obj)
         {
             try
             {
-                canvasRef.Elements.Add(obj);
+                canvasRef.Icons.Add(obj);
 
                 canvasRef.InvalidateSurface();
             }
@@ -92,7 +104,7 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <param name="obj">Object.</param>
         private void SettingsFolderInteraction(ArgsSelectedIcon obj)
         {
-            canvasRef.Elements.Add(App.ImageBuilderInstance.BuildCommunicationFolderLocal(obj));
+            canvasRef.Icons.Add(App.ImageBuilderInstance.BuildCommunicationFolderLocal(obj));
 
             canvasRef.Controller.PromptResave();
         }
@@ -109,8 +121,8 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <summary>
         /// Confirms the remove icon, with some animation.
         /// </summary>
-        /// <param name="currentElement">Current element.</param>
-        public async void ConfirmRemoveIcon(SkiaSharp.Elements.Element currentElement)
+        /// <param name="currentIcon">Current element.</param>
+        public async void ConfirmRemoveIcon(Icon currentIcon)
         {
             var response = await Acr.UserDialogs.UserDialogs.Instance.ConfirmAsync("Delete this icon?");
 
@@ -118,11 +130,11 @@ namespace FastTalkerSkiaSharp.Helpers
             {
                 new Xamarin.Forms.Animation((value) =>
                 {
-                    currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
+                    currentIcon.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
 
                 }).Commit(Xamarin.Forms.Application.Current.MainPage, "Anim", length: Constants.DeviceLayout.AnimationShrinkMillis, finished: async (v2, c2) =>
                 {
-                    canvasRef.Elements.Remove(currentElement);
+                    canvasRef.Icons.Remove(currentIcon);
                     canvasRef.Controller.PromptResave();
 
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -136,20 +148,20 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <summary>
         /// Delete folder and icons within
         /// </summary>
-        /// <param name="currentElement"></param>
-        public async void ConfirmDeleteFolder(SkiaSharp.Elements.Element currentElement)
+        /// <param name="currentIcon"></param>
+        public async void ConfirmDeleteFolder(Icon currentIcon)
         {
             var response = await Acr.UserDialogs.UserDialogs.Instance.ConfirmAsync("Delete this folder and the icons within?");
 
-            if (response && currentElement != null)
+            if (response && currentIcon != null)
             {
                 new Xamarin.Forms.Animation((value) =>
                 {
                     try
                     {
-                        if (currentElement != null)
+                        if (currentIcon != null)
                         {
-                            currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
+                            currentIcon.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
                         }
                     }
                     catch (System.Exception e)
@@ -161,8 +173,8 @@ namespace FastTalkerSkiaSharp.Helpers
                 {
                     try
                     {
-                        var containedIconColl = canvasRef.Elements.Where(elem => elem.IsStoredInAFolder &&
-                                                                      elem.StoredFolderTag == currentElement.Text);
+                        var containedIconColl = canvasRef.Icons.Where(elem => elem.IsStoredInAFolder &&
+                                                                      elem.StoredFolderTag == currentIcon.Text);
 
                         if (containedIconColl != null && containedIconColl.Any() && containedIconColl.Count() > 0)
                         {
@@ -171,7 +183,7 @@ namespace FastTalkerSkiaSharp.Helpers
                             // Build a list of items to remove
                             foreach (var storedIcon in containedIconColl)
                             {
-                                indicesToRemove.Add(canvasRef.Elements.IndexOf(storedIcon));
+                                indicesToRemove.Add(canvasRef.Icons.IndexOf(storedIcon));
                             }
 
                             indicesToRemove = indicesToRemove.Where(i => i != -1)
@@ -180,13 +192,13 @@ namespace FastTalkerSkiaSharp.Helpers
 
                             foreach (var index in indicesToRemove)
                             {
-                                canvasRef.Elements.RemoveAt(index);
+                                canvasRef.Icons.RemoveAt(index);
                             }
                         }
 
-                        if (currentElement != null)
+                        if (currentIcon != null)
                         {
-                            canvasRef.Elements.Remove(currentElement);
+                            canvasRef.Icons.Remove(currentIcon);
                             canvasRef.Controller.PromptResave();
 
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -206,28 +218,28 @@ namespace FastTalkerSkiaSharp.Helpers
         /// <summary>
         /// Insert an icon into a specific folder
         /// </summary>
-        /// <param name="_currentElement"></param>
+        /// <param name="_currentIcon"></param>
         /// <param name="folderOfInterest"></param>
-        public void InsertIntoFolder(SkiaSharp.Elements.Element _currentElement, System.Collections.Generic.IEnumerable<SkiaSharp.Elements.Element> folderOfInterest)
+        public void InsertIntoFolder(Icon _currentIcon, System.Collections.Generic.IEnumerable<Icon> folderOfInterest)
         {
-            if (folderOfInterest != null && _currentElement != null && folderOfInterest.Count() > 0)
+            if (folderOfInterest != null && _currentIcon != null && folderOfInterest.Count() > 0)
             {
-                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "In Completed: Insertable into folder: " + _currentElement.Tag);
+                System.Diagnostics.Debug.WriteLineIf(App.OutputVerbose, "In Completed: Insertable into folder: " + _currentIcon.Tag);
 
                 var folderToInsertInto = folderOfInterest.First();
 
-                var startPoint = _currentElement.Location;
+                var startPoint = _currentIcon.Location;
 
-                float xDiff = (folderToInsertInto.Location.X + folderToInsertInto.Bounds.Width / 2f) - (startPoint.X + _currentElement.Bounds.Width / 2f);
-                float yDiff = (folderToInsertInto.Location.Y + folderToInsertInto.Bounds.Height / 2f) - (startPoint.Y + _currentElement.Bounds.Height / 2f);
+                float xDiff = (folderToInsertInto.Location.X + folderToInsertInto.Bounds.Width / 2f) - (startPoint.X + _currentIcon.Bounds.Width / 2f);
+                float yDiff = (folderToInsertInto.Location.Y + folderToInsertInto.Bounds.Height / 2f) - (startPoint.Y + _currentIcon.Bounds.Height / 2f);
 
                 new Xamarin.Forms.Animation((value) =>
                 {
-                    if (_currentElement != null)
+                    if (_currentIcon != null)
                     {
                         try
                         {
-                            _currentElement.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
+                            _currentIcon.Location = new SKPoint((startPoint.X) + (xDiff * (float)value),
                                                                   (startPoint.Y) + (yDiff * (float)value));
                         }
                         catch (System.Exception e)
@@ -242,9 +254,9 @@ namespace FastTalkerSkiaSharp.Helpers
                     {
                         try
                         {
-                            if (_currentElement != null)
+                            if (_currentIcon != null)
                             {
-                                _currentElement.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
+                                _currentIcon.Transformation = SKMatrix.MakeScale(1 - (float)value, 1 - (float)value);
                             }
                         }
                         catch (System.Exception e)
@@ -256,13 +268,13 @@ namespace FastTalkerSkiaSharp.Helpers
                     {
                         try
                         {
-                            if (_currentElement != null)
+                            if (_currentIcon != null)
                             {
-                                _currentElement.IsStoredInAFolder = true;
-                                _currentElement.Transformation = SKMatrix.MakeScale(1, 1);
-                                _currentElement.StoredFolderTag = folderToInsertInto.Text;
+                                _currentIcon.IsStoredInAFolder = true;
+                                _currentIcon.Transformation = SKMatrix.MakeScale(1, 1);
+                                _currentIcon.StoredFolderTag = folderToInsertInto.Text;
 
-                                canvasRef.Elements.SendToBack(_currentElement);
+                                canvasRef.Icons.SendToBack(_currentIcon);
                                 canvasRef.Controller.PromptResave();
                             }
                         }
